@@ -1,0 +1,40 @@
+{
+  "overrides": {
+    "nitropack": "2.9.7"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint . --fix --ignore-pattern .gitignore"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@nuxtjs/pwa": "^3.3.4",
+    "@vue/eslint-config-typescript": "^13.0.0",
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0",
+    "eslint-plugin-vue": "^9.31.0",
+    "globals": "^15.12.0",
+    "nuxt": "3.13.1",
+    "typescript-eslint": "^8.14.0"
+  },
+  "dependencies": {
+    "@intlify/unplugin-vue-i18n": "^5.3.1",
+    "@mdi/font": "^7.4.47",
+    "@nuxt/eslint-config": "^0.6.1",
+    "@pinia/nuxt": "^0.7.0",
+    "defu": "^6.1.4",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "sass": "^1.58.0",
+    "typescript": "^5.4.2",
+    "vuetify": "^3.7.4",
+    "vuetify-nuxt-module": "^0.18.3"
+  }
+}

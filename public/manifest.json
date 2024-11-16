@@ -1,0 +1,17 @@
+{  
+  "name": "Heal Quest",  
+  "short_name": "Healquest",  
+  "start_url": "/?home=true",
+  "lang": "en",  
+  "theme_color": "#000000",  
+  "background_color": "#ffffff",  
+  "display": "standalone",  
+  "icons": [  
+    {
+      "src": "/icon-512.png",
+      "sizes": "163x46",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "portrait"
+}

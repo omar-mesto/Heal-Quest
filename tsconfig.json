@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "noUncheckedIndexedAccess": true,
+    "baseUrl": ".",
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "allowSyntheticDefaultImports": true,
+    "composite": true,
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "strict": false,
+    "jsx": "preserve",
+    "sourceMap": false,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "types": [
+      "node",
+      "vuetify",
+      "unplugin-vue-router/client"
+    ],
+    "paths": {
+      "~~/*": [
+        "/*"
+      ]
+    }
+  },
+  "include": [
+    "*.ts",
+    "/*.d.ts",
+    "/*.tsx",
+    "/*.vue",
+    // "auto-imports.d.ts",
+    // "vite.config.mts",
+    "typed-router.d.ts"
+  ]
+}
