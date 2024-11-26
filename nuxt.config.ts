@@ -3,7 +3,8 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: [
-    'vuetify/lib/styles/main.sass'
+    'vuetify/lib/styles/main.sass',
+    '@/assets/styles/scss/main.scss'
   ],
   build: {
     transpile: ['vuetify']
@@ -13,14 +14,6 @@ export default defineNuxtConfig({
     define: {
       'process.env.DEBUG': false
     },
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: '@use "@/assets/styles/scss/theme/_variables.scss" as *;'
-        }
-      }
-    }
-
   },
   modules: ['vuetify-nuxt-module'],
   vuetify: {
@@ -43,46 +36,13 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        { rel: 'manifest', href: '/manifest.json' }
+        { rel: 'manifest', href: '/manifest.json' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'
+        }
       ]
     }
-  },
-  pwa: {
-    // manifest: {
-    //   name: 'Taryiq',
-    //   short_name: 'Taryiq',
-    //   lang: 'en',
-    //   theme_color: '#ffffff',
-    //   background_color: '#ffffff',
-    //   display: 'standalone',
-    //   icons: [
-    //     {
-    //       src: '/icon.png', // Path to your icon file
-    //       sizes: '192x192',
-    //       type: 'image/png'
-    //     },
-    //     {
-    //       src: '/icon-512.png', // Path to your larger icon file
-    //       sizes: '512x512',
-    //       type: 'image/png'
-    //     }
-    //   ]
-    // },
-    // workbox: {
-    //   // Workbox options
-    //   runtimeCaching: [
-    //     {
-    //       urlPattern: 'https://example.com/.*',
-    //       handler: 'CacheFirst',
-    //       method: 'GET',
-    //       strategyOptions: {
-    //         cacheableResponse: {
-    //           statuses: [0, 200]
-    //         }
-    //       }
-    //     }
-    //   ]
-    // }
   },
   compatibilityDate: '2024-11-14'
 }

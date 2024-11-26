@@ -1,6 +1,3 @@
-
-
-
 module.exports={
     env:{
         node:true
@@ -9,6 +6,7 @@ module.exports={
   parserOptions: {
     parser: '@typescript-eslint/parser',
     sourceType: 'module',
+    "ecmaVersion": 6
   },
   root:true,
     extends:[
@@ -23,6 +21,7 @@ module.exports={
     ],
     "rules":{
         "vue/multi-word-component-names":"off",
+        "linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"]
     },
     "settings": {
       "import/resolver": {
