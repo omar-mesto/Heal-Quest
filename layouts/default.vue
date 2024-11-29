@@ -1,12 +1,12 @@
 <script setup>
-import NavBar from '~~/shared/NavBar.vue'
-import Footer from '~~/shared/Footer.vue'
+import Footer from '~~/shared/Footer.vue';
+import NavBar from '~~/shared/NavBar.vue';
 </script>
 
 <template>
-  <div>
-    <NavBar />
-    <slot />
+  <v-app>
+    <NavBar/>
+    <slot />  
     <Footer />
-  </div>
+  </v-app>
 </template>
