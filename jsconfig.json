@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+      "noUncheckedIndexedAccess": true,
+      "baseUrl": ".",
+      "target": "esnext",
+      "useDefineForClassFields": true,
+      "allowSyntheticDefaultImports": true,
+      "composite": true,
+      "module": "esnext",
+      "moduleResolution": "Bundler",
+      "strict": false,
+      "jsx": "preserve",
+      "sourceMap": false,
+      "skipLibCheck": true,
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "lib": [
+        "esnext",
+        "dom"
+      ],
+      "types": [
+        "node",
+        "vuetify",
+      ],
+      "paths": {
+        "@@/*": [
+          "/*"
+        ]
+      }
+    },
+    "include": [
+      ".//*.ts",
+      ".//*.vue",
+    ]
+  }

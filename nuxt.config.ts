@@ -1,21 +1,31 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
-
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  // devtools: { enabled: true },
+  shim: true,
+
   css: [
     'vuetify/lib/styles/main.sass',
     '@/assets/styles/scss/main.scss'
   ],
+
   build: {
     transpile: ['vuetify']
   },
+
   vite: {
 
     define: {
       'process.env.DEBUG': false
     },
   },
+
   modules: ['vuetify-nuxt-module'],
+
+  eslint: {
+
+    checker: true,
+    configType: 'eslintrc'
+  },
+
   vuetify: {
     moduleOptions: {
 
@@ -33,6 +43,7 @@ export default defineNuxtConfig({
       }
     }
   },
+
   app: {
     head: {
       link: [
@@ -44,6 +55,11 @@ export default defineNuxtConfig({
       ]
     }
   },
-  compatibilityDate: '2024-11-14'
+
+  compatibilityDate: '2024-11-14',
+
+  devtools: {
+    enabled: true
+  }
 }
 )
