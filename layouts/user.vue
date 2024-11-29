@@ -3,7 +3,8 @@
         <NavBar>
           <v-app-bar-nav-icon variant="text" @click="toggleDrawer"></v-app-bar-nav-icon>
         </NavBar>
-      <v-navigation-drawer v-model="drawer" app>
+        <v-navigation-drawer  class="h-100" 
+        v-model="drawer" app>
         <v-list class="h-100">
           <v-list-item class="profile-section">
             <div class="d-flex align-center">
@@ -14,7 +15,6 @@
             </div>
           </v-list-item>
           <v-divider></v-divider>
-          <div class="h-75" style="display: grid; align-content: space-between;">
             <v-list-item
               v-for="item in items"
               :key="item.value"
@@ -28,7 +28,6 @@
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </div>
             </v-list-item>
-          </div>
         </v-list>
       </v-navigation-drawer>
   
@@ -43,7 +42,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 import NavBar from '../shared/NavBar.vue';
-  const drawer = ref(false);
+  const drawer = ref(true);
   const items = [
     { title: 'Profile', value: 'profile', icon: 'mdi-account',route:'/userProfile' },
     { title: 'Notifications', value: 'notification', icon: 'mdi-bell',route:'/userProfile/notifications' },
@@ -61,7 +60,17 @@ import NavBar from '../shared/NavBar.vue';
   const toggleDrawer = () => {
     drawer.value = !drawer.value;
   };
+
+  
 </script>
   
   <style scoped>
+  @media (max-width: 600px) {
+  .v-navigation-drawer {
+    justify-content: center !important;
+    display: grid !important;
+    top: 0 !important;
+    width: 100% !important;
+  }
+}
   </style>

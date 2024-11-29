@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 
 import { useAuthStore } from './store/auth/user';
-
 const userAuthStore = useAuthStore()
 useHead({
   title: 'Heal Quest',

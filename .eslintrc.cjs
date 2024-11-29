@@ -1,24 +1,25 @@
 module.exports={
   env:{
     node:true,
+    browser: true,
   },
   parser: 'vue-eslint-parser',
   parserOptions: {
     parser: '@typescript-eslint/parser',
     sourceType: 'module',
-    'ecmaVersion': 6,
+    ecmaVersion: 2020,
   },
   root:true,
   extends:[
-    'eslint:recommended',
+    'eslint:recommended', 
 
     // '@vue/eslint-config-typescript',
     'plugin:import/typescript',
     'plugin:import/recommended',
     'plugin:promise/recommended',
     'plugin:vue/vue3-strongly-recommended',
-
-    // '@nuxt/eslint-config'
+    'plugin:vue/vue3-recommended',
+    '@nuxt/eslint-config'
     // 'eslint:recommended',
     // '@nuxt/eslint-config',
     // "plugin:nuxt/recommended"
@@ -69,14 +70,17 @@ module.exports={
     'vue/padding-line-between-blocks': ['error', 'always'],
       
   },
-  'settings': {
+  settings: {
     'import/resolver': {
       alias: {
-        extensions: ['.vue', '.ts'],
         map: [
           ['~~', './'],
-          // ['@', './'],
+          ['@', './src'],
         ],
+        extensions: ['.js', '.vue', '.json', '.ts'],
+      },
+      node: {
+        extensions: ['.js', '.vue', '.json', '.ts'], 
       },
     },
   },
