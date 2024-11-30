@@ -23,7 +23,6 @@ export const useCategoryStore = defineStore('category', () => {
       const data = await response.json();  
       if (Array.isArray(data.result)) {  
         categories.value = data.result; 
-        console.log(categories)
       } else {  
         throw new Error('Fetched data is not an array.');  
       }  

@@ -1,29 +1,35 @@
-<template>
+<template>  
   <div>
-    <v-window v-model="window" show-arrows class="mt-14">  
-        <v-window-item  
-          v-for="n in length"  
-          :key="n"  
-        >  
-          <v-card class="d-flex justify-center align-center" height="400px"
-          :style="{ backgroundImage: 'url(/homaSlider.png)', backgroundSize: 'cover', backgroundPosition: 'center' }"  >  
-            <div class="text-center">  
-              <h1 class="display-2 font-weight-bold mb-2">Experience the beauty of Rwanda with us</h1>  
-              <h3 class="font-weight-light">Discover the Land of a Thousand Hills</h3>  
-            </div>  
-          </v-card>  
-        </v-window-item>  
-      </v-window>
-  </div>
-</template>
+    <v-window v-model="window" class="mt-sm-14 mt-0" show-arrows>  
+       <v-window-item v-for="advertisement in advertisementStore.advertisements" :key="advertisement.id">
+        <v-card  
+          class="d-flex justify-center align-center"  
+          height="330px"  
+          :style="{  
+            backgroundImage: `url(${advertisement.image})`,  
+            backgroundSize: 'cover',  
+            backgroundPosition: 'center'  
+          }"  
+        >     
+        </v-card>  
+        
+      </v-window-item>  
+    </v-window> 
+     
+  </div>  
+</template>  
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useAdvertisementsStore } from '../../store/home/useAdvertisementsStore';
 
-const length = ref(3);  
-const window = ref(0);
+const advertisementStore = useAdvertisementsStore();
+const window = ref(1);
+
+onMounted(() => {
+  advertisementStore.fetchAdvertisements();
+});
 </script>
 
-<style>
-
+<style>  
 </style>
