@@ -70,7 +70,9 @@ import NavBar from '../shared/NavBar.vue';
     justify-content: center !important;
     display: grid !important;
     top: 0 !important;
-    width: 100% !important;
+  }
+  .v-app{
+    top: 0 !important;
   }
 }
   </style>
