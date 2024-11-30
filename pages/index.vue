@@ -2,7 +2,7 @@
   <v-app app>  
     <v-container fluid>  
       <Home/>
-      
+      <HomeCategory/>
     </v-container>  
   </v-app>  
 </template>  
