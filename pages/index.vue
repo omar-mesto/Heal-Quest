@@ -1,12 +1,16 @@
-<script lang="ts" setup>
+<template>  
+  <v-app app>  
+    <v-container fluid>  
+      <Home/>
+      
+    </v-container>  
+  </v-app>  
+</template>  
 
+<script lang="ts" setup>  
+ 
+</script>  
 
-</script>
+<style scoped>  
 
-<template>
-  <div>
-    <Home />
-  </div>
-</template>
-
-<style scoped lang="scss"></style>
+</style>

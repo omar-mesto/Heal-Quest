@@ -16,7 +16,7 @@
       <v-btn icon>
         <v-icon>mdi-heart</v-icon>
       </v-btn>
-      <v-btn icon>
+      <v-btn icon @click="$router.push('/userProfile')">
         <v-icon>mdi-account</v-icon>
       </v-btn>
       <slot/>
