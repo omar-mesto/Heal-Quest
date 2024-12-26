@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 
 import { useAuthStore } from './store/auth/user';
+
 const userAuthStore = useAuthStore()
 useHead({
   title: 'Heal Quest',
@@ -12,8 +13,7 @@ useHead({
   <div>
     <NuxtLayout>
       <NuxtPage />
-    </NuxtLayout>
-
+      
     <VSnackbar
       v-model="userAuthStore.snackbar.show"
       :color="userAuthStore.snackbar.color"
@@ -30,5 +30,7 @@ useHead({
         </VBtn>
       </template>
     </VSnackbar>
+    </NuxtLayout>
+
   </div>
 </template>

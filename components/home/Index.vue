@@ -1,35 +1,35 @@
+<script lang="ts" setup>  
+import { useAsyncData, useNuxtApp } from 'nuxt/app';
+import { ref } from 'vue';
+
+const { $api } = useNuxtApp();  
+const window = ref(false);
+
+const { data } = await useAsyncData('advertisement', async () => {  
+  const response = await $api('/getAdvertisment'); 
+  
+  return response;  
+}); 
+</script>  
+
 <template>  
-  <div>
-    <v-window v-model="window" class="mt-sm-14 mt-0" show-arrows>  
-       <v-window-item v-for="advertisement in advertisementStore.advertisements" :key="advertisement.id">
-        <v-card  
-          class="d-flex justify-center align-center"  
-          height="330px"  
-          :style="{  
-            backgroundImage: `url(${advertisement.image})`,  
-            backgroundSize: 'cover',  
-            backgroundPosition: 'center'  
-          }"  
-        >     
-        </v-card>  
-        
-      </v-window-item>  
-    </v-window> 
-     
+  <div>  
+    <VWindow  
+      v-model="window"  
+      class="mt-sm-14 mt-0"  
+      style="margin-top:0"  
+      show-arrows  
+    >  
+      <VWindowItem  
+        v-for="advertisement in data?.result || []"
+        :key="advertisement.id"  
+      >  
+        <VImg  
+          :src="advertisement.image"  
+          cover  
+          height="300"  
+        />  
+      </VWindowItem>  
+    </VWindow>  
   </div>  
-</template>  
-
-<script lang="ts" setup>
-import { onMounted, ref } from 'vue';
-import { useAdvertisementsStore } from '../../store/home/useAdvertisementsStore';
-
-const advertisementStore = useAdvertisementsStore();
-const window = ref(1);
-
-onMounted(() => {
-  advertisementStore.fetchAdvertisements();
-});
-</script>
-
-<style>  
-</style>
+</template>
