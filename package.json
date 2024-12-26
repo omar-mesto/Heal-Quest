@@ -9,7 +9,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint ./**/*.vue --fix --ignore-pattern .gitignore"
+    "lint": "eslint . --fix --ignore-pattern .gitignore"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^0.7.2",

@@ -4,17 +4,17 @@ export default defineNuxtConfig({
 
   css: [
     'vuetify/lib/styles/main.sass',
-    '@/assets/styles/scss/main.scss'
+    '@/assets/styles/scss/main.scss',
   ],
 
   build: {
-    transpile: ['vuetify']
+    transpile: ['vuetify'],
   },
 
   vite: {
 
     define: {
-      'process.env.DEBUG': false
+      'process.env.DEBUG': false,
     },
   },
 
@@ -23,7 +23,7 @@ export default defineNuxtConfig({
   eslint: {
 
     checker: true,
-    configType: 'eslintrc'
+    configType: 'eslintrc',
   },
 
   vuetify: {
@@ -36,12 +36,12 @@ export default defineNuxtConfig({
           light: {
             dark: false,
             colors: {
-              primary: '#2260FF'
-            }
-          }
-        }
-      }
-    }
+              primary: '#2260FF',
+            },
+          },
+        },
+      },
+    },
   },
 
   app: {
@@ -50,16 +50,16 @@ export default defineNuxtConfig({
         { rel: 'manifest', href: '/manifest.json' },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'
-        }
-      ]
-    }
+          href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
+        },
+      ],
+    },
   },
 
   compatibilityDate: '2024-11-14',
 
   devtools: {
-    enabled: true
-  }
-}
+    enabled: true,
+  },
+},
 )

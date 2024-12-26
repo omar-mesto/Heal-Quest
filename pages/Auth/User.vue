@@ -11,12 +11,10 @@ definePageMeta({
 
 const userAuthStore = useAuthStore()
 const loginForm = ref();
-const phone = ref('')
-const otp = ref('')
 
 const login = async () => {
   if (loginForm.value.isValid) {
-      userAuthStore.setPhone(phone.value);
+      userAuthStore.setPhone(userAuthStore.phone);
       await userAuthStore.generateOtp();
   } else {
       userAuthStore.showSnackbar('Please enter a valid phone number.', 'warning');
@@ -24,7 +22,7 @@ const login = async () => {
 };
 
 const checkOTP = async () => {
-  userAuthStore.setOtp(otp.value);
+  userAuthStore.setOtp(userAuthStore.otp);
   const success = await userAuthStore.login();
 
   if (success) {
@@ -52,7 +50,7 @@ const checkOTP = async () => {
             @submit.prevent="login"
           >
             <VTextField
-              v-model="phone"
+              v-model="userAuthStore.phone"
               :rules="[validators.rules.phoneNumberRule]"
               label="Phone Number"
               variant="outlined"
@@ -75,7 +73,7 @@ const checkOTP = async () => {
           <VImg
             src="/public/userLogin.png"
             class="mt-10"
-            style="height: 80vh"
+            height="500px"
           />
         </template>
       </AuthLoginWindowItem>
@@ -92,7 +90,7 @@ const checkOTP = async () => {
                 @submit.prevent="checkOTP"
             >
             <VOtpInput
-              v-model="otp"
+              v-model="userAuthStore.otp"
               focus-all
               :length="4"
               variant="outlined"
@@ -113,7 +111,7 @@ const checkOTP = async () => {
           <VImg
             src="/public/OTPuser.png"
             class="mt-10"
-            style="height: 80vh"
+            height="500px"
           />
         </template>
       </AuthLoginWindowItem>

@@ -1,16 +1,8 @@
 <template>  
-  <v-app app>  
-    <v-container fluid>  
-      <Home/>
-      <HomeCategory/>
-    </v-container>  
-  </v-app>  
+  <VApp app>  
+    <VContainer fluid>  
+      <Home />
+      <HomeCategory />  
+    </VContainer>  
+  </VApp>  
 </template>  
-
-<script lang="ts" setup>  
- 
-</script>  
-
-<style scoped>  
-
-</style>

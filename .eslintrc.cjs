@@ -19,7 +19,9 @@ module.exports={
     'plugin:promise/recommended',
     'plugin:vue/vue3-strongly-recommended',
     'plugin:vue/vue3-recommended',
-    '@nuxt/eslint-config'
+    '@nuxt/eslint-config',
+    'plugin:@typescript-eslint/recommended',
+
     // 'eslint:recommended',
     // '@nuxt/eslint-config',
     // "plugin:nuxt/recommended"
@@ -46,7 +48,6 @@ module.exports={
     'newline-before-return': 'error',
     'object-curly-spacing': ['error', 'always'],
     'quotes': ['error', 'single'],
-    'semi': ['error', 'never'],
     'unused-imports/no-unused-imports': 'error',
     'unused-imports/no-unused-vars': [
       'warn',
