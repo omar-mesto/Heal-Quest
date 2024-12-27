@@ -1,36 +1,50 @@
 <script lang="ts" setup>  
-import { useAsyncData, useNuxtApp } from 'nuxt/app';
+import { onMounted, ref } from 'vue';
+import type { CategoryModel } from '../../models/categoryModel';
+import { api } from '../../utils/api';
 
-const { $api } = useNuxtApp();  
+const isLoading = ref(true);   
+const data = ref<CategoryModel[]>([]);
 
-const { data } = await useAsyncData('categories', async () => {  
-  const response = await $api('/getCategories');  
-  
-  return response;  
+onMounted(async () => {  
+  isLoading.value = true;   
+  try {   
+    data.value = await api.get<CategoryModel[]>('getCategories');  
+  } finally {  
+    isLoading.value = false;  
+  }  
 });  
 </script>  
 
 <template>  
   <div>  
-    <VRow class="py-5">
+    <VRow class="py-5">  
       <VCol  
-        v-for="category in data?.result?.slice(1, 7) || []"
-            
-        :key="category.id"  
+        v-for="index in (isLoading ? 6 : Math.min(data.result?.length || 0, 6))"
+        :key="isLoading ? index : data.result[index]?.id"  
         cols="6"  
         md="2"  
       >  
-        <VCard  
-          class="mx-auto text-center h-100 cursor-pointer"  
-        >  
-          <VAvatar size="50">  
-            <VImg :src="`${category.icon}`" />  
-          </VAvatar>  
-          <VCardText>  
-            {{ category.name.en }}  
-          </VCardText>  
-        </VCard>  
+        <template v-if="isLoading">  
+          <VSkeletonLoader  
+            class="window-item-skeleton"  
+            card  
+            height="100"  
+          />  
+        </template>  
+        <template v-else>  
+          <VCard  
+            class="mx-auto text-center h-100 cursor-pointer"  
+          >  
+            <VAvatar size="50">  
+              <VImg :src="data.result[index]?.icon" />  
+            </VAvatar>  
+            <VCardText>  
+              {{ data.result[index]?.name.en }}  
+            </VCardText>  
+          </VCard>  
+        </template>  
       </VCol>  
-    </VRow>  
+    </VRow>
   </div>  
 </template>
