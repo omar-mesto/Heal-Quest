@@ -9,11 +9,8 @@ const isLoading = ref(true);
 
 onMounted(async () => {  
   isLoading.value = true; 
-  try {   
-    data.value = await api.get<AdvertisementModel[]>('getAdvertisment');
-  } finally {  
-    isLoading.value = false;
-  }  
+  data.value = await api.get<AdvertisementModel[]>('getAdvertisment');
+  isLoading.value = false;
 });  
 </script>  
 

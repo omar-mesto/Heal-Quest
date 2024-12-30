@@ -8,11 +8,8 @@ const data = ref<CategoryModel[]>([]);
 
 onMounted(async () => {  
   isLoading.value = true;   
-  try {   
-    data.value = await api.get<CategoryModel[]>('getCategories');  
-  } finally {  
-    isLoading.value = false;  
-  }  
+  data.value = await api.get<CategoryModel[]>('getCategories');  
+  isLoading.value = false;  
 });  
 </script>  
 
@@ -20,7 +17,7 @@ onMounted(async () => {
   <div>  
     <VRow class="py-5">  
       <VCol  
-        v-for="index in (isLoading ? 6 : Math.min(data.result?.length || 0, 6))"
+        v-for="index in 6"
         :key="isLoading ? index : data.result[index]?.id"  
         cols="6"  
         md="2"  

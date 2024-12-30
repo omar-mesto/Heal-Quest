@@ -2,16 +2,23 @@ import { ApiError } from '../models/apiErrorModel';
 
 const API_BASE_URL = 'https://hq.90-soft.com/api/functions/';  
 
-const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> => {  
-  const response = await fetch(url, {  
-    ...options,  
+const fetchData = async <T, U>(  
+  method: 'GET' | 'POST' | 'DELETE',  
+  endpoint: string,  
+  body?: U,
+): Promise<T> => {  
+  const options: RequestInit = {  
+    method,  
     headers: {  
       'Content-Type': 'application/json',  
-      'X-Parse-Application-Id': 'appId', 
+      'X-Parse-Application-Id': 'appId',   
       'X-Parse-REST-API-Key': 'restAPIKey',  
-      ...(options.headers || {}),  
     },  
-  });  
+  };  
+
+  options.body = JSON.stringify(body);  
+
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, options);  
 
   if (!response.ok) {  
     const errorData: ApiError = await response.json();  
@@ -23,28 +30,14 @@ const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> 
 
 export const api = {  
   get: async <T>(endpoint: string): Promise<T> => {  
-    return fetchData<T>(`${API_BASE_URL}${endpoint}`, {  
-      method: 'GET',  
-    });  
+    return fetchData<T, undefined>('GET', endpoint);  
   },  
 
   post: async <T, U>(endpoint: string, body: U): Promise<T> => {  
-    return fetchData<T>(`${API_BASE_URL}${endpoint}`, {  
-      method: 'POST',  
-      body: JSON.stringify(body),  
-    });  
-  },  
-
-  put: async <T, U>(endpoint: string, body: U): Promise<T> => {  
-    return fetchData<T>(`${API_BASE_URL}${endpoint}`, {  
-      method: 'PUT',  
-      body: JSON.stringify(body),  
-    });  
+    return fetchData<T, U>('POST', endpoint, body);  
   },  
 
   delete: async <T>(endpoint: string): Promise<T> => {  
-    return fetchData<T>(`${API_BASE_URL}${endpoint}`, {  
-      method: 'DELETE',  
-    });  
+    return fetchData<T, undefined>('DELETE', endpoint);  
   },  
 };
