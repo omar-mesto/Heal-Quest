@@ -19,9 +19,9 @@ const login = async () => {
 
     success.value = await adminAuthStore.loginAdmin();
   } 
-  // if (success) {
-  //   router.push('/dashboard');
-  // }
+  if (success) {
+    router.push('/dashboard');
+  }
 };
 
 
