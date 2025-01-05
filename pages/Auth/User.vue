@@ -76,6 +76,19 @@ const checkOTP = async () => {
             height="500px"
           />
         </template>
+
+        <template #buttons>
+          <VBtn
+              icon="mdi-record"
+              :variant="userAuthStore.step === 1 ? 'outlined' : 'plain'"
+              z
+              @click="userAuthStore.step--"
+            />
+            <VBtn
+              icon="mdi-record"
+              :variant="userAuthStore.step === 1 ? 'plain' : 'outlined'"
+            />
+        </template>
       </AuthLoginWindowItem>
 
       <AuthLoginWindowItem

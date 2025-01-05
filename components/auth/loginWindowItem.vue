@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { useAuthStore } from '../../store/auth/user';
-const userAuthStore = useAuthStore();
 
 const props = defineProps<{
   step: number;
@@ -29,7 +27,7 @@ const props = defineProps<{
               <p class="text-center py-4">
                 {{ props.message }}
               </p>
-                <slot name="form" />
+              <slot name="form" />
             </VCardText>
           </div>
         </VCol>
@@ -41,16 +39,7 @@ const props = defineProps<{
         >
           <slot name="image" />
           <div class="text-center py-5">
-            <VBtn
-              icon="mdi-record"
-              :variant="userAuthStore.step === 1 ? 'outlined' : 'plain'"
-              z
-              @click="userAuthStore.step--"
-            />
-            <VBtn
-              icon="mdi-record"
-              :variant="userAuthStore.step === 1 ? 'plain' : 'outlined'"
-            />
+            <slot name="buttons" />
           </div>
         </VCol>
       </VRow>
