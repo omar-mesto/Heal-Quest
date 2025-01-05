@@ -1,15 +1,28 @@
 <script lang="ts" setup>  
-import { useRoute } from 'nuxt/app';
 import { ref } from 'vue';
 
-const drawer = ref(true);  
+const drawer = ref(true); 
 const items = ref([  
-  { text: 'Actors', icon: 'mdi-folder',rout:'/dashboard' },  
-  { text: 'Actors', icon: 'mdi-account-multiple',rout:'/Actors' },  
-  { text: 'Actors', icon: 'mdi-star',rout:'/Actors' },  
-  { text: 'Actors', icon: 'mdi-history',rout:'/Actors' },  
-  { text: 'Actors', icon: 'mdi-check-circle',rout:'/Actors' },  
+  { title: 'Actors', icon: 'mdi-folder',rout:'/dashboard',
+    subitems:[
+      { title:'Users' },
+      { title:'Doctors' },
+    ],
+  },  
+  { title: 'Actors2', icon: 'mdi-folder',rout:'/dashboard',
+    subitems:[
+      { title:'Users' },
+      { title:'Doctors' },
+    ],
+  },  
+  { title: 'Actors3', icon: 'mdi-folder',rout:'/dashboard',
+    subitems:[
+      { title:'Users' },
+      { title:'Doctors' },
+    ],
+  },  
 ]); 
+
  
 const toggleDrawer = () => {  
   drawer.value = !drawer.value;  
@@ -42,22 +55,60 @@ const toggleDrawer = () => {
               />
             </VList>  
           </div>
-
           <VList
             density="compact"
             nav
           >  
-            <VListItem  
-              v-for="(item, i) in items"  
-              :key="i"  
-              :value="item"
-              :class="{'inverted-border-radius':item.rout===useRoute().fullPath}"
+            <VListGroup
+              value="Actors"
+              class="inverted-border-radius"
             >
-              <template #prepend>
-                <VIcon :icon="item.icon" />
+              <template #activator="{ props }">
+                <VListItem  
+                  
+                  title="Actors"
+                  v-bind="props"
+                />
               </template>
-              <VListItemTitle v-text="item.text" />
-            </VListItem>
+              <VListItem
+                v-for="(item, i) in items[0].subitems"
+                :key="i"  
+                class="listItem"
+                :title="item.title"
+              />
+            </VListGroup>
+            <VListGroup
+              value="items"
+            >
+              <template #activator="{ props }">
+                <VListItem  
+                  
+                  title="Actors"
+                  v-bind="props"
+                />
+              </template>
+              <VListItem
+                v-for="(item, i) in items[0].subitems"  
+                :key="i"
+                :title="item.title"
+              />
+            </VListGroup>
+            <VListGroup
+              value="items2"
+            >
+              <template #activator="{ props }">
+                <VListItem  
+                  
+                  title="Actors"
+                  v-bind="props"
+                />
+              </template>
+              <VListItem
+                v-for="(item, i) in items[0].subitems"  
+                :key="i"
+                :title="item.title"
+              />
+            </VListGroup>
           </VList>
         </VNavigationDrawer>
       </VLayout>  
@@ -111,7 +162,7 @@ const toggleDrawer = () => {
 
 .inverted-border-radius::before {
   content: "";
-  position: absolute;
+  position: relative;
   
   background-color: transparent;
   bottom: -50px;
@@ -120,5 +171,10 @@ const toggleDrawer = () => {
   border-top-left-radius: 25px;
   box-shadow: 0 -25px 0 0 #2260FF;
 }
-
+.listItem{
+  background-color: #fff !important;
+  margin-bottom: 0 !important;
+  color: #000000ED !important;
+  border-radius: 0 !important;
+}
 </style>
