@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router';
 import validators from '../../services/validators';
 import { useAdminAuthStore } from '../../store/auth/admin';
 const router = useRouter();
-const success=ref()
 definePageMeta({
   layout: false,
 })
@@ -17,11 +16,11 @@ const login = async () => {
     adminAuthStore.setUserName(adminAuthStore.userName);
     adminAuthStore.setPassword(adminAuthStore.password);
 
-    success.value = await adminAuthStore.loginAdmin();
+    const success = await adminAuthStore.loginAdmin();
+    if (success) {
+      router.push('/dashboard');
+    }
   } 
-  if (success) {
-    router.push('/dashboard');
-  }
 };
 
 
