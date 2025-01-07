@@ -14,9 +14,8 @@ const headers = ref([
   { title: 'mobileNumber', align: 'center', sortable: true, key: 'mobileNumber' },  
   { title: 'createdAt', align: 'center', sortable: true, key: 'createdAt' },  
   { title: 'updatedAt', align: 'center', sortable: true, key: 'updatedAt' },  
-  { title: 'image', align: 'center', sortable: true, key: 'image.image' },  
-  { title: 'userBlock', align: 'center', sortable: true, key: 'userBlock.status' },  
-  { title: 'Actions', key: 'actions', sortable: false },  
+  { title: 'image', align: 'right', sortable: true, key: 'image.image' },  
+  { title: 'Actions',align: 'center', key: 'actions', sortable: false },  
 ]);  
 </script>  
 

@@ -1,46 +1,48 @@
 <script lang="ts" setup>  
+import { useRoute } from 'nuxt/app';
 import { computed, ref, watch } from 'vue';
 
 const drawer = ref(true); 
+const dialog = ref(false); 
+const dialogDelete = ref(false);  
+const editedIndex = ref(-1);
+const page=ref(1)
+const router=useRoute()
+
+//side Bar
 const items = ref([  
-  { title: 'Actors', icon: 'mdi-folder',rout:'/dashboard',
+  { title: 'Actors',id:1,
     subitems:[
-      { title:'Users' },
-      { title:'Doctors' },
+      { title:'Users',route:'/' },
+      { title:'Doctors',route:'/dashboard/Actors/doctors' },
     ],
   },  
-  { title: 'Actors2', icon: 'mdi-folder',rout:'/dashboard',
+  { title: 'Actors2',id:2,
     subitems:[
-      { title:'Users' },
-      { title:'Doctors' },
+      { title:'Users2',route:'/'  },
+      { title:'Doctors2',route:'/'  },
     ],
   },  
-  { title: 'Actors3', icon: 'mdi-folder',rout:'/dashboard',
+  { title: 'Actors3',id:3,
     subitems:[
-      { title:'Users' },
-      { title:'Doctors' },
+      { title:'Users3',route:'/'  },
+      { title:'Doctors3',route:'/'  },
     ],
   },  
 ]); 
-
- 
 const toggleDrawer = () => {  
   drawer.value = !drawer.value;  
 };  
-
 
 const props = defineProps<{
   headers: string[];
   data: string[];
   tableName: string;
-  prevStep?: () => void;
-  nextStep?: () => void;
 }>();
 
-const dialog = ref(false); 
-const formTitle = computed(() => (editedIndex.value === -1 ? 'New Item' : 'Edit Item')); 
-const dialogDelete = ref(false);  
-const editedIndex = ref(-1);   
+const formTitle = computed(() => 
+  (editedIndex.value === -1 ? 'New Item' : 'Edit Item'),
+);
 
 watch(dialog, (val) => {  
   if (!val) close();  
@@ -83,6 +85,7 @@ const blockItem = (item:string) => {
   dialogDelete.value = true;
   console.log(`Blocking item: ${item}`);  
 };  
+
 </script>  
 
 <template>  
@@ -116,53 +119,23 @@ const blockItem = (item:string) => {
             nav
           >  
             <VListGroup
-              value="Actors"
-              class="inverted-border-radius"
+              v-for="item in items"
+              :key="item.title"
+              :value="item.id"
             >
               <template #activator="{ props }">
-                <VListItem  
-                  
-                  title="Actors"
+                <VListItem
+                  :title="item.title"
                   v-bind="props"
                 />
               </template>
               <VListItem
-                v-for="(item, i) in items[0].subitems"
-                :key="i"  
+                v-for="subitem in item.subitems"
+                :key="subitem.route"  
                 class="listItem"
-                :title="item.title"
-              />
-            </VListGroup>
-            <VListGroup
-              value="items"
-            >
-              <template #activator="{ props }">
-                <VListItem  
-                  
-                  title="Actors"
-                  v-bind="props"
-                />
-              </template>
-              <VListItem
-                v-for="(item, i) in items[0].subitems"  
-                :key="i"
-                :title="item.title"
-              />
-            </VListGroup>
-            <VListGroup
-              value="items2"
-            >
-              <template #activator="{ props }">
-                <VListItem  
-                  
-                  title="Actors"
-                  v-bind="props"
-                />
-              </template>
-              <VListItem
-                v-for="(item, i) in items[0].subitems"  
-                :key="i"
-                :title="item.title"
+                :title="subitem.title"
+                :class="{'border-s-lg border-primary':subitem.route===router.fullPath}"
+                @click="$router.push(`${subitem.route}`)"
               />
             </VListGroup>
           </VList>
@@ -192,9 +165,9 @@ const blockItem = (item:string) => {
         fluid
       >  
         <VCard
-          class="mt-5 bg-light-blue-lighten-5"
+          class="mt-5"
           elevation="7"
-        >  
+        >
           <VDataTable
             :headers="props.headers"
             :items="props.data"
@@ -204,7 +177,10 @@ const blockItem = (item:string) => {
               <VToolbar
                 flat
               >
-                <VToolbarTitle>{{ props.tableName }}</VToolbarTitle>
+                <VToolbarTitle class="text-subtitle-1">
+                  {{ props.tableName }}
+                </VToolbarTitle>
+                
                 <VDialog
                   v-model="dialog"
                   max-width="500px"
@@ -281,13 +257,7 @@ const blockItem = (item:string) => {
             </template>
       
             <template #item.actions="{ item }">
-              <VIcon
-                class="me-2"
-                size="20"
-                @click="blockItem(item)"
-              >
-                mdi-block-helper
-              </VIcon>
+              <slot />
               <VIcon
                 size="25"
                 @click="deleteItem(item)"
@@ -298,17 +268,24 @@ const blockItem = (item:string) => {
 
             <template #item.image.image="{ item }">
               <VCard
-                class="my-2"
+                class="my-2 rounded-circle"
+                width="50"
                 elevation="2"
                 rounded
               >
                 <VImg
                   :src="`${item.image.image}`"
-                  height="100"
-                  width="100"
+                  width="50"
                   cover
                 />
               </VCard>
+            </template>
+            <template #bottom>
+              <div class="text-center pt-2">
+                <VPagination
+                  v-model="page"
+                />
+              </div>
             </template>
           </VDataTable>  
         </VCard>  
@@ -318,34 +295,7 @@ const blockItem = (item:string) => {
 </template>
 
 <style scoped lang="scss">
-.border{
-  border-left:solid 10px #2260FF !important;
-}
 .v-list--nav {
   padding-inline: 0px !important;
-}
-.inverted-border-radius{
-  position: relative;
-  background-color: #2260FF;
-  color: #fff;
-  border-radius: 25px 25px 25px 0;
-}
-
-.inverted-border-radius::before {
-  content: "";
-  position: relative;
-  
-  background-color: transparent;
-  bottom: -50px;
-  height: 50px;
-  width: 25px;
-  border-top-left-radius: 25px;
-  box-shadow: 0 -25px 0 0 #2260FF;
-}
-.listItem{
-  background-color: #fff !important;
-  margin-bottom: 0 !important;
-  color: #000000ED !important;
-  border-radius: 0 !important;
 }
 </style>
