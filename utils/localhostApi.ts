@@ -28,7 +28,7 @@ const fetchData = async <T, U>(
   return response.json() as Promise<T>;  
 };  
 
-export const api = {  
+export const localhostAPI = {  
   get: async <T>(endpoint: string): Promise<T> => {  
     return fetchData<T, undefined>('GET', endpoint);  
   },  
