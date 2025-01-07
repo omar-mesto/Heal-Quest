@@ -1,5 +1,5 @@
 <script lang="ts" setup>  
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const drawer = ref(true); 
 const items = ref([  
@@ -26,6 +26,62 @@ const items = ref([
  
 const toggleDrawer = () => {  
   drawer.value = !drawer.value;  
+};  
+
+
+const props = defineProps<{
+  headers: string[];
+  data: string[];
+  tableName: string;
+  prevStep?: () => void;
+  nextStep?: () => void;
+}>();
+
+const dialog = ref(false); 
+const formTitle = computed(() => (editedIndex.value === -1 ? 'New Item' : 'Edit Item')); 
+const dialogDelete = ref(false);  
+const editedIndex = ref(-1);   
+
+watch(dialog, (val) => {  
+  if (!val) close();  
+});  
+
+watch(dialogDelete, (val) => {  
+  if (!val) closeDelete();  
+})
+
+const close = () => {  
+  dialog.value = false;   
+  editedIndex.value = -1;  
+}; 
+const closeDelete = () => {  
+  dialogDelete.value = false;  
+};  
+
+const save = () => {  
+  if (editedIndex.value > -1) {  
+    // Edit the existing item   
+  } else {  
+    // Add a new item  
+  }  
+  close();  
+};  
+
+const deleteItem = () => {  
+  // editedIndex.value = data?.value.indexOf(item);  
+  dialogDelete.value = true; // Open delete confirmation dialog  
+};  
+
+const deleteItemConfirm = () => {  
+  if (editedIndex.value > -1) {  
+    console.log('test')
+  }  
+  closeDelete();  
+};  
+
+const blockItem = (item:string) => {  
+  dialogDelete.value = true;
+  console.log(`Blocking item: ${item}`);  
 };  
 </script>  
 
@@ -139,7 +195,122 @@ const toggleDrawer = () => {
           class="mt-5 bg-light-blue-lighten-5"
           elevation="7"
         >  
-          <slot />
+          <VDataTable
+            :headers="props.headers"
+            :items="props.data"
+            density="compact"
+          >
+            <template #top>
+              <VToolbar
+                flat
+              >
+                <VToolbarTitle>{{ props.tableName }}</VToolbarTitle>
+                <VDialog
+                  v-model="dialog"
+                  max-width="500px"
+                >
+                  <template #activator="{ props }">
+                    <VBtn
+                      class="mb-2 w-40"
+                      color="primary"
+                      dark
+                      v-bind="props"
+                    >
+                      + New
+                    </VBtn>
+                  </template>
+                  <VCard>
+                    <VCardTitle>
+                      <span class="text-h5">{{ formTitle }}</span>
+                    </VCardTitle>
+
+                    <VCardText>
+                      <VContainer />
+                    </VCardText>
+
+                    <VCardActions>
+                      <VSpacer />
+                      <VBtn
+                        color="blue-darken-1"
+                        variant="text"
+                        @click="close"
+                      >
+                        Cancel
+                      </VBtn>
+                      <VBtn
+                        color="blue-darken-1"
+                        variant="text"
+                        @click="save"
+                      >
+                        Save
+                      </VBtn>
+                    </VCardActions>
+                  </VCard>
+                </VDialog>
+              </vtoolbar>
+
+
+              <VDialog
+                v-model="dialogDelete"
+                max-width="500px"
+              >
+                <VCard>
+                  <VCardTitle class="text-h5">
+                    Are you sure you want to contenue this jop?
+                  </VCardTitle>
+                  <VCardActions>
+                    <VSpacer />
+                    <VBtn
+                      color="blue-darken-1"
+                      variant="text"
+                      @click="closeDelete"
+                    >
+                      Cancel
+                    </VBtn>
+                    <VBtn
+                      color="blue-darken-1"
+                      variant="text"
+                      @click="deleteItemConfirm"
+                    >
+                      OK
+                    </VBtn>
+                    <VSpacer />
+                  </VCardActions>
+                </VCard>
+              </VDialog>
+            </template>
+      
+            <template #item.actions="{ item }">
+              <VIcon
+                class="me-2"
+                size="20"
+                @click="blockItem(item)"
+              >
+                mdi-block-helper
+              </VIcon>
+              <VIcon
+                size="25"
+                @click="deleteItem(item)"
+              >
+                mdi-delete
+              </VIcon>
+            </template>
+
+            <template #item.image.image="{ item }">
+              <VCard
+                class="my-2"
+                elevation="2"
+                rounded
+              >
+                <VImg
+                  :src="`${item.image.image}`"
+                  height="100"
+                  width="100"
+                  cover
+                />
+              </VCard>
+            </template>
+          </VDataTable>  
         </VCard>  
       </VContainer>  
     </VMain>  
