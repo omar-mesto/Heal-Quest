@@ -4,8 +4,6 @@ const props = defineProps<{
   step: number;
   title: string;
   message: string;
-  prevStep?: () => void;
-  nextStep?: () => void;
 }>();
 </script>
 
