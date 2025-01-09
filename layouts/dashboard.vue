@@ -35,8 +35,8 @@ const toggleDrawer = () => {
 };  
 
 const props = defineProps<{
-  headers: string[];
-  data: string[];
+  headers: Array<string>;
+  data: Array<string>;
   tableName: string;
 }>();
 
@@ -91,15 +91,14 @@ const blockItem = (item:string) => {
 <template>  
   <VApp>  
     <VNavigationDrawer  
-      v-model="drawer"  
-      app  
+      v-model="drawer" 
+      app
       permanent  
     >  
       <VLayout class="h-screen">  
         <VNavigationDrawer
           absolute
           permanent
-          class="border"
         >  
           <div class="text-center">
             <VAvatar
@@ -110,7 +109,7 @@ const blockItem = (item:string) => {
             </VAvatar>
             <VList>  
               <VListItem 
-                title="Adam"  
+                title="Adam" 
               />
             </VList>  
           </div>
@@ -201,7 +200,9 @@ const blockItem = (item:string) => {
                     </VCardTitle>
 
                     <VCardText>
-                      <VContainer />
+                      <VContainer>
+                        <slot name="newItem" />
+                      </VContainer>
                     </VCardText>
 
                     <VCardActions>
@@ -280,6 +281,7 @@ const blockItem = (item:string) => {
                 />
               </VCard>
             </template>
+
             <template #bottom>
               <div class="text-center pt-2">
                 <VPagination

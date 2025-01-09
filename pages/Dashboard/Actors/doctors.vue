@@ -26,6 +26,10 @@ const headers = ref([
       :headers="headers"
       :data="data?.result"
       table-name="Doctors"
-    />
+    >
+      <template #newItem>
+        testssss
+      </template>
+    </NuxtLayout>
   </div>
 </template>
