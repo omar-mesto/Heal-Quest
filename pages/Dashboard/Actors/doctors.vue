@@ -5,27 +5,40 @@ import { localhostAPI } from '../../../utils/localhostApi';
 definePageMeta({
   layout: false,
 })
-const data = ref<DoctorsModel[]>([]);  
+
+const Loading = ref(true);   
+const data = ref<{'result' : DoctorsModel[]}>({ 'result':[] });  
 onMounted(async () => {   
-  data.value = await localhostAPI.get<DoctorsModel[]>('getDoctor');  
+  Loading.value = true;
+  data.value = await localhostAPI.get<{'result' : DoctorsModel[]}>('getDoctor');  
+  Loading.value = false;
 });
 const headers = ref([  
-  { title: 'fullName', align: 'center', sortable: true, key: 'fullName' },  
-  { title: 'mobileNumber', align: 'center', sortable: true, key: 'mobileNumber' },  
-  { title: 'createdAt', align: 'center', sortable: true, key: 'createdAt' },  
-  { title: 'updatedAt', align: 'center', sortable: true, key: 'updatedAt' },  
+  { title: 'full Name', align: 'center', sortable: true, key: 'fullName' },  
+  { title: 'mobile Number', align: 'center', sortable: true, key: 'mobileNumber' },  
+  { title: 'created At', align: 'center', sortable: true, key: 'createdAt' },  
+  { title: 'updated At', align: 'center', sortable: true, key: 'updatedAt' },  
   { title: 'image', align: 'right', sortable: true, key: 'image.image' },  
   { title: 'Actions',align: 'center', key: 'actions', sortable: false },  
-]);  
-</script>  
+] as const);  
+const saveDoctor=()=>{
+  console.log('save doctor')
+}
+const updateDoctor=()=>{
+  console.log('updateDoctor')
+}
+</script>   
 
 <template>
   <div>
     <NuxtLayout
       name="dashboard"
       :headers="headers"
-      :data="data?.result"
+      :data="data.result"
       table-name="Doctors"
+      :loading="Loading"
+      @save="saveDoctor"
+      @update="updateDoctor"
     >
       <template #newItem>
         testssss

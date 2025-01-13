@@ -1,7 +1,7 @@
-<script lang="ts" setup>  
+<script lang="ts" setup generic="T">  
 import { useRoute } from 'nuxt/app';
 import { computed, ref, watch } from 'vue';
-
+const emit = defineEmits(['save','update']);
 const drawer = ref(true); 
 const dialog = ref(false); 
 const dialogDelete = ref(false);  
@@ -33,11 +33,11 @@ const items = ref([
 const toggleDrawer = () => {  
   drawer.value = !drawer.value;  
 };  
-
-const props = defineProps<{
-  headers: Array<string>;
-  data: Array<string>;
-  tableName: string;
+defineProps<{
+  headers: { title: string, align: string, sortable: boolean, key: string }[]  ,
+  data: T[],
+  loading:boolean,
+  tableName: string
 }>();
 
 const formTitle = computed(() => 
@@ -62,16 +62,15 @@ const closeDelete = () => {
 
 const save = () => {  
   if (editedIndex.value > -1) {  
-    // Edit the existing item   
+    emit('save');
   } else {  
-    // Add a new item  
+    emit('update');
   }  
   close();  
 };  
 
 const deleteItem = () => {  
-  // editedIndex.value = data?.value.indexOf(item);  
-  dialogDelete.value = true; // Open delete confirmation dialog  
+  dialogDelete.value = true;  
 };  
 
 const deleteItemConfirm = () => {  
@@ -91,57 +90,48 @@ const blockItem = (item:string) => {
 <template>  
   <VApp>  
     <VNavigationDrawer  
-      v-model="drawer" 
-      app
-      permanent  
+      v-model="drawer"
+      permanent
+      class="bg-red"
     >  
-      <VLayout class="h-screen">  
-        <VNavigationDrawer
-          absolute
-          permanent
-        >  
-          <div class="text-center">
-            <VAvatar
-              size="100px"
-              class="mt-3"
-            >
-              <VImg src="../public/admin.png" />
-            </VAvatar>
-            <VList>  
-              <VListItem 
-                title="Adam" 
-              />
-            </VList>  
-          </div>
-          <VList
-            density="compact"
-            nav
-          >  
-            <VListGroup
-              v-for="item in items"
-              :key="item.title"
-              :value="item.id"
-            >
-              <template #activator="{ props }">
-                <VListItem
-                  :title="item.title"
-                  v-bind="props"
-                />
-              </template>
-              <VListItem
-                v-for="subitem in item.subitems"
-                :key="subitem.route"  
-                class="listItem"
-                :title="subitem.title"
-                :class="{'border-s-lg border-primary':subitem.route===router.fullPath}"
-                @click="$router.push(`${subitem.route}`)"
-              />
-            </VListGroup>
-          </VList>
-        </VNavigationDrawer>
-      </VLayout>  
-    </VNavigationDrawer>  
-
+      <!-- <VAvatar
+          size="100px"
+          class="mt-3"
+        >
+          <VImg src="../public/admin.png" />
+        </VAvatar>
+      <VList>  
+        <VListItem 
+          title="Adam" 
+        />
+      </VList>  
+      <VList
+        density="compact"
+        nav
+      >  
+        <VListGroup
+          v-for="item in items"
+          :key="item.title"
+          :value="item.id"
+        >
+          <template #activator="{ props }">
+            <VListItem
+              :title="item.title"
+              v-bind="props"
+            />
+          </template>
+          <VListItem
+            v-for="subitem in item.subitems"
+            :key="subitem.route"  
+            class="listItem"
+            :title="subitem.title"
+            :class="{'border-s-lg border-primary':subitem.route===router.fullPath}"
+            @click="$router.push(`${subitem.route}`)"
+          />
+        </VListGroup>
+      </VList> -->
+    </VNavigationDrawer> 
+   
     <VMain>  
       <VToolbar
         class="bg-white"
@@ -168,8 +158,9 @@ const blockItem = (item:string) => {
           elevation="7"
         >
           <VDataTable
-            :headers="props.headers"
-            :items="props.data"
+            :headers="headers"
+            :items="data"
+            :loading="loading"
             density="compact"
           >
             <template #top>
@@ -177,7 +168,7 @@ const blockItem = (item:string) => {
                 flat
               >
                 <VToolbarTitle class="text-subtitle-1">
-                  {{ props.tableName }}
+                  {{ tableName }}
                 </VToolbarTitle>
                 
                 <VDialog
