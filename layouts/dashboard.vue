@@ -41,7 +41,7 @@ defineProps<{
 }>();
 
 const formTitle = computed(() => 
-  (editedIndex.value === -1 ? 'New Item' : 'Edit Item'),
+  (editedIndex.value === -1 ? 'New' : 'Edit'),
 );
 
 watch(dialog, (val) => {  

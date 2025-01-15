@@ -41,7 +41,98 @@ const updateDoctor=()=>{
       @update="updateDoctor"
     >
       <template #newItem>
-        testssss
+        <VRow>
+          <VCol
+            cols="12"
+            md="6"
+            sm="6"
+          >
+            <VTextField
+              label="fullName"
+              focus-all
+              :length="4"
+              variant="outlined"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            md="6"
+            sm="6"
+          >
+            <VTextField
+              label="username "
+              focus-all
+              :length="4"
+              variant="outlined"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            md="6"
+            sm="6"
+          >
+            <VTextField
+              label="birth date"
+              focus-all
+              :length="4"
+              variant="outlined"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            md="6"
+            sm="6"
+          >
+            <VTextField
+              label="mobile Number"
+              focus-all
+              :length="4"
+              variant="outlined"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            md="6"
+            sm="6"
+          >
+            <VTextField
+              label="Password"
+              focus-all
+              :length="4"
+              variant="outlined"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            md="6"
+            sm="6"
+          >
+            <VFileInput
+              clearable
+              label="image"
+              variant="outlined"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            md="6"
+            sm="6"
+          >
+            <VRadioGroup
+              inline
+              label="Radio group label"
+            >
+              <VRadio
+                label="male"
+                value="male"
+              />
+              <VRadio
+                label="femal"
+                value="femal"
+              />
+            </VRadioGroup>
+          </vcol>
+        </VRow>
       </template>
     </NuxtLayout>
   </div>
