@@ -62,9 +62,10 @@ const closeDelete = () => {
 
 const save = () => {  
   if (editedIndex.value > -1) {  
-    emit('save');
-  } else {  
     emit('update');
+  } else {  
+    
+    emit('save');
   }  
   close();  
 };  
@@ -92,19 +93,20 @@ const blockItem = (item:string) => {
     <VNavigationDrawer  
       v-model="drawer"
       permanent
-      class="bg-red"
     >  
-      <!-- <VAvatar
+      <div class="text-center">
+        <VAvatar
           size="100px"
           class="mt-3"
         >
           <VImg src="../public/admin.png" />
         </VAvatar>
-      <VList>  
-        <VListItem 
-          title="Adam" 
-        />
-      </VList>  
+        <VList>  
+          <VListItem 
+            title="Adam" 
+          />
+        </VList>  
+      </div>
       <VList
         density="compact"
         nav
@@ -129,7 +131,7 @@ const blockItem = (item:string) => {
             @click="$router.push(`${subitem.route}`)"
           />
         </VListGroup>
-      </VList> -->
+      </VList>
     </VNavigationDrawer> 
    
     <VMain>  
