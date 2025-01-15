@@ -19,8 +19,6 @@ watch(group, () => {
 const toggleDrawer = () => {
   drawer.value = !drawer.value;
 };
-
-  
 </script>
   
 <template>
@@ -35,6 +33,7 @@ const toggleDrawer = () => {
       v-model="drawer" 
       class="h-100"
       app
+      permanent
     >
       <VList class="h-100">
         <VListItem class="profile-section">
