@@ -1,133 +1,160 @@
-<script setup lang="ts">
+<script setup lang="ts">  
+import { navigateTo } from 'nuxt/app';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import validators from '../../services/validators';
-import { useAuthStore } from '../../store/auth/user';
-const router = useRouter();
+import { api } from '../../utils/api';
 
-definePageMeta({
-  layout: false,
-})
+definePageMeta({  
+  layout: false,  
+});  
 
-const userAuthStore = useAuthStore()
-const loginForm = ref();
+
+const phone = ref('');  
+const otp = ref('');  
+const step = ref(1);  
+const loginForm = ref();  
+const snackbar = ref({ show: false, message: '', color: 'error' });  
+
+const showSnackbar = (message: string, color = 'error') => {  
+  snackbar.value.message = message;  
+  snackbar.value.color = color;  
+  snackbar.value.show = true;  
+};  
+
+const closeSnackbar = () => {  
+  snackbar.value.show = false;  
+};  
+
+const generateOtp = async () => {  
+  if (loginForm.value.isValid) { 
+    try {  
+      await api.post('generateOTP', {
+        mobileNumber: phone.value, 
+      });  
+      showSnackbar('OTP sent successfully', 'success');  
+      step.value++;  
+    } catch (error) {  
+      showSnackbar(error.message, 'error');
+    }  
+  }
+};  
 
 const login = async () => {
-  if (loginForm.value.isValid) {
-      userAuthStore.setPhone(userAuthStore.phone);
-      await userAuthStore.generateOtp();
-  } else {
-      userAuthStore.showSnackbar('Please enter a valid phone number.', 'warning');
+  if (loginForm.value.isValid) {    
+    try {  
+      const data = await api.post('loginClient', {  
+        mobileNumber: phone.value,  
+        otpCode: otp.value,  
+        installationId: phone.value,  
+      });  
+   
+      localStorage.setItem('sessionToken', data.result?.sessionToken);  
+      showSnackbar('Login successfully', 'success');  
+      navigateTo('/userProfile');  
+    } catch (error) {  
+      showSnackbar(error.message, 'error');
+    }  
   }
-};
+};  
+</script>  
 
-const checkOTP = async () => {
-  userAuthStore.setOtp(userAuthStore.otp);
-  const success = await userAuthStore.login();
-
-  if (success) {
-    router.push('/userProfile');
-  }
-};
-
-</script>
-
-<template>
-  <VCard class="h-screen">
+<template>  
+  <VCard class="h-screen">  
     <VWindow
-      v-model="userAuthStore.step"
+      v-model="step"
       class="h-100"
-    >
+    >  
       <AuthLoginWindowItem
         :step="1"
         title="Login"
         message="Enter Your Phone Number to Send OTP"
-      >
-        <template #form>
-          <VForm              
+      >  
+        <template #form>  
+          <VForm
             ref="loginForm"
             validate-on="input"
-            @submit.prevent="login"
-          >
-            <VTextField
-              v-model="userAuthStore.phone"
-              :rules="[validators.rules.phoneNumberRule]"
-              label="Phone Number"
-              variant="outlined"
-            />
+            @submit.prevent="generateOtp"
+          >  
+            <VTextField  
+              v-model="phone"  
+              :rules="[validators.rules.phoneNumberRule]"  
+              label="Phone Number"  
+              variant="outlined"  
+            />  
             <VBtn
-              :disabled="!loginForm?.isValid"
+              :disabled="!loginForm?.isValid"  
               type="submit"
               class="text-none my-2"
               color="primary"
               size="x-large"
               variant="flat"
               block
-            >
-              Sign In
-            </VBtn>
-          </VForm>
-        </template>
-
-        <template #image>
-          <VImg
-            src="/public/userLogin.png"
-            class="mt-10"
-            height="500px"
-          />
-        </template>
-
-        <template #buttons>
-          <VBtn
-              icon="mdi-record"
-              :variant="userAuthStore.step === 1 ? 'outlined' : 'plain'"
-              z
-              @click="userAuthStore.step--"
-            />
-            <VBtn
-              icon="mdi-record"
-              :variant="userAuthStore.step === 1 ? 'plain' : 'outlined'"
-            />
-        </template>
-      </AuthLoginWindowItem>
-
+            >  
+              Send OTP  
+            </VBtn>  
+          </VForm>  
+        </template>  
+        <template #image>  
+          <VImg  
+            src="/public/userLogin.png"  
+            class="mt-10"  
+            height="500px"  
+          />  
+        </template>  
+      </AuthLoginWindowItem>    
       <AuthLoginWindowItem
         :step="2"
         title="Login"
         message="Enter the OTP that we sent"
-      >
-        <template #form>
+      >  
+        <template #form>  
           <VForm
-                ref="loginForm"
-                validate-on="input"
-                @submit.prevent="checkOTP"
-            >
+            ref="otpForm"
+            validate-on="input"
+            @submit.prevent="login"
+          >  
             <VOtpInput
-              v-model="userAuthStore.otp"
+              v-model="otp"
               focus-all
               :length="4"
               variant="outlined"
-            />
+            />  
             <VBtn
-                type="submit"
-                class="text-none my-2"
-                color="primary"
-                size="x-large"
-                variant="flat"
-                block
-              >
-                Sign In
-            </VBtn>
-          </VForm>
-        </template>
-        <template #image>
-          <VImg
-            src="/public/OTPuser.png"
-            class="mt-10"
-            height="500px"
-          />
-        </template>
-      </AuthLoginWindowItem>
-    </VWindow>
-  </VCard>
+              :disabled="!loginForm?.isValid"  
+              type="submit"
+              class="text-none my-2"
+              color="primary"
+              size="x-large"
+              variant="flat"
+              block
+            >  
+              Sign In  
+            </VBtn>  
+          </VForm>  
+        </template>  
+        <template #image>  
+          <VImg  
+            src="/public/OTPuser.png"  
+            class="mt-10"  
+            height="500px"  
+          />  
+        </template>  
+      </AuthLoginWindowItem>  
+    </VWindow>   
+    <VSnackbar
+      v-model="snackbar.show"
+      :color="snackbar.color"
+    >  
+      {{ snackbar.message }}  
+      <template #action="{ attrs }">  
+        <VBtn
+          text
+          v-bind="attrs"
+          @click="closeSnackbar"
+        >
+          Close
+        </VBtn>  
+      </template>  
+    </VSnackbar>  
+  </VCard>  
 </template>
