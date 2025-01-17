@@ -3,7 +3,7 @@ const navItems = [
   { title: 'Home', value: 'Home', icon: 'mdi-home', route: '/' },
   { title: 'Chat', value: 'Chat', icon: 'mdi-chat', route: '/chat' },
   { title: 'Plans', value: 'Plans', icon: 'mdi-calendar-check', route: '/plans' },
-  { title: 'Policy', value: 'Policy', icon: 'mdi-file-document', route: '/policy' },
+  { title: 'Profile', value: 'Profile', icon: 'mdi-account', route: '/userProfile/account' },
 ];
 </script>
 
