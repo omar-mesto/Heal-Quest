@@ -68,14 +68,12 @@ const toggleDrawer = () => {
       </VList>
     </VNavigationDrawer>
   
-    <VMain>
-      <VContainer
-        class="h-100"
-        fluid
-      >
-        <slot />
-      </VContainer>
-    </VMain>
+    <VContainer
+      class="h-100 container d-flex justify-center ms-10 ps-15 mt-15"
+      fluid
+    >
+      <slot />
+    </VContainer>
   </VApp>
 </template>
   
@@ -88,6 +86,9 @@ const toggleDrawer = () => {
   }
   .v-app{
     top: 0 !important;
+  }
+  .container{
+    margin: 0 auto !important;
   }
 }
   </style>
