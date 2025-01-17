@@ -10,57 +10,52 @@ const dateOfBirth = ref('DD / MM / YYYY')
 </script>
 
 <template>
-  <VContainer
-    class="w-100"
-    fluid
+  <VCard
+    class="pa-4"
+    width="500px"
   >  
-    <VCard
-      class="pa-4 mx-auto"
-      max-width="500"
-    >  
-      <VCardSubtitle class="text-center">  
-        <VAvatar
-          size="100"
-          class="mb-5"
-        >  
-          <VImg src="/userImage.png" />  
-        </VAvatar>  
-      </VCardSubtitle>  
+    <VCardSubtitle class="text-center">  
+      <VAvatar
+        size="100"
+        class="mb-5"
+      >  
+        <VImg src="/userImage.png" />  
+      </VAvatar>  
+    </VCardSubtitle>  
 
-      <VForm>  
-        <VTextField  
-          v-model="fullName"  
-          label="Full Name"  
-          required  
-          variant="outlined" 
-        />  
-        <VTextField  
-          v-model="phoneNumber"  
-          label="Phone Number"  
-          required  
-          variant="outlined" 
-        />  
+    <VForm>  
+      <VTextField  
+        v-model="fullName"  
+        label="Full Name"  
+        required  
+        variant="outlined" 
+      />  
+      <VTextField  
+        v-model="phoneNumber"  
+        label="Phone Number"  
+        required  
+        variant="outlined" 
+      />  
         
-        <VTextField  
-          v-model="dateOfBirth"  
-          label="Date Of Birth"  
-          placeholder="DD / MM / YYYY"  
-          required  
-          variant="outlined"
-        />  
-        <div class="text-center">
-          <VBtn
-            color="primary"
-            type="submit"
-            class="mt-4"
-            large
-          >
-            Update Profile
-          </VBtn>  
-        </div>
-      </VForm>  
-    </VCard>  
-  </VContainer>
+      <VTextField  
+        v-model="dateOfBirth"  
+        label="Date Of Birth"  
+        placeholder="DD / MM / YYYY"  
+        required  
+        variant="outlined"
+      />  
+      <div class="text-center">
+        <VBtn
+          color="primary"
+          type="submit"
+          class="mt-4"
+          large
+        >
+          Update Profile
+        </VBtn>  
+      </div>
+    </VForm>  
+  </VCard>  
 </template>  
 
 <style scoped>  
