@@ -22,7 +22,7 @@ const fetchData = async <T, U>(
 
   if (!response.ok) {  
     const errorData: ApiError = await response.json();  
-    throw new Error(errorData.message || 'Error fetching data');  
+    throw new Error(errorData.error);  
   }  
 
   return response.json() as Promise<T>;  
