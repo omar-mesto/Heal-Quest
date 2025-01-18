@@ -36,6 +36,7 @@ const toggleDrawer = () => {
 defineProps<{
   headers: { title: string, align: string, sortable: boolean, key: string }[]  ,
   data: T[],
+  disable:boolean,
   loading:boolean,
   tableName: string
 }>();
@@ -157,9 +158,10 @@ const blockItem = (item:string) => {
       >  
         <VCard
           class="mt-5"
-          elevation="7"
         >
           <VDataTable
+            v-show="useRoute().fullPath!='/dashboard'"
+            elevation="7"
             :headers="headers"
             :items="data"
             :loading="loading"
@@ -210,7 +212,8 @@ const blockItem = (item:string) => {
                       <VBtn
                         color="blue-darken-1"
                         variant="text"
-                        @click="save"
+                        :disabled="disable"
+                        @click="save" 
                       >
                         Save
                       </VBtn>
@@ -218,8 +221,6 @@ const blockItem = (item:string) => {
                   </VCard>
                 </VDialog>
               </vtoolbar>
-
-
               <VDialog
                 v-model="dialogDelete"
                 max-width="500px"
@@ -263,13 +264,15 @@ const blockItem = (item:string) => {
             <template #item.image.image="{ item }">
               <VCard
                 class="my-2 rounded-circle"
-                width="50"
+                width="80"
+                height="80"
                 elevation="2"
                 rounded
               >
                 <VImg
                   :src="`${item.image.image}`"
-                  width="50"
+                  width="80"
+                  height="80"
                   cover
                 />
               </VCard>
