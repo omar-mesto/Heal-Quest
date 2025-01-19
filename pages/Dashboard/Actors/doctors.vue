@@ -30,7 +30,7 @@ const token = window?.localStorage.getItem('sessionToken');
 const userName = ref('');  
 const fullName = ref('');  
 const password = ref('');  
-const birthdate_ms = ref('');  
+const birthdate_ms = ref();  
 const mobileNumber = ref('');  
 const imageBase64 = ref('');  
 const gender = ref('');   
@@ -57,7 +57,7 @@ const createDoctor = async () => {
       const requestBody = {  
         fullName: fullName.value,  
         username: userName.value,  
-        birthdate_ms: birthdate_ms.value,  
+        birthdate: birthdate_ms.value,  
         mobileNumber: mobileNumber.value,  
         password: password.value,  
         image_base64: imageBase64.value,  
@@ -136,13 +136,10 @@ const handleImageUpload = (event: Event) => {
               cols="12"
               md="6"
               sm="6"
-            >  
-              <VTextField  
+            >
+              <VDateInput  
                 v-model="birthdate_ms"  
-                :rules="[validators.rules.birthdateRule]" 
                 label="Birth Date (in ms)"  
-                focus-all  
-                :length="4"  
                 variant="outlined"  
               />
             </VCol>  

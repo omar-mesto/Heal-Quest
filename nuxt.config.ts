@@ -31,6 +31,9 @@ export default defineNuxtConfig({
 
     },
     vuetifyOptions: {
+      labComponents:true,
+
+      // components: ['VDateInput'],
       theme: {
         themes: {
           light: {
