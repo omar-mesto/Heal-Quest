@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 
 const props = defineProps<{
+  message: string;
   step: number;
   title: string;
-  message: string;
-}>();
+}>()
 </script>
 
 <template>
