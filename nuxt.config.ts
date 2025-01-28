@@ -1,15 +1,40 @@
 export default defineNuxtConfig({
-  devtools: { enabled: true },
-  shim: true,
-
-  css: [
-    'vuetify/lib/styles/main.sass',
-    '@/assets/styles/scss/main.scss',
-  ],
+  app: {
+    head: {
+      link: [
+        { href: '/manifest.json', rel: 'manifest' },
+        {
+          href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
+          rel: 'stylesheet',
+        },
+      ],
+    },
+  },
 
   build: {
     transpile: ['vuetify'],
   },
+
+  compatibilityDate: '2024-11-14',
+
+  css: [
+    '@/assets/styles/scss/main.scss',
+  ],
+
+  devtools: {
+    enabled: true,
+
+  },
+
+  eslint: {
+
+    checker: true,
+    configType: 'eslintrc',
+  },
+
+  modules: ['vuetify-nuxt-module'],
+
+  shim: true,
 
   vite: {
 
@@ -18,54 +43,24 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['vuetify-nuxt-module'],
-
-  eslint: {
-
-    checker: true,
-    configType: 'eslintrc',
-  },
-
   vuetify: {
     moduleOptions: {
 
     },
     vuetifyOptions: {
-      labComponents:true,
+      labComponents: true,
 
       // components: ['VDateInput'],
       theme: {
         themes: {
           light: {
-            dark: false,
             colors: {
               primary: '#2260FF',
             },
+            dark: false,
           },
         },
       },
-    },
-  },
-
-  app: {
-    head: {
-      link: [
-        { rel: 'manifest', href: '/manifest.json' },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
-        },
-      ],
-    },
-  },
-
-  compatibilityDate: '2024-11-14',
-
-  devtools: {
-    enabled: true,
-
-    timeline: {
-      enabled: true,
     },
   },
 },
