@@ -1,100 +1,99 @@
-<script lang="ts" setup generic="T">  
-import { useRoute } from 'nuxt/app';
-import { computed, ref, watch } from 'vue';
-const emit = defineEmits(['save','update']);
-const drawer = ref(true); 
-const dialog = ref(false); 
-const dialogDelete = ref(false);  
-const editedIndex = ref(-1);
-const page=ref(1)
-const router=useRoute()
+<script lang="ts" setup generic="T">
+import { useRoute } from 'nuxt/app'
+import { computed, ref, watch } from 'vue'
+const emit = defineEmits(['save', 'update'])
+const drawer = ref(true)
+const dialog = ref(false)
+const dialogDelete = ref(false)
+const editedIndex = ref(-1)
+const page = ref(1)
+const router = useRoute()
 
-//side Bar
-const items = ref([  
-  { title: 'Actors',id:1,
-    subitems:[
-      { title:'Users',route:'/' },
-      { title:'Doctors',route:'/dashboard/Actors/doctors' },
+// side Bar
+const items = ref([
+  { id: 1, subitems: [
+      { route: '/', title: 'Users' },
+      { route: '/dashboard/Actors/doctors', title: 'Doctors' },
     ],
-  },  
-  { title: 'Actors2',id:2,
-    subitems:[
-      { title:'Users2',route:'/'  },
-      { title:'Doctors2',route:'/'  },
+    title: 'Actors',
+  },
+  { id: 2, subitems: [
+      { route: '/', title: 'Users2' },
+      { route: '/', title: 'Doctors2' },
     ],
-  },  
-  { title: 'Actors3',id:3,
-    subitems:[
-      { title:'Users3',route:'/'  },
-      { title:'Doctors3',route:'/'  },
+    title: 'Actors2',
+  },
+  { id: 3, subitems: [
+      { route: '/', title: 'Users3' },
+      { route: '/', title: 'Doctors3' },
     ],
-  },  
-]); 
-const toggleDrawer = () => {  
-  drawer.value = !drawer.value;  
-};  
+    title: 'Actors3',
+  },
+])
+const toggleDrawer = () => {
+  drawer.value = !drawer.value
+}
 defineProps<{
-  headers: { title: string, align: string, sortable: boolean, key: string }[]  ,
   data: T[],
-  disable:boolean,
-  loading:boolean,
+  disable: boolean,
+  headers: { align: string, key: string, sortable: boolean, title: string }[],
+  loading: boolean,
   tableName: string
-}>();
+}>()
 
-const formTitle = computed(() => 
+const formTitle = computed(() =>
   (editedIndex.value === -1 ? 'New' : 'Edit'),
-);
+)
 
-watch(dialog, (val) => {  
-  if (!val) close();  
-});  
-
-watch(dialogDelete, (val) => {  
-  if (!val) closeDelete();  
+watch(dialog, (val) => {
+  if (!val) close()
 })
 
-const close = () => {  
-  dialog.value = false;   
-  editedIndex.value = -1;  
-}; 
-const closeDelete = () => {  
-  dialogDelete.value = false;  
-};  
+watch(dialogDelete, (val) => {
+  if (!val) closeDelete()
+})
 
-const save = () => {  
-  if (editedIndex.value > -1) {  
-    emit('update');
-  } else {  
-    
-    emit('save');
-  }  
-  close();  
-};  
+const close = () => {
+  dialog.value = false
+  editedIndex.value = -1
+}
+const closeDelete = () => {
+  dialogDelete.value = false
+}
 
-const deleteItem = () => {  
-  dialogDelete.value = true;  
-};  
+const save = () => {
+  if (editedIndex.value > -1) {
+    emit('update')
+  } else {
+    emit('save')
+  }
+  close()
+}
 
-const deleteItemConfirm = () => {  
-  if (editedIndex.value > -1) {  
+const deleteItem = () => {
+  dialogDelete.value = true
+}
+
+const deleteItemConfirm = () => {
+  if (editedIndex.value > -1) {
     console.log('test')
-  }  
-  closeDelete();  
-};  
+  }
+  closeDelete()
+}
 
-const blockItem = (item:string) => {  
-  dialogDelete.value = true;
-  console.log(`Blocking item: ${item}`);  
-};  
+const blockItem = (item: string) => {
+  dialogDelete.value = true
+  console.log(`Blocking item: ${item}`)
+}
 
-</script>  
+</script>
 
-<template>  
-  <VApp>  
-    <VNavigationDrawer  
+<template>
+  <VApp>
+    <VNavigationDrawer
       v-model="drawer"
       permanent
-    >  
+    >
       <div class="text-center">
         <VAvatar
           size="100px"
@@ -102,16 +101,16 @@ const blockItem = (item:string) => {
         >
           <VImg src="../public/admin.png" />
         </VAvatar>
-        <VList>  
-          <VListItem 
-            title="Adam" 
+        <VList>
+          <VListItem
+            title="Adam"
           />
-        </VList>  
+        </VList>
       </div>
       <VList
         density="compact"
         nav
-      >  
+      >
         <VListGroup
           v-for="item in items"
           :key="item.title"
@@ -125,7 +124,7 @@ const blockItem = (item:string) => {
           </template>
           <VListItem
             v-for="subitem in item.subitems"
-            :key="subitem.route"  
+            :key="subitem.route"
             class="listItem"
             :title="subitem.title"
             :class="{'border-s-lg border-primary':subitem.route===router.fullPath}"
@@ -133,29 +132,29 @@ const blockItem = (item:string) => {
           />
         </VListGroup>
       </VList>
-    </VNavigationDrawer> 
-   
-    <VMain>  
+    </VNavigationDrawer>
+
+    <VMain>
       <VToolbar
         class="bg-white"
         elevation="2"
-      >  
-        <VToolbarTitle>Good Morning, Adam!</VToolbarTitle>  
-        <VSpacer />  
+      >
+        <VToolbarTitle>Good Morning, Adam!</VToolbarTitle>
+        <VSpacer />
         <VBtn
           icon
           @click="toggleDrawer"
         >
-          <VIcon>{{ drawer ? 'mdi-menu-open' : 'mdi-menu' }}</VIcon>  
-        </VBtn>  
-        <VBtn icon>  
-          <VIcon>mdi-account-circle</VIcon>  
-        </VBtn>  
-      </VToolbar>  
-      <VDivider />  
+          <VIcon>{{ drawer ? 'mdi-menu-open' : 'mdi-menu' }}</VIcon>
+        </VBtn>
+        <VBtn icon>
+          <VIcon>mdi-account-circle</VIcon>
+        </VBtn>
+      </VToolbar>
+      <VDivider />
       <VContainer
         fluid
-      >  
+      >
         <VCard
           class="mt-5"
         >
@@ -174,7 +173,7 @@ const blockItem = (item:string) => {
                 <VToolbarTitle class="text-subtitle-1">
                   {{ tableName }}
                 </VToolbarTitle>
-                
+
                 <VDialog
                   v-model="dialog"
                   max-width="500px"
@@ -213,7 +212,7 @@ const blockItem = (item:string) => {
                         color="blue-darken-1"
                         variant="text"
                         :disabled="disable"
-                        @click="save" 
+                        @click="save"
                       >
                         Save
                       </VBtn>
@@ -250,7 +249,7 @@ const blockItem = (item:string) => {
                 </VCard>
               </VDialog>
             </template>
-      
+
             <template #item.actions="{ item }">
               <slot />
               <VIcon
@@ -285,11 +284,11 @@ const blockItem = (item:string) => {
                 />
               </div>
             </template>
-          </VDataTable>  
-        </VCard>  
-      </VContainer>  
-    </VMain>  
-  </VApp>  
+          </VDataTable>
+        </VCard>
+      </VContainer>
+    </VMain>
+  </VApp>
 </template>
 
 <style scoped lang="scss">
