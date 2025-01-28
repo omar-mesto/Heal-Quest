@@ -1,9 +1,3 @@
-<script lang="ts" setup>
-useHead({
-  title: 'Heal Quest',
-})
-</script>
-
 <template>
   <div>
     <NuxtLayout>
@@ -11,3 +5,8 @@ useHead({
     </NuxtLayout>
   </div>
 </template>
+
+<style>
+
+.v-application__wrap {  min-height: 100% !important; }
+</style>
