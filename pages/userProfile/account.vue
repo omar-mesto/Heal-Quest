@@ -1,11 +1,11 @@
-<script lang="ts" setup>  
-import { ref } from 'vue';
+<script lang="ts" setup>
+import { ref } from 'vue'
 definePageMeta({
   layout: 'user',
 })
-const fullName = ref('John Doe')  
-const phoneNumber = ref('+123 567 89000')   
-const dateOfBirth = ref('DD / MM / YYYY')  
+const fullName = ref('John Doe')
+const phoneNumber = ref('+123 567 89000')
+const dateOfBirth = ref('DD / MM / YYYY')
 
 </script>
 
@@ -13,37 +13,37 @@ const dateOfBirth = ref('DD / MM / YYYY')
   <VCard
     class="pa-4"
     width="500px"
-  >  
-    <VCardSubtitle class="text-center">  
+  >
+    <VCardSubtitle class="text-center">
       <VAvatar
         size="100"
         class="mb-5"
-      >  
-        <VImg src="/userImage.png" />  
-      </VAvatar>  
-    </VCardSubtitle>  
+      >
+        <VImg src="/userImage.png" />
+      </VAvatar>
+    </VCardSubtitle>
 
-    <VForm>  
-      <VTextField  
-        v-model="fullName"  
-        label="Full Name"  
-        required  
-        variant="outlined" 
-      />  
-      <VTextField  
-        v-model="phoneNumber"  
-        label="Phone Number"  
-        required  
-        variant="outlined" 
-      />  
-        
-      <VTextField  
-        v-model="dateOfBirth"  
-        label="Date Of Birth"  
-        placeholder="DD / MM / YYYY"  
-        required  
+    <VForm>
+      <VTextField
+        v-model="fullName"
+        label="Full Name"
+        required
         variant="outlined"
-      />  
+      />
+      <VTextField
+        v-model="phoneNumber"
+        label="Phone Number"
+        required
+        variant="outlined"
+      />
+
+      <VTextField
+        v-model="dateOfBirth"
+        label="Date Of Birth"
+        placeholder="DD / MM / YYYY"
+        required
+        variant="outlined"
+      />
       <div class="text-center">
         <VBtn
           color="primary"
@@ -52,11 +52,11 @@ const dateOfBirth = ref('DD / MM / YYYY')
           large
         >
           Update Profile
-        </VBtn>  
+        </VBtn>
       </div>
-    </VForm>  
-  </VCard>  
-</template>  
+    </VForm>
+  </VCard>
+</template>
 
-<style scoped>  
-</style>  
+<style scoped>
+</style>
