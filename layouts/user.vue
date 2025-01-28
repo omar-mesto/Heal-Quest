@@ -1,26 +1,27 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
-import NavBar from '../shared/NavBar.vue';
-const drawer = ref(true);
+import { ref, watch } from 'vue'
+
+import NavBar from '../shared/NavBar.vue'
+const drawer = ref(true)
 const items = [
-  { title: 'Profile', value: 'profile', icon: 'mdi-account',route:'/userProfile' },
-  { title: 'Notifications', value: 'notification', icon: 'mdi-bell',route:'/userProfile/notifications' },
-  { title: 'Language', value: 'language', icon: 'mdi-translate',route:'/userProfile' },
-  { title: 'Privacy Policy', value: 'privacy-policy', icon: 'mdi-file-lock',route:'/userProfile/privacyPolicy' },
-  { title: 'Settings', value: 'settings', icon: 'mdi-cog',route:'/userProfile/settings' },
-  { title: 'Help', value: 'help', icon: 'mdi-help-circle',route:'/userProfile/help' },
-  { title: 'Logout', value: 'logout', icon: 'mdi-logout',route:'/userProfile' },
-];
-const group = ref(null);
+  { icon: 'mdi-account', route: '/userProfile', title: 'Profile', value: 'profile' },
+  { icon: 'mdi-bell', route: '/userProfile/notifications', title: 'Notifications', value: 'notification' },
+  { icon: 'mdi-translate', route: '/userProfile', title: 'Language', value: 'language' },
+  { icon: 'mdi-file-lock', route: '/userProfile/privacyPolicy', title: 'Privacy Policy', value: 'privacy-policy' },
+  { icon: 'mdi-cog', route: '/userProfile/settings', title: 'Settings', value: 'settings' },
+  { icon: 'mdi-help-circle', route: '/userProfile/help', title: 'Help', value: 'help' },
+  { icon: 'mdi-logout', route: '/userProfile', title: 'Logout', value: 'logout' },
+]
+const group = ref(null)
 watch(group, () => {
-  drawer.value = false;
-});
-  
+  drawer.value = false
+})
+
 const toggleDrawer = () => {
-  drawer.value = !drawer.value;
-};
+  drawer.value = !drawer.value
+}
 </script>
-  
+
 <template>
   <VApp>
     <NavBar>
@@ -30,7 +31,7 @@ const toggleDrawer = () => {
       />
     </NavBar>
     <VNavigationDrawer
-      v-model="drawer" 
+      v-model="drawer"
       class="h-100"
       app
       permanent
@@ -67,16 +68,16 @@ const toggleDrawer = () => {
         </VListItem>
       </VList>
     </VNavigationDrawer>
-  
+
     <VContainer
-      class="h-100 container d-flex justify-center ms-10 ps-15 mt-15"
+      class="h-100 container d-flex justify-center"
       fluid
     >
       <slot />
     </VContainer>
   </VApp>
 </template>
-  
+
   <style scoped>
   @media (max-width: 600px) {
   .v-navigation-drawer {
