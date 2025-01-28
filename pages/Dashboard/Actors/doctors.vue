@@ -1,229 +1,208 @@
-<script lang="ts" setup>  
-import { onMounted, ref } from 'vue';
-import type { DoctorsModel } from '../../../models/DoctorsModel';
-import validators from '../../../services/validators';
-import { localhostAPI } from '../../../utils/localhostApi';
+<script lang="ts" setup>
+import { ref } from 'vue'
 
-definePageMeta({  
-  layout: false,  
-});  
+import { useCreateDoctor, useDoctors } from '../../../queries/doctors'
+import validators from '../../../utils/validators'
+definePageMeta({
+  layout: false,
+})
 
-const headers = ref([  
-  { title: 'Full Name', align: 'center', sortable: true, key: 'fullName' },  
-  { title: 'Mobile Number', align: 'center', sortable: true, key: 'mobileNumber' },  
-  { title: 'Created At', align: 'center', sortable: true, key: 'createdAt' },  
-  { title: 'Updated At', align: 'center', sortable: true, key: 'updatedAt' },  
-  { title: 'Image', align: 'right', sortable: true, key: 'image.image' },  
-  { title: 'Actions', align: 'center', key: 'actions', sortable: false },  
-] as const);  
+const headers = ref([
+  { align: 'center', key: 'fullName', sortable: true, title: 'Full Name' },
+  { align: 'center', key: 'mobileNumber', sortable: true, title: 'Mobile Number' },
+  { align: 'center', key: 'createdAt', sortable: true, title: 'Created At' },
+  { align: 'center', key: 'updatedAt', sortable: true, title: 'Updated At' },
+  { align: 'right', key: 'image.image', sortable: true, title: 'Image' },
+  { align: 'center', key: 'actions', sortable: false, title: 'Actions' },
+] as const)
 
-const Loading = ref(true);  
-const data = ref<{ 'result': DoctorsModel[] }>({ 'result': [] });  
-onMounted(async () => {  
-  Loading.value = true;  
-  data.value = await localhostAPI.get<{ 'result': DoctorsModel[] }>('getDoctor');  
-  Loading.value = false;  
-});  
+const { data, status } = useDoctors()
 
-const loginForm = ref();  
-const token = window?.localStorage.getItem('sessionToken');  
-const userName = ref('');  
-const fullName = ref('');  
-const password = ref('');  
-const birthdate_ms = ref();  
-const mobileNumber = ref('');  
-const imageBase64 = ref('');  
-const gender = ref('');   
+const doctorForm = ref({
+  birthdate: null,
+  fullName: '',
+  gender: '',
+  imageBase64: '',
+  mobileNumber: '',
+  password: '',
+  userName: '',
+})
+const createDoctorForm = ref()
 
-const saveDoctor = () => {  
-  createDoctor();  
-};  
+const snackbar = ref({ color: 'error', message: '', show: false })
 
-const snackbar = ref({ show: false, message: '', color: 'error' });  
-const showSnackbar = (message: string, color = 'error') => {  
-  snackbar.value.message = message;  
-  snackbar.value.color = color;  
-  snackbar.value.show = true;  
-};  
+const showSnackbar = (message: string, color = 'error') => {
+  snackbar.value.message = message
+  snackbar.value.color = color
+  snackbar.value.show = true
+}
 
-const closeSnackbar = () => {  
-  snackbar.value.show = false;  
-}; 
+const closeSnackbar = () => {
+  snackbar.value.show = false
+}
 
-const createDoctor = async () => {  
-  if (loginForm.value.isValid) {
-    try{
-      Loading.value = true;   
-      const requestBody = {  
-        fullName: fullName.value,  
-        username: userName.value,  
-        birthdate: birthdate_ms.value,  
-        mobileNumber: mobileNumber.value,  
-        password: password.value,  
-        image_base64: imageBase64.value,  
-        gender: gender.value,  
-      };  
-      await localhostAPI.post('crateDoctor', requestBody, token);
-      showSnackbar('Doctor created successfully', 'success');   
-      Loading.value = false;
-    }
-    catch(error){
-      showSnackbar(error.message, 'error');
-      Loading.value = false;
-    }
-  }  
-};  
+const createDoctor = async () => {
+  const { error } = useCreateDoctor(doctorForm.value)
+  showSnackbar(error ?
+    error.value?.data?.error
+: 'Doctor created successfully',
+  error ? 'error' : 'success',
+  )
+}
 
-const handleImageUpload = (event: Event) => {  
-  const file = (event.target as HTMLInputElement).files?.[0];  
-  if (file) {  
-    const reader = new FileReader();  
-    reader.onload = () => {  
-      imageBase64.value = reader.result as string;  
-    };  
-    reader.readAsDataURL(file);  
-  }  
-};  
+const addImageToDoctorForm = (event: Event) => {
+  const file = (event.target as HTMLInputElement).files?.[0]
+  if (!file)
+    return true
+  const reader = new FileReader()
+
+  reader.onload = () => {
+    doctorForm.value.imageBase64 = reader.result as string
+  }
+
+  reader.readAsDataURL(file)
+}
 </script>
 
-<template>  
-  <div>  
-    <NuxtLayout  
-      name="dashboard"  
-      :headers="headers"  
-      :data="data.result"  
-      table-name="Doctors"  
-      :loading="Loading"
-      :disable="!loginForm?.isValid"  
-      @save="saveDoctor"  
-    >  
-      <template #newItem>  
-        <VForm  
-          ref="loginForm"  
-          validate-on="input"  
-          @submit.prevent="createDoctor"  
-        >  
-          <VRow>  
-            <VCol
-              cols="12"
-              md="6"
-              sm="6"
-            >  
-              <VTextField  
-                v-model="fullName" 
-                :rules="[validators.rules.fullNameRule]"  
-                label="Full Name"  
-                focus-all  
-                :length="4"  
-                variant="outlined"  
-              />  
-            </VCol>  
-            <VCol
-              cols="12"
-              md="6"
-              sm="6"
-            >  
-              <VTextField  
-                v-model="userName"  
-                :rules="[validators.rules.userNameRule]" 
-                label="Username"  
-                focus-all  
-                :length="4"  
-                variant="outlined"  
-              />  
-            </VCol>  
+<template>
+  <div>
+    <NuxtLayout
+      name="dashboard"
+      :headers="headers"
+
+      :data="data?.result"
+      table-name="Doctors"
+      :loading="status!=='success'"
+      :disable="!createDoctorForm?.isValid"
+      @save="createDoctor"
+    >
+      <template #newItem>
+        <VForm
+          ref="createDoctorForm"
+          validate-on="input"
+          @submit.prevent="createDoctor"
+        >
+          <VRow>
             <VCol
               cols="12"
               md="6"
               sm="6"
             >
-              <VDateInput  
-                v-model="birthdate_ms"  
-                label="Birth Date (in ms)"  
-                variant="outlined"  
+              <VTextField
+                v-model="doctorForm.fullName"
+                :rules="[validators.rules.fullNameRule]"
+                label="Full Name"
+                focus-all
+                :length="4"
+                variant="outlined"
               />
-            </VCol>  
+            </VCol>
             <VCol
               cols="12"
               md="6"
               sm="6"
-            >  
-              <VTextField  
-                v-model="mobileNumber" 
-                :rules="[validators.rules.phoneNumberRule]" 
-                label="Mobile Number"  
-                focus-all  
-                :length="4"  
-                variant="outlined"  
-              />  
-            </VCol>  
+            >
+              <VTextField
+                v-model="doctorForm.userName"
+                :rules="[validators.rules.userNameRule]"
+                label="Username"
+                focus-all
+                :length="4"
+                variant="outlined"
+              />
+            </VCol>
             <VCol
               cols="12"
               md="6"
               sm="6"
-            >  
-              <VTextField  
-                v-model="password"  
-                :rules="[validators.rules.passwordRule]" 
-                label="Password"  
-                type="password"  
-                focus-all  
-                :length="4"  
-                variant="outlined"  
-              />  
-            </VCol>  
+            >
+              <VDateInput
+                v-model="doctorForm.birthdate"
+                label="Birth Date (in ms)"
+                variant="outlined"
+              />
+            </VCol>
             <VCol
               cols="12"
               md="6"
               sm="6"
-            >  
-              <VFileInput  
-                clearable  
+            >
+              <VTextField
+                v-model="doctorForm.mobileNumber"
+                :rules="[validators.rules.phoneNumberRule]"
+                label="Mobile Number"
+                focus-all
+                :length="4"
+                variant="outlined"
+              />
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+              sm="6"
+            >
+              <VTextField
+                v-model="doctorForm.password"
+                :rules="[validators.rules.passwordRule]"
+                label="Password"
+                type="password"
+                focus-all
+                :length="4"
+                variant="outlined"
+              />
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+              sm="6"
+            >
+              <VFileInput
+                clearable
                 label="Image"
                 required
-                variant="outlined"  
-                @change="handleImageUpload"  
-              />  
-            </VCol>  
+                variant="outlined"
+                @change="addImageToDoctorForm"
+              />
+            </VCol>
             <VCol
               cols="12"
               md="6"
               sm="6"
-            >  
-              <VRadioGroup  
-                v-model="gender"
-                :rules="[validators.rules.genderRule]"    
-                inline  
-                label="Gender"  
-              >  
+            >
+              <VRadioGroup
+                v-model="doctorForm.gender"
+                :rules="[validators.rules.genderRule]"
+                inline
+                label="Gender"
+              >
                 <VRadio
                   label="Male"
                   value="male"
-                />  
+                />
                 <VRadio
                   label="Female"
                   value="female"
-                />  
-              </VRadioGroup>  
-            </VCol>  
-          </VRow>  
+                />
+              </VRadioGroup>
+            </VCol>
+          </VRow>
         </VForm>
-      </template>  
+      </template>
       <VSnackbar
         v-model="snackbar.show"
         :color="snackbar.color"
-      >  
-        {{ snackbar.message }}  
-        <template #action="{ attrs }">  
+      >
+        {{ snackbar.message }}
+        <template #action="{ attrs }">
           <VBtn
             text
             v-bind="attrs"
             @click="closeSnackbar"
           >
             Close
-          </VBtn>  
-        </template>  
-      </VSnackbar>  
-    </NuxtLayout>  
-  </div>  
+          </VBtn>
+        </template>
+      </VSnackbar>
+    </NuxtLayout>
+  </div>
 </template>
