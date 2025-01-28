@@ -1,5 +1,5 @@
-export interface CategoreModel {  
-    id: string;  
-    icon: string;  
-    name: { en: string; ar: string };  
+export interface CategoreModel {
+    icon: string;
+    id: string;
+    name: { ar: string; en: string };
   }
