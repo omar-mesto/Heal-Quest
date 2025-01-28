@@ -1,8 +1,8 @@
-<template>  
-  <VApp app>  
-    <VContainer fluid>  
+<template>
+  <VApp app>
+    <VContainer fluid>
       <Home />
-      <HomeCategory />  
-    </VContainer>  
-  </VApp>  
-</template>  
+      <HomeCategory />
+    </VContainer>
+  </VApp>
+</template>
