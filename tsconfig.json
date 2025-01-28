@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "target": "esnext",
     "useDefineForClassFields": true,
-    "allowSyntheticDefaultImports": true,
-    "composite": true,
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
     "strict": false,
     "jsx": "preserve",
     "sourceMap": false,
@@ -24,18 +24,26 @@
       "unplugin-vue-router/client"
     ],
     "paths": {
-      "~~/*": [
-        "/*"
+      "@@/*": [
+        "./*"
       ]
     }
   },
   "include": [
+    "./**/*.ts",
+    "./**/*.js",
+    "./**/*.vue",
     "*.ts",
-    "/*.d.ts",
-    "/*.tsx",
+    "*.vue",
+    // "/*.d.ts",
+    // "/*.tsx",
     "/*.vue",
     // "auto-imports.d.ts",
     // "vite.config.mts",
     "typed-router.d.ts"
-  ]
+  ],
+  "exclude": [
+    "./node_modules/**"
+  ],
+
 }
