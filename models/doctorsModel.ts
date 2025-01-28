@@ -1,9 +1,9 @@
-export interface DoctorsModel {  
-    id: string;  
+export interface DoctorsModel {
+    createdAt: string;
     fullName: string;
-    mobileNumber:string;  
-    image:{image:string};
-    userBlock:{status:boolean};
-    createdAt:string;
-    name: { en: string; ar: string };  
-  }
+    id: string;
+    image: { image: string };
+    mobileNumber: string;
+    name: { ar: string; en: string };
+    userBlock: { status: boolean };
+}
