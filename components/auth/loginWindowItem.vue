@@ -18,11 +18,11 @@ const props = defineProps<{
           class="d-flex h-screen justify-center align-center"
         >
           <div class="w-75">
-            <VCardTitle class="text-center text-h4 font-weight-bold">
+            <VCardTitle class="text-center text-h4 text-grey-darken-3 font-weight-bold">
               {{ props.title }}
             </VCardTitle>
             <VCardText>
-              <p class="text-center py-4">
+              <p class="text-center text-body-1 mt-2 mb-8">
                 {{ props.message }}
               </p>
               <slot name="form" />
