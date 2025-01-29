@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { VMain } from 'vuetify/components';
+
 const navItems = [
   { icon: 'mdi-home', route: '/', title: 'Home', value: 'Home' },
   { icon: 'mdi-chat', route: '/chat', title: 'Chat', value: 'Chat' },
@@ -8,8 +10,7 @@ const navItems = [
 </script>
 
 <template>
-  <div>
-    <VLayout>
+  <div> 
       <VAppBar>
         <VToolbarTitle>Logo</VToolbarTitle>
         <VSpacer />
@@ -33,9 +34,9 @@ const navItems = [
           <VIcon>mdi-account</VIcon>
         </VBtn>
       </VAppBar>
-      <VMain>
+      <VMain >
+
         <slot />
       </VMain>
-    </VLayout>
   </div>
-</template>
+  </template>
