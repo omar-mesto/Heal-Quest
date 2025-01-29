@@ -1,39 +1,31 @@
 <script lang="ts" setup>
-import { AdvertisementModel } from '@@/models/advertismentModel'
-import { useAPI } from '@@/services/baseApi'
-import { ref } from 'vue'
+import { useAdvertisment } from '@@/queries/advertisment';
 
-const window = ref(false)
-const { data, status } = await useAPI<AdvertisementModel[]>('/getAdvertisment')
+
+const {data,status}=  useAdvertisment();
 
 </script>
 
 <template>
   <div>
-    <template v-if="status !='success'">
       <VSkeletonLoader
-        class="window-item-skeleton mt-sm-14 mt-0"
-        image
+        v-if="status !='success'"
+        class="window-item-skeleton"
         height="300"
       />
-    </template>
-    <template v-else>
-      <VWindow
-        v-model="window"
-        class="mt-sm-14 mt-0"
-        show-arrows
-      >
-        <VWindowItem
-          v-for="advertisement in data?.result"
-          :key="advertisement.id"
+  
+      <VCarousel height="300" v-else  hide-delimiters>
+      
+        <VCarouselItem
+        v-for="advertisement in data?.result"
+        :key="advertisement.id"
+        aspect-ratio="16/9"
+        :src="advertisement.image"
+        eager
+        lazy-src="/default-image.png"
         >
-          <VImg
-            :src="advertisement.image"
-            cover
-            height="300"
-          />
-        </VWindowItem>
-      </VWindow>
-    </template>
+      </VCarouselItem>
+      </VCarousel>
+    
   </div>
 </template>
