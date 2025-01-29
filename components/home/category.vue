@@ -1,43 +1,48 @@
 <script lang="ts" setup>
-// import { useCategories } from '@/queries/categories';
+import { useCategories } from '@@/queries/categories';
+import { computed } from 'vue';
 
-// const {data,status}=  useCategories();
+
+const {data,status}=  useCategories();
+const isLoading=computed(()=>(status.value!='success' && status.value!='error')) 
+const isCompleteLoading=computed(()=>(status.value=='success' || status.value=='error' ))
 
 </script>
 
 <template>
-  <div class="">
-    category page
-  </div>
-  <!-- {{ status }} -->
-  <!-- <div>
-    <VRow class="py-5">
-      <VCol
-        v-for="index in 6"
-        :key="isLoading ? index : data.result[index]?.id"
+
+  <div>
+    <VRow class="mt-2">
+      <VCol v-for="index in (isLoading && !isCompleteLoading) ? 12 : 0"
+        :key="index"
         cols="6"
-        md="2"
-      >
-        <template v-if="isLoading">
-          <VSkeletonLoader
+        md="2">
+        <VSkeletonLoader
             class="window-item-skeleton"
             card
             height="100"
           />
-        </template>
-        <template v-else>
+      </VCol>
+      <VCol
+        v-for="index in isCompleteLoading ? 12 : 0"
+        :key="index"
+        cols="6"
+        md="2"
+      >
           <VCard
             class="mx-auto text-center h-100 cursor-pointer"
           >
             <VAvatar size="50">
-              <VImg :src="data.result[index]?.icon" />
+              <VImg 
+              lazy-src="/default-image.png"
+              :src="data?.result[index]?.icon ? data?.result[index]?.icon : '/default-image.png'" 
+              />
             </VAvatar>
             <VCardText>
-              {{ data.result[index]?.name.en }}
+              {{ data?.result[index]?.name.en }}
             </VCardText>
           </VCard>
-        </template>
       </VCol>
     </VRow>
-  </div> -->
+  </div>
 </template>
