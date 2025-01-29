@@ -6,3 +6,6 @@ export const getDoctors = async () => {
 export const getCategories = () => {
 return api('/getCategory')
 }
+export const getAdvertisment = () => {
+  return api('/getAdvertisment')
+}
