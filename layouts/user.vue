@@ -20,6 +20,7 @@ watch(group, () => {
 const toggleDrawer = () => {
   drawer.value = !drawer.value
 }
+
 </script>
 
 <template>
