@@ -1,4 +1,9 @@
+
 export default defineNuxtConfig({
+
+  imports: {
+    autoImport: true
+  },
   app: {
     head: {
       link: [
@@ -15,6 +20,9 @@ export default defineNuxtConfig({
     transpile: ['vuetify'],
   },
 
+  buildModules: [
+    'nuxt-vite'
+  ],
   compatibilityDate: '2024-11-14',
 
   css: [
@@ -37,10 +45,10 @@ export default defineNuxtConfig({
   shim: true,
 
   vite: {
-
     define: {
       'process.env.DEBUG': false,
     },
+
   },
 
   vuetify: {
@@ -49,7 +57,25 @@ export default defineNuxtConfig({
     },
     vuetifyOptions: {
       labComponents: true,
+      defaults:{
 
+        VTextField:{
+          density:'comfortable',
+          variant:'outlined',
+          hideDetails:'auto'
+        },
+        VDateInput:{
+          density:'comfortable',
+          variant:'outlined',
+          hideDetails:'auto'
+        },
+        VFileInput:{
+          density:'comfortable',
+          variant:'outlined',
+          hideDetails:'auto'
+
+        }
+      },
       // components: ['VDateInput'],
       theme: {
         themes: {
@@ -60,6 +86,7 @@ export default defineNuxtConfig({
             dark: false,
           },
         },
+
       },
     },
   },
