@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import validators from '@@/utils/validators'
-import { navigateTo } from 'nuxt/app'
-import { ref } from 'vue'
+import validators from '@@/utils/validators';
+import { navigateTo } from 'nuxt/app';
+import { ref } from 'vue';
+import { api } from '../../utils/api';
 
-import { api } from '../../utils/api'
-
-definePageMeta({
-  layout: false,
-})
-
+definePageMeta({layout:false})
 const phone = ref('')
 const otp = ref('')
 const step = ref(1)
@@ -59,10 +55,10 @@ const login = async () => {
 </script>
 
 <template>
-  <VCard class="h-screen">
+
+  <VCard >
     <VWindow
       v-model="step"
-      class="h-100"
     >
       <AuthLoginWindowItem
         :step="1"
@@ -75,7 +71,7 @@ const login = async () => {
             validate-on="input"
             @submit.prevent="generateOtp"
           >
-            <VTextField
+          <VTextField
               v-model="phone"
               :rules="[validators.rules.phoneNumberRule]"
               label="Phone Number"
@@ -146,10 +142,9 @@ const login = async () => {
       :color="snackbar.color"
     >
       {{ snackbar.message }}
-      <template #action="{ attrs }">
+      <template >
         <VBtn
-          text
-          v-bind="attrs"
+          variant="text"
           @click="closeSnackbar"
         >
           Close
@@ -157,4 +152,5 @@ const login = async () => {
       </template>
     </VSnackbar>
   </VCard>
+
 </template>
