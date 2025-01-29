@@ -1,11 +1,11 @@
 <script lang="ts" setup generic="T">
-import { useRoute } from 'nuxt/app'
-import { computed, ref, watch } from 'vue'
-const emit = defineEmits(['save', 'update'])
+import PrimaryDialog from '@@/components/PrimaryDialog.vue';
+import { DoctorsModel } from '@@/models/doctorsModel';
+import { useRoute } from 'nuxt/app';
+import { ref } from 'vue';
+const emit = defineEmits(['save', 'update','viewCreateDialog'])
 const drawer = ref(true)
-const dialog = ref(false)
 const dialogDelete = ref(false)
-const editedIndex = ref(-1)
 const page = ref(1)
 const router = useRoute()
 
@@ -33,58 +33,15 @@ const items = ref([
 const toggleDrawer = () => {
   drawer.value = !drawer.value
 }
-defineProps<{
-  data: T[],
+const props = defineProps<{
+  data: [],
   disable: boolean,
-  headers: { align: string, key: string, sortable: boolean, title: string }[],
   loading: boolean,
+  headers: { align: string, key: string, sortable: boolean, title: string }[],
   tableName: string
+  dialogHeaderTitle?:string
 }>()
-
-const formTitle = computed(() =>
-  (editedIndex.value === -1 ? 'New' : 'Edit'),
-)
-
-watch(dialog, (val) => {
-  if (!val) close()
-})
-
-watch(dialogDelete, (val) => {
-  if (!val) closeDelete()
-})
-
-const close = () => {
-  dialog.value = false
-  editedIndex.value = -1
-}
-const closeDelete = () => {
-  dialogDelete.value = false
-}
-
-const save = () => {
-  if (editedIndex.value > -1) {
-    emit('update')
-  } else {
-    emit('save')
-  }
-  close()
-}
-
-const deleteItem = () => {
-  dialogDelete.value = true
-}
-
-const deleteItemConfirm = () => {
-  if (editedIndex.value > -1) {
-    console.log('test')
-  }
-  closeDelete()
-}
-
-const blockItem = (item: string) => {
-  dialogDelete.value = true
-  console.log(`Blocking item: ${item}`)
-}
+const currentDoctor=ref<DoctorsModel>();
 
 </script>
 
@@ -170,93 +127,22 @@ const blockItem = (item: string) => {
               <VToolbar
                 flat
               >
-                <VToolbarTitle class="text-subtitle-1">
+                <VToolbarTitle class="text-h6">
                   {{ tableName }}
                 </VToolbarTitle>
-
-                <VDialog
-                  v-model="dialog"
-                  max-width="500px"
-                >
-                  <template #activator="{ props }">
-                    <VBtn
-                      class="mb-2 w-40"
-                      color="primary"
-                      dark
-                      v-bind="props"
-                    >
-                      + New
-                    </VBtn>
-                  </template>
-                  <VCard>
-                    <VCardTitle>
-                      <span class="text-h5">{{ formTitle }}</span>
-                    </VCardTitle>
-
-                    <VCardText>
-                      <VContainer>
-                        <slot name="newItem" />
-                      </VContainer>
-                    </VCardText>
-
-                    <VCardActions>
-                      <VSpacer />
-                      <VBtn
-                        color="blue-darken-1"
-                        variant="text"
-                        @click="close"
-                      >
-                        Cancel
-                      </VBtn>
-                      <VBtn
-                        color="blue-darken-1"
-                        variant="text"
-                        :disabled="disable"
-                        @click="save"
-                      >
-                        Save
-                      </VBtn>
-                    </VCardActions>
-                  </VCard>
-                </VDialog>
+<VBtn  style="font-size: 24px;" icon="mdi-plus" color="primary" @click="$emit('viewCreateDialog')" />
+     
               </vtoolbar>
-              <VDialog
-                v-model="dialogDelete"
-                max-width="500px"
-              >
-                <VCard>
-                  <VCardTitle class="text-h5">
-                    Are you sure you want to contenue this jop?
-                  </VCardTitle>
-                  <VCardActions>
-                    <VSpacer />
-                    <VBtn
-                      color="blue-darken-1"
-                      variant="text"
-                      @click="closeDelete"
-                    >
-                      Cancel
-                    </VBtn>
-                    <VBtn
-                      color="blue-darken-1"
-                      variant="text"
-                      @click="deleteItemConfirm"
-                    >
-                      OK
-                    </VBtn>
-                    <VSpacer />
-                  </VCardActions>
-                </VCard>
-              </VDialog>
+     
             </template>
 
             <template #item.actions="{ item }">
               <slot />
               <VIcon
-                size="25"
-                @click="deleteItem(item)"
+                size="35"
+                @click="()=>{currentDoctor=item; dialogDelete=true}"
               >
-                mdi-delete
+                mdi-delete-outline
               </VIcon>
             </template>
 
@@ -269,7 +155,7 @@ const blockItem = (item: string) => {
                 rounded
               >
                 <VImg
-                  :src="`${item.image.image}`"
+                  :src="`${item?.image?.image}`"
                   width="80"
                   height="80"
                   cover
@@ -288,6 +174,32 @@ const blockItem = (item: string) => {
         </VCard>
       </VContainer>
     </VMain>
+    <PrimaryDialog icon="mdi-account-cancel-outline" @close="dialogDelete=false" v-model="dialogDelete" title="Delete">
+<VForm @submit.prevent="deleteDoctor()">
+
+      <p class="text-h6">Are you sure, you want to delete <span class="font-weight-bold">{{ currentDoctor.fullName }}</span>  doctor </p>
+      <VCardActions class="mt-4">
+        <VSpacer></VSpacer>
+        <VBtn
+                        color="grey-darken-3"
+                        @click="dialogDelete=false"
+                      >
+                        Cancel
+                      </VBtn>
+                      <VBtn
+                      elevation="0"
+                        color="error"
+                       type="submit"
+                       variant="elevated"
+                       
+                      >
+                        Save
+                      </VBtn>
+      </VCardActions>
+</VForm>
+
+    </PrimaryDialog>
+
   </VApp>
 </template>
 
