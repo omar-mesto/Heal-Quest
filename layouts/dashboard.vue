@@ -1,12 +1,8 @@
 <script lang="ts" setup generic="T">
-import PrimaryDialog from '@@/components/PrimaryDialog.vue';
-import { DoctorsModel } from '@@/models/doctorsModel';
 import { useRoute } from 'nuxt/app';
-import { ref } from 'vue';
-const emit = defineEmits(['save', 'update','viewCreateDialog'])
+import { ref, watch } from 'vue';
+const emit = defineEmits(['save', 'update','viewCreateDialog','deleteItem','deleteThisItem'])
 const drawer = ref(true)
-const dialogDelete = ref(false)
-const page = ref(1)
 const router = useRoute()
 
 // side Bar
@@ -34,15 +30,20 @@ const toggleDrawer = () => {
   drawer.value = !drawer.value
 }
 const props = defineProps<{
-  data: [],
-  disable: boolean,
-  loading: boolean,
+  data: {results:[]} | undefined,
   headers: { align: string, key: string, sortable: boolean, title: string }[],
   tableName: string
   dialogHeaderTitle?:string
 }>()
-const currentDoctor=ref<DoctorsModel>();
 
+const updatedData=ref(props.data)
+watch(()=>props.data,(newValue)=>{
+    
+  updatedData.value=newValue
+},{immediate:true})
+function deleteThisItem(itemId) {
+  emit('deleteThisItem', itemId);
+}
 </script>
 
 <template>
@@ -92,6 +93,7 @@ const currentDoctor=ref<DoctorsModel>();
     </VNavigationDrawer>
 
     <VMain>
+
       <VToolbar
         class="bg-white"
         elevation="2"
@@ -119,8 +121,8 @@ const currentDoctor=ref<DoctorsModel>();
             v-show="useRoute().fullPath!='/dashboard'"
             elevation="7"
             :headers="headers"
-            :items="data"
-            :loading="loading"
+            :items="updatedData"  
+            height="400"
             density="compact"
           >
             <template #top>
@@ -130,8 +132,7 @@ const currentDoctor=ref<DoctorsModel>();
                 <VToolbarTitle class="text-h6">
                   {{ tableName }}
                 </VToolbarTitle>
-<VBtn  style="font-size: 24px;" icon="mdi-plus" color="primary" @click="$emit('viewCreateDialog')" />
-     
+                  <VBtn  style="font-size: 24px;" icon="mdi-plus" color="primary" @click="$emit('viewCreateDialog')" />
               </vtoolbar>
      
             </template>
@@ -140,65 +141,36 @@ const currentDoctor=ref<DoctorsModel>();
               <slot />
               <VIcon
                 size="35"
-                @click="()=>{currentDoctor=item; dialogDelete=true}"
+                @click="deleteThisItem(item)"
               >
                 mdi-delete-outline
               </VIcon>
+              
             </template>
 
             <template #item.image.image="{ item }">
-              <VCard
-                class="my-2 rounded-circle"
-                width="80"
-                height="80"
-                elevation="2"
-                rounded
-              >
                 <VImg
-                  :src="`${item?.image?.image}`"
+                  :src="item?.image?.image"
+                  lazy-src="/default-image.png"
                   width="80"
                   height="80"
                   cover
+                  class="rounded-circle"
                 />
-              </VCard>
             </template>
 
             <template #bottom>
               <div class="text-center pt-2">
-                <VPagination
-                  v-model="page"
-                />
+                <slot name="pagination"/>
               </div>
             </template>
+
+            
           </VDataTable>
         </VCard>
       </VContainer>
     </VMain>
-    <PrimaryDialog icon="mdi-account-cancel-outline" @close="dialogDelete=false" v-model="dialogDelete" title="Delete">
-<VForm @submit.prevent="deleteDoctor()">
-
-      <p class="text-h6">Are you sure, you want to delete <span class="font-weight-bold">{{ currentDoctor.fullName }}</span>  doctor </p>
-      <VCardActions class="mt-4">
-        <VSpacer></VSpacer>
-        <VBtn
-                        color="grey-darken-3"
-                        @click="dialogDelete=false"
-                      >
-                        Cancel
-                      </VBtn>
-                      <VBtn
-                      elevation="0"
-                        color="error"
-                       type="submit"
-                       variant="elevated"
-                       
-                      >
-                        Save
-                      </VBtn>
-      </VCardActions>
-</VForm>
-
-    </PrimaryDialog>
+  
 
   </VApp>
 </template>
