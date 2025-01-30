@@ -2,26 +2,29 @@
 import { useCategories } from '@@/queries/categories';
 import { computed } from 'vue';
 
-
-const {data,status}=  useCategories();
-const isLoading=computed(()=>(status.value!='success' && status.value!='error')) 
-const isCompleteLoading=computed(()=>(status.value=='success' || status.value=='error' ))
+const { data, status } = useCategories()
+const isLoading = computed(() => (status.value != 'success' && status.value != 'error'))
+const isCompleteLoading = computed(() => (status.value == 'success' || status.value == 'error'))
 
 </script>
 
 <template>
-
   <div>
-    <VRow class="mt-2">
-      <VCol v-for="index in (isLoading && !isCompleteLoading) ? 12 : 0"
+    <p class="text-grey-darken-4 text-h5 font-weight-medium mt-12 mb-4 ">
+      Disease categories
+    </p>
+    <VRow class="mt-2 ">
+      <VCol
+        v-for="index in (isLoading && !isCompleteLoading) ? 12 : 0"
         :key="index"
         cols="6"
-        md="2">
+        md="2"
+      >
         <VSkeletonLoader
-            class="window-item-skeleton"
-            card
-            height="100"
-          />
+          class="window-item-skeleton"
+          card
+          height="100"
+        />
       </VCol>
       <VCol
         v-for="index in isCompleteLoading ? 12 : 0"
@@ -29,19 +32,19 @@ const isCompleteLoading=computed(()=>(status.value=='success' || status.value=='
         cols="6"
         md="2"
       >
-          <VCard
-            class="mx-auto text-center h-100 cursor-pointer"
-          >
-            <VAvatar size="50">
-              <VImg 
+        <VCard
+          class="mx-auto text-center h-100 cursor-pointer"
+        >
+          <VAvatar size="50">
+            <VImg
               lazy-src="/default-image.png"
-              :src="data?.result[index]?.icon ? data?.result[index]?.icon : '/default-image.png'" 
-              />
-            </VAvatar>
-            <VCardText>
-              {{ data?.result[index]?.name.en }}
-            </VCardText>
-          </VCard>
+              :src="data?.result[index]?.icon ? data?.result[index]?.icon : '/default-image.png'"
+            />
+          </VAvatar>
+          <VCardText>
+            {{ data?.result[index]?.name.en }}
+          </VCardText>
+        </VCard>
       </VCol>
     </VRow>
   </div>
