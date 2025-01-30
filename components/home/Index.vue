@@ -1,31 +1,31 @@
 <script lang="ts" setup>
-import { useAdvertisment } from '@@/queries/advertisment';
-
-
-const {data,status}=  useAdvertisment();
-
+import { useAdvertisment } from '@@/queries/advertisment'
+const { data, status } = useAdvertisment()
 </script>
 
 <template>
   <div>
-      <VSkeletonLoader
-        v-if="status !='success'"
-        class="window-item-skeleton"
-        height="300"
-      />
-  
-      <VCarousel height="300" v-else  hide-delimiters>
-      
-        <VCarouselItem
+    <VSkeletonLoader
+      v-if="status !='success'"
+      class="window-item-skeleton"
+      height="300"
+    />
+    <VCarousel
+      v-else
+      height="300"
+      show-arrows="hover"
+      hide-delimiters
+    >
+      <VCarouselItem
+
         v-for="advertisement in data?.result"
         :key="advertisement.id"
         aspect-ratio="16/9"
         :src="advertisement.image"
         eager
+        cover
         lazy-src="/default-image.png"
-        >
-      </VCarouselItem>
-      </VCarousel>
-    
+      />
+    </VCarousel>
   </div>
 </template>
