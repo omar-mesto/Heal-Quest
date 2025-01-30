@@ -1,12 +1,10 @@
 <script setup lang="ts">
 </script>
+
 <template>
   <div>
-
     <VApp>
-
       <NuxtLayout>
-   
         <NuxtPage />
       </NuxtLayout>
     </VApp>
