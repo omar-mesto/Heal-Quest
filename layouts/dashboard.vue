@@ -8,7 +8,7 @@ const router = useRoute()
 // side Bar
 const items = ref([
   { id: 1, subitems: [
-      { route: '/', title: 'Users' },
+      { route: '/dashboard/Actors/users', title: 'Users' },
       { route: '/dashboard/Actors/doctors', title: 'Doctors' },
     ],
     title: 'Actors',
@@ -34,6 +34,7 @@ const props = defineProps<{
   headers: { align: string, key: string, sortable: boolean, title: string }[],
   tableName: string
   dialogHeaderTitle?:string
+  icon?: string
 }>()
 
 const updatedData=ref(props.data)
@@ -132,7 +133,7 @@ function deleteThisItem(itemId) {
                 <VToolbarTitle class="text-h6">
                   {{ tableName }}
                 </VToolbarTitle>
-                  <VBtn  style="font-size: 24px;" icon="mdi-plus" color="primary" @click="$emit('viewCreateDialog')" />
+                  <VBtn :disabled="useRoute().name==='Dashboard-actors-users'" style="font-size: 24px;" icon="mdi-plus" color="primary" @click="$emit('viewCreateDialog')" />
               </vtoolbar>
      
             </template>
@@ -143,7 +144,7 @@ function deleteThisItem(itemId) {
                 size="35"
                 @click="deleteThisItem(item)"
               >
-                mdi-delete-outline
+                {{ icon ? icon : 'mdi-delete-outline' }}
               </VIcon>
               
             </template>
@@ -155,7 +156,7 @@ function deleteThisItem(itemId) {
                   width="80"
                   height="80"
                   cover
-                  class="rounded-circle"
+                  class="rounded-circle my-2"
                 />
             </template>
 
