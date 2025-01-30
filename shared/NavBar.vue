@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRoute } from 'nuxt/app';
 import { VMain } from 'vuetify/components';
 
 const navItems = [
@@ -10,33 +11,46 @@ const navItems = [
 </script>
 
 <template>
-  <div> 
-      <VAppBar>
-        <VToolbarTitle>Logo</VToolbarTitle>
-        <VSpacer />
-        <div class="d-flex justify-center w-50">
-          <VBtn
-            v-for="item in navItems"
-            :key="item.value"
-            @click="$router.push(item.route)"
-          >
-            <span>{{ item.title }}</span>
-          </VBtn>
-        </div>
-        <VSpacer />
-        <VBtn icon>
-          <VIcon>mdi-heart</VIcon>
-        </VBtn>
+  <div>
+    <VAppBar class="bg-primary px-4 d-none  d-sm-flex">
+      <VToolbarTitle>Logo</VToolbarTitle>
+      <div class="d-flex justify-center w-50">
         <VBtn
-          icon
-          @click="$router.push('/userProfile')"
+          v-for="item in navItems"
+          :key="item.value"
+          class="mx-2"
+          :class="{'bg-blue':useRoute().fullPath==item.route}"
+          @click="$router.push(item.route)"
         >
-          <VIcon>mdi-account</VIcon>
+          <span class="font-weight-bold">{{ item.title }}</span>
         </VBtn>
-      </VAppBar>
-      <VMain >
-
-        <slot />
-      </VMain>
+      </div>
+      <VSpacer />
+      <VBtn icon>
+        <VIcon>mdi-heart</VIcon>
+      </VBtn>
+      <VBtn
+        icon
+        @click="$router.push('/userProfile')"
+      >
+        <VIcon>mdi-account</VIcon>
+      </VBtn>
+    </VAppBar>
+    <VBottomNavigation
+      class="d-flex d-sm-none bg-primary"
+      app
+    >
+      <VBtn
+        v-for="item in navItems"
+        :key="item.value"
+        @click="$router.push(item.route)"
+      >
+        <VIcon>{{ item.icon }}</VIcon>
+        <span>{{ item.title }}</span>
+      </VBtn>
+    </VBottomNavigation>
+    <VMain>
+      <slot />
+    </VMain>
   </div>
-  </template>
+</template>
