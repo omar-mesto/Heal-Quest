@@ -26,7 +26,7 @@ module.exports = {
     // 'plugin:@tanstack/query/recommended',
   ],
 
-  ignorePatterns: ['vite-env.d.ts', 'node_modules/'],
+  ignorePatterns: ['vite-env.d.ts', 'node_modules/', '**/node_modules/**'],
   parser: 'vue-eslint-parser',
   parserOptions: {
     parser: '@typescript-eslint/parser',
