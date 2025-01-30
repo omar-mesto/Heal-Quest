@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import validators from '@@/utils/validators'
 import { navigateTo } from 'nuxt/app'
 import { ref } from 'vue'
 
-import validators from '@@/utils/validators'
 import Snackbar from '../../shared/Snackbar.vue'
 import { localhostAPI } from '../../utils/localhostApi'
 
@@ -31,6 +31,7 @@ const login = async () => {
         username: userName.value,
       })
       localStorage.setItem('sessionToken', data?.result?.sessionToken)
+      localStorage.setItem('Role',data?.result?.role)
       showSnackBar('Login successfully', 'success')
       navigateTo('/dashboard')
     } catch (error) {
@@ -41,7 +42,7 @@ const login = async () => {
 </script>
 
 <template>
-  <div >
+  <div>
     <VWindow class="h-100">
       <AuthLoginWindowItem
         :step="1"
@@ -53,32 +54,28 @@ const login = async () => {
             validate-on="input"
             @submit.prevent="login"
           >
-          <VRow>
-            <VCol>
-              
-            <VTextField
-              v-model="userName"
-              :rules="[validators.rules.userNameRule]"
-              label="UserName"
-              variant="outlined"
-            />
-            
-          </VCol>
-          </VRow>
-          <VRow>
-            <VCol>
-              
-            <VTextField
-              v-model="password"
-              :rules="[validators.rules.passwordRule]"
-              label="Password"
-              variant="outlined"
-              type="password"
-            />
-            
-          </VCol>
-          </VRow>
-          
+            <VRow>
+              <VCol>
+                <VTextField
+                  v-model="userName"
+                  :rules="[validators.rules.userNameRule]"
+                  label="UserName"
+                  variant="outlined"
+                />
+              </VCol>
+            </VRow>
+            <VRow>
+              <VCol>
+                <VTextField
+                  v-model="password"
+                  :rules="[validators.rules.passwordRule]"
+                  label="Password"
+                  variant="outlined"
+                  type="password"
+                />
+              </VCol>
+            </VRow>
+
             <VBtn
               :disabled="!loginForm?.isValid"
               type="submit"
