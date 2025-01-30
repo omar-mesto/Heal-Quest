@@ -1,18 +1,20 @@
-import { refreshNuxtData, useFetch } from "nuxt/app"
-
+import { refreshNuxtData, useFetch } from 'nuxt/app';
+import { Ref } from "vue";
 export function useAPI<T>(
-  url: (() => string) | string,
-  payload:object,
-  queryKey:string,
-  type:('POST' | 'GET' | 'PUT' | 'DELETE')
+options:{  url: string,
+  payload?: object,
+  queryKey: string,
+  isLazy?:boolean
+  params?:{skip:Ref<number>,limit:Ref<number>}
+    type:('DELETE' | 'GET' | 'POST' | 'PUT')}
 ) {
-  return useFetch(url, {
-  
+  return useFetch(options.url, {
     $fetch: api,
-    method:type,
-    watch:false,
-    body:payload,
-    onResponse: async()=>await refreshNuxtData(queryKey)
+    body: options.payload,
+    params:{...options.params},
+    method: options.type,
+    watch: false,
+    onResponse: async () => await refreshNuxtData(options.queryKey),
   })
 }
 
@@ -25,9 +27,8 @@ export const api = $fetch.create({
     options.headers.set('X-Parse-REST-API-Key', 'restAPIKey')
   options.headers.set('X-Parse-Session-Token', window?.localStorage.getItem('sessionToken') ?? '')
   },
-  onResponseError:(error)=>{
-    window?.localStorage.setItem("snackBar",error.response._data)
-
-  }
+  onResponseError: (error) => {
+    window?.localStorage.setItem('snackBar', error.response._data)
+  },
 },
 )
