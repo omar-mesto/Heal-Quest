@@ -1,9 +1,5 @@
-
 export default defineNuxtConfig({
 
-  imports: {
-    autoImport: true
-  },
   app: {
     head: {
       link: [
@@ -15,16 +11,15 @@ export default defineNuxtConfig({
       ],
     },
   },
-
   build: {
     transpile: ['vuetify'],
   },
 
   buildModules: [
-    'nuxt-vite'
+    'nuxt-vite',
   ],
-  compatibilityDate: '2024-11-14',
 
+  compatibilityDate: '2024-11-14',
   css: [
     '@/assets/styles/scss/main.scss',
   ],
@@ -38,6 +33,10 @@ export default defineNuxtConfig({
 
     checker: true,
     configType: 'eslintrc',
+  },
+
+  imports: {
+    autoImport: true,
   },
 
   modules: ['vuetify-nuxt-module'],
@@ -56,26 +55,26 @@ export default defineNuxtConfig({
 
     },
     vuetifyOptions: {
-      labComponents: true,
-      defaults:{
+      defaults: {
 
-        VTextField:{
-          density:'comfortable',
-          variant:'outlined',
-          hideDetails:'auto'
+        VDateInput: {
+          density: 'comfortable',
+          hideDetails: 'auto',
+          variant: 'outlined',
         },
-        VDateInput:{
-          density:'comfortable',
-          variant:'outlined',
-          hideDetails:'auto'
-        },
-        VFileInput:{
-          density:'comfortable',
-          variant:'outlined',
-          hideDetails:'auto'
+        VFileInput: {
+          density: 'comfortable',
+          hideDetails: 'auto',
+          variant: 'outlined',
 
-        }
+        },
+        VTextField: {
+          density: 'comfortable',
+          hideDetails: 'auto',
+          variant: 'outlined',
+        },
       },
+      labComponents: true,
       // components: ['VDateInput'],
       theme: {
         themes: {
