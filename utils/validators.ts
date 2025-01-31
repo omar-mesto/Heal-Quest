@@ -6,5 +6,6 @@ export default {
     passwordRule: (value: string) => /^(?=.*[A-Za-z]|\d)[A-Za-z\d]$/.test(value) || 'Invalid password',
     phoneNumberRule: (value: string) => /^\+[0-9]{12}$/.test(value) || 'Invalid phone number',
     userNameRule: (value: string) => /^[a-zA-Z0-9\s]+$/.test(value) || 'Invalid username',
+    imageRule: (value:string) => {if (!value) return 'Image is required.';},
   },
 }
