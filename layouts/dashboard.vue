@@ -4,23 +4,22 @@ import { ref, watch } from 'vue';
 const emit = defineEmits(['save', 'update','viewCreateDialog','deleteItem','deleteThisItem'])
 const drawer = ref(true)
 const router = useRoute()
-
 // side Bar
 const items = ref([
   { id: 1, subitems: [
-      { route: '/dashboard/Actors/users', title: 'Users' },
-      { route: '/dashboard/Actors/doctors', title: 'Doctors' },
+      { route: '/dashboard/actors/users', title: 'Users' },
+      { route: '/dashboard/actors/doctors', title: 'Doctors' },
     ],
     title: 'Actors',
   },
   { id: 2, subitems: [
-      { route: '/', title: 'Users2' },
-      { route: '/', title: 'Doctors2' },
+      { route: '/dashboard/home/categories', title: 'Disease Categories' },
+      { route: '/', title: 'Place' },
     ],
-    title: 'Actors2',
+    title: 'Home',
   },
   { id: 3, subitems: [
-      { route: '/', title: 'Users3' },
+      { route: '/', title: 'Category' },
       { route: '/', title: 'Doctors3' },
     ],
     title: 'Actors3',
@@ -69,14 +68,15 @@ function deleteThisItem(itemId) {
       <VList
         density="compact"
         nav
-      >
-        <VListGroup
-          v-for="item in items"
-          :key="item.title"
-          :value="item.id"
         >
-          <template #activator="{ props }">
-            <VListItem
+        <VListGroup
+          
+        v-for="item in items"
+        :key="item.title"
+        :value="item.id"
+        >
+        <template #activator="{ props }">
+          <VListItem
               :title="item.title"
               v-bind="props"
             />
@@ -152,6 +152,16 @@ function deleteThisItem(itemId) {
             <template #item.image.image="{ item }">
                 <VImg
                   :src="item?.image?.image"
+                  lazy-src="/default-image.png"
+                  width="80"
+                  height="80"
+                  cover
+                  class="rounded-circle my-2"
+                />
+            </template>
+            <template #item.icon="{ item }">
+                <VImg
+                  :src="item?.icon"
                   lazy-src="/default-image.png"
                   width="80"
                   height="80"
