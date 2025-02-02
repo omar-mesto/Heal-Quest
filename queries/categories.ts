@@ -8,6 +8,7 @@ export const useCategories = () => {
 }
 
 export const useDashboardCategories = (params:{skip:Ref<number>,limit:Ref<number>}) => {  
+
   return useAsyncData('categories', () => api(`/getCategories`, {
     params: {
       skip: params.skip.value,
