@@ -42,7 +42,7 @@ const toggleDrawer = () => {
           <div class="d-flex align-center">
             <VListItemAvatar>
               <VImg
-                src="../public/userImage.png"
+                src="../public/default-image.png"
                 width="100px"
               />
             </VListItemAvatar>
