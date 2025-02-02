@@ -11,11 +11,12 @@ defineEmits(['close'])
   <VDialog
     v-model="model"
     persistent
-    max-width="40%"
+    :max-width="$vuetify.display.smAndDown ? '100%' : '40%'"
+    :fullscreen="$vuetify.display.smAndDown"
   >
     <VContainer>
       <VCard>
-        <VCardTitle class="d-flex align-center justify-space-between ">
+        <VCardTitle class="d-flex align-center justify-space-between">
           <div class="d-flex">
             <VIcon
               color="grey-darken-3"
@@ -36,7 +37,7 @@ defineEmits(['close'])
             />
           </div>
         </VCardTitle>
-        <VCardText>
+        <VCardText style="overflow-y: auto; max-height: 80vh;">
           <slot />
         </VCardText>
       </VCard>
