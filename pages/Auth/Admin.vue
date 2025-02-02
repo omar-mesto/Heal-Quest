@@ -1,44 +1,28 @@
 <script setup lang="ts">
-import validators from '@@/utils/validators'
-import { navigateTo } from 'nuxt/app'
-import { ref } from 'vue'
-
-import Snackbar from '../../shared/Snackbar.vue'
-import { localhostAPI } from '../../utils/localhostApi'
+import { useLoginAdmin } from '@@/queries/admin';
+import validators from '@@/utils/validators';
+import { computed, ref } from 'vue';
 
 definePageMeta({
   layout: false,
 })
 
-const userName = ref('')
-const password = ref('')
-const loginForm = ref()
-const snackBar = ref({ color: 'error', message: '', show: false })
 
-const showSnackBar = (message: string, color = 'error') => {
-  snackBar.value.message = message
-  snackBar.value.color = color
-  snackBar.value.show = true
-}
-const closeSnackBar = () => {
-  snackBar.value.show = false
-}
-const login = async () => {
-  if (loginForm.value.isValid) {
-    try {
-      const data = await localhostAPI.post('logIn', {
-        password: password.value,
-        username: userName.value,
-      })
-      localStorage.setItem('sessionToken', data?.result?.sessionToken)
-      localStorage.setItem('Role',data?.result?.role)
-      showSnackBar('Login successfully', 'success')
-      navigateTo('/dashboard')
-    } catch (error) {
-      showSnackBar(error.message)
-    }
+const adminForm = ref({
+  username:'',
+  password:'',
+})
+const loginAdminForm = ref()
+const isLoading = ref(false);
+
+const loginAdmin = async () => {
+  isLoading.value = true;
+  const { status,data } = await useLoginAdmin(adminForm.value)
+  if (status.value == 'success') {
+    isLoading.value = false
   }
 }
+const isValidForm = computed(() => loginAdminForm.value?.isValid)
 </script>
 
 <template>
@@ -50,14 +34,14 @@ const login = async () => {
       >
         <template #form>
           <VForm
-            ref="loginForm"
+            ref="loginAdminForm"
             validate-on="input"
-            @submit.prevent="login"
+            @submit.prevent="loginAdmin"
           >
             <VRow>
               <VCol>
                 <VTextField
-                  v-model="userName"
+                  v-model="adminForm.username"
                   :rules="[validators.rules.userNameRule]"
                   label="UserName"
                   variant="outlined"
@@ -67,7 +51,7 @@ const login = async () => {
             <VRow>
               <VCol>
                 <VTextField
-                  v-model="password"
+                  v-model="adminForm.password"
                   :rules="[validators.rules.passwordRule]"
                   label="Password"
                   variant="outlined"
@@ -77,7 +61,8 @@ const login = async () => {
             </VRow>
 
             <VBtn
-              :disabled="!loginForm?.isValid"
+              :disabled="!isValidForm"
+              :loading="isLoading"
               type="submit"
               class="text-none mt-8"
               color="primary"
@@ -100,11 +85,5 @@ const login = async () => {
       </AuthLoginWindowItem>
     </VWindow>
 
-    <Snackbar
-      :show="snackBar.show"
-      :message="snackBar.message"
-      :color="snackBar.color"
-      @close="closeSnackBar"
-    />
   </div>
 </template>
