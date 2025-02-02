@@ -2,10 +2,10 @@
 import { useCategories } from '@@/queries/categories';
 import { computed } from 'vue';
 
-const { data, status } = useCategories()
+const { data, status,clear } = useCategories()
 const isLoading = computed(() => (status.value != 'success' && status.value != 'error'))
 const isCompleteLoading = computed(() => (status.value == 'success' || status.value == 'error'))
-
+clear()
 </script>
 
 <template>
@@ -38,7 +38,7 @@ const isCompleteLoading = computed(() => (status.value == 'success' || status.va
           <VAvatar size="50">
             <VImg
               lazy-src="/default-image.png"
-              :src="data?.result[index]?.icon ? data?.result[index]?.icon : '/default-image.png'"
+              :src="data?.result[index]?.icon.url ? data?.result[index]?.icon.url : '/default-image.png'"
             />
           </VAvatar>
           <VCardText>
