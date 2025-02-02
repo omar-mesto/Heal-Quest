@@ -14,7 +14,7 @@ const items = ref([
   },
   { id: 2, subitems: [
       { route: '/dashboard/home/categories', title: 'Disease Categories' },
-      { route: '/', title: 'Place' },
+      { route: '/dashboard/home/advertisement', title: 'Advertisments' },
     ],
     title: 'Home',
   },
@@ -57,7 +57,7 @@ function deleteThisItem(itemId) {
           size="100px"
           class="mt-3"
         >
-          <VImg src="../public/admin.png" />
+          <VImg src="../public/default-image.png" />
         </VAvatar>
         <VList>
           <VListItem
@@ -152,6 +152,16 @@ function deleteThisItem(itemId) {
             <template #item.image.image="{ item }">
                 <VImg
                   :src="item?.image?.image"
+                  lazy-src="/default-image.png"
+                  width="80"
+                  height="80"
+                  cover
+                  class="rounded-circle my-2"
+                />
+            </template>
+            <template #item.image.url="{ item }">
+                <VImg
+                  :src="item?.image?.url"
                   lazy-src="/default-image.png"
                   width="80"
                   height="80"
