@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 
 const props = defineProps<{
-  message: string;
+  message?: string;
   step: number;
   title: string;
 }>()
@@ -23,7 +23,7 @@ const props = defineProps<{
             </VCardTitle>
             <VCardText>
               <p class="text-center text-body-1 mt-2 mb-8">
-                {{ props.message }}
+                {{ message ? message : ' ' }}
               </p>
               <slot name="form" />
             </VCardText>
