@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAdvertisment } from '@@/queries/advertisment'
+import { useAdvertisment } from '@@/queries/advertisment';
 const { data, status } = useAdvertisment()
 </script>
 
@@ -21,7 +21,7 @@ const { data, status } = useAdvertisment()
         v-for="advertisement in data?.result"
         :key="advertisement.id"
         aspect-ratio="16/9"
-        :src="advertisement.image"
+        :src="advertisement.image.url"
         eager
         cover
         lazy-src="/default-image.png"
