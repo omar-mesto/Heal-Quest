@@ -1,74 +1,50 @@
 <script setup lang="ts">
-import { useCreateCategory } from '@@/queries/categories'
+import { useCreateAdvertisment } from '@@/queries/advertisment'
 import validators from '@@/utils/validators'
 import { computed, ref } from 'vue'
 const emit = defineEmits(['close'])
-const categoryForm = ref({
-  name_en:'',
-  name_ar:'',
-  icon:''
+const advertismentsForm = ref({
+  image:''
 })
 const isLoading=ref(false);
-const createCategoryForm = ref()
-const createDoctor = async () => {
+const createAdvertismentsForm = ref()
+const createAdvertisments = async () => {
   isLoading.value=true;
-  const { status } = await useCreateCategory(categoryForm.value)
+  const { status } = await useCreateAdvertisment(advertismentsForm.value)
 
-if (status.value == 'success'){
-  emit('close')
-}
+if (status.value == 'success')
+emit('close')
+
 if(status.value!=='success') {
     isLoading.value=false
   }
 }
 
-
-const addIconToCategoryForm = (event: Event) => {
+const addImageToAdvertismentsFormForm = (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0]
   if (!file)
     return true
   const reader = new FileReader()
 
   reader.onload = () => {
-    categoryForm.value.icon = reader.result as string
+    advertismentsForm.value.image = reader.result as string
   }
 
   reader.readAsDataURL(file)
 }
-const isValidForm = computed(() => createCategoryForm.value?.isValid)
+
+const isValidForm = computed(() => createAdvertismentsForm.value?.isValid)
 </script>
 
 <template>
   <VContainer>
     <VForm
-      ref="createCategoryForm"
+      ref="createAdvertismentsForm"
       validate-on="input"
-      @submit.prevent="createDoctor()"
+      @submit.prevent="createAdvertisments()"
     >
       <VCardText>
         <VRow>
-          <VCol
-            cols="12"
-            md="6"
-            sm="6"
-          >
-            <VTextField
-              v-model="categoryForm.name_en"
-              :rules="[validators.rules.userNameRule]"
-              label="English Name"
-            />
-          </VCol>
-          <VCol
-            cols="12"
-            md="6"
-            sm="6"
-          >
-            <VTextField
-              v-model="categoryForm.name_ar"
-              :rules="[validators.rules.userNameRule]"
-              label="Arablic Name"
-            />
-          </VCol>
           <VCol
             cols="12"
             md="12"
@@ -76,18 +52,12 @@ const isValidForm = computed(() => createCategoryForm.value?.isValid)
           >
             <VFileInput
               clearable
-              label="Category Icon"
+              label="Advertisment Image"
               :rules="[validators.rules.imageRule]"
               prepend-icon=""
               append-inner-icon="mdi-cloud-upload-outline"
-              @change="addIconToCategoryForm"
+              @change="addImageToAdvertismentsFormForm"
             />
-          </VCol>
-          <VCol
-            cols="12"
-            md="6"
-            sm="6"
-          >
           </VCol>
         </VRow>
       </VCardText>

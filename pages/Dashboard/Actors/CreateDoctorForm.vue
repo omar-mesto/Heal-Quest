@@ -12,12 +12,15 @@ const doctorForm = ref({
   password: '',
   username: '',
 })
+const isLoading=ref(false);
 const createDoctorForm = ref()
 const createDoctor = async () => {
+  isLoading.value=true;
   const { status } = await useCreateDoctor(doctorForm.value)
 
-if (status.value == 'success')
-emit('close')
+  if (status.value === 'success'){
+  emit('close')
+  }
 }
 
 const addImageToDoctorForm = (event: Event) => {
@@ -121,7 +124,6 @@ const isValidForm = computed(() => createDoctorForm.value?.isValid)
             sm="6"
           >
             <VRadioGroup
-
               v-model="doctorForm.gender"
               :rules="[validators.rules.genderRule]"
               inline
@@ -151,6 +153,7 @@ const isValidForm = computed(() => createDoctorForm.value?.isValid)
           color="blue-darken-1"
           variant="elevated"
           type="submit"
+          :loading="isLoading"
           :disabled="!isValidForm"
         >
           Save
