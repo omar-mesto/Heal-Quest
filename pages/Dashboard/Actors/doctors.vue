@@ -37,15 +37,13 @@ const deleteDoctor = async (doctor:DoctorsModel)=>{
   }
 }
 
-const nextPage=(currentPage:number)=>{
-  if(currentPage>page.value){
-
-    skip.value+=limit.value;
+const nextPage = (currentPage: number) => {
+  if (currentPage > page.value) {
+    skip.value = page.value;
     page.value++;
   }
-  else
-  {
-    skip.value-=limit.value;
+  else {
+    skip.value = limit.value;
     page.value++;
   }
 }
