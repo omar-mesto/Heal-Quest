@@ -16,6 +16,7 @@ export default defineNuxtConfig({
 
   buildModules: [
     'nuxt-vite',
+    // ['@pinia/nuxt', { disableVuex: true }]
   ],
 
   compatibilityDate: '2024-11-14',
@@ -38,7 +39,7 @@ export default defineNuxtConfig({
     autoImport: true,
   },
 
-  modules: ['vuetify-nuxt-module'],
+  modules: ['vuetify-nuxt-module','@pinia/nuxt','pinia-plugin-persistedstate/nuxt'],
 
   shim: true,
 
