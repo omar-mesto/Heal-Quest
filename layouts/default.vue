@@ -5,13 +5,13 @@ import NavBar from '@@/shared/NavBar.vue'
 </script>
 
 <template>
-  <VContainer
-    fluid
-    class="pt-0"
-  >
     <NavBar>
-      <slot />
+      <VContainer
+        fluid
+        class="pt-0"
+      >
+        <slot />  
+      </VContainer>
     </NavBar>
     <Footer />
-  </VContainer>
 </template>

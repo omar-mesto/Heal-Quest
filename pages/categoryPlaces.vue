@@ -16,7 +16,6 @@ clear()
     <div>
       <p class="text-grey-darken-4 text-h6 text-sm-h5 font-weight-medium mt-8 mt-sm-12 mb-4">
         Places {{ queryId }}
-        <pre>{{ data?.result[0]?.placeService.id }}</pre>
       </p>
       <VRow class="mt-2">
         <VCol
