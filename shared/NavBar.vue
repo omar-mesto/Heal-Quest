@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useRoute } from 'nuxt/app';
-import { VMain } from 'vuetify/components';
+import { useRoute } from 'nuxt/app'
+import { VMain } from 'vuetify/components'
 
 const navItems = [
   { icon: 'mdi-home', route: '/', title: 'Home', value: 'Home' },
@@ -12,7 +12,10 @@ const navItems = [
 
 <template>
   <div>
-    <VAppBar class="bg-primary px-4 d-none  d-sm-flex">
+    <VAppBar
+      v-if="!$vuetify.display.mobile"
+      class="bg-primary px-4 "
+    >
       <VToolbarTitle>Logo</VToolbarTitle>
       <div class="d-flex justify-center w-50">
         <VBtn
@@ -36,8 +39,13 @@ const navItems = [
         <VIcon>mdi-account</VIcon>
       </VBtn>
     </VAppBar>
+
+    <VMain>
+      <slot />
+    </VMain>
     <VBottomNavigation
-      class="d-flex d-sm-none bg-primary"
+      v-if="$vuetify.display.mobile"
+      class="bg-primary"
       app
     >
       <VBtn
@@ -49,8 +57,5 @@ const navItems = [
         <span>{{ item.title }}</span>
       </VBtn>
     </VBottomNavigation>
-    <VMain>
-      <slot />
-    </VMain>
   </div>
 </template>
