@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { categoryModel } from '@@/models/categoryModel'
+import { CategoreModel } from '@@/models/categoryModel'
 import { useDashboardCategories, useDeleteCategory } from '@@/queries/categories'
-import { ref } from 'vue'
-import CreateCategoryForm from './createCategoryForm.vue'
+import { computed, ref } from 'vue'
+import CreateCategoryForm from './CreateCategoryForm.vue'
 
 definePageMeta({ layout: false, middleware: 'auth' })
 const headers = ref([
@@ -13,20 +13,20 @@ const headers = ref([
   { align: 'center', key: 'actions', sortable: false, title: 'Actions' },
 ] as const)
 
-const page = ref(0)
+const page = ref(1)
 const skip = ref(0)
 const limit = ref(3)
 
-const { data, status, clear } = useDashboardCategories({ skip: skip, limit: limit });
+const { data, status, clear } = await useDashboardCategories({ skip: skip, limit: limit });
 clear()
 
 const crateCategoryDialog = ref(false);
 
-const thisUser = ref<categoryModel>({ id: '', icon: '', name: { ar: '', en: '' } })
+const thisUser = ref<CategoreModel>({ id: '', icon: '', name: { ar: '', en: '' } })
 
 const isLoading = ref(false);
 const deleteDialog = ref(false)
-const deleteDoctor = async (category: categoryModel) => {
+const deleteDoctor = async (category: CategoreModel) => {
   isLoading.value = true;
   const { status } = await useDeleteCategory(category.id)
   if (status.value == 'success') {
@@ -35,21 +35,13 @@ const deleteDoctor = async (category: categoryModel) => {
   }
 }
 
-const nextPage = (currentPage: number) => {
-  if (currentPage > page.value) {
-    skip.value = page.value;
-    page.value++;
-  }
-  else {
-    skip.value = limit.value;
-    page.value++;
-  }
-}
+const nextPage = (currentPage:number) => skip.value=currentPage;
+const categories=computed(()=>data.value?.result?.results ? data.value?.result?.results : [] )
 </script>
 
 <template>
   <div>
-    <NuxtLayout v-if="data?.result?.results?.length" name="dashboard" :headers="headers" :data="data?.result?.results"
+    <NuxtLayout  name="dashboard" :headers="headers" :data="categories"
       table-name="Categories" @view-create-dialog="crateCategoryDialog = true" :loading="status !== 'success'"
       @deleteThisItem="(item) => { thisUser = item; deleteDialog = true; }">
       <template #pagination>

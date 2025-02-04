@@ -1,65 +1,58 @@
 <script setup lang="ts">
+import { useGenerateOtpUser, useLoginUser } from '@@/queries/users'
 import validators from '@@/utils/validators'
-import { navigateTo } from 'nuxt/app'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
-import { api } from '../../utils/api'
+definePageMeta({
+  layout: false,
+})
 
-definePageMeta({ layout: false })
-const phone = ref('')
-const otp = ref('')
-const step = ref(1)
-const loginForm = ref()
-const snackbar = ref({ color: 'error', message: '', show: false })
+const step = ref<number>(1)
 
-const showSnackbar = (message: string, color = 'error') => {
-  snackbar.value.message = message
-  snackbar.value.color = color
-  snackbar.value.show = true
-}
+const userGenerateOtpForm = ref({
+  mobileNumber: '',
+})
 
-const closeSnackbar = () => {
-  snackbar.value.show = false
-}
+
+const userLoginForm = ref({
+  mobileNumber: '',
+  installationId: '',
+  otpCode: ''
+})
+const loginUserForm = ref()
+
+const generateUserOtp = ref()
+const isLoading = ref<boolean>(false)
+const loginIsLoading=ref<boolean>(false)
+
+const isValidGenrateOtpForm = computed(() => generateUserOtp.value?.isValid)
+const isValidLoginForm = computed(() => loginUserForm.value?.isValid)
 
 const generateOtp = async () => {
-  if (loginForm.value.isValid) {
-    try {
-      await api.post('generateOTP', {
-        mobileNumber: phone.value,
-      })
-      showSnackbar('OTP sent successfully', 'success')
-      step.value++
-    } catch (error) {
-      showSnackbar(error.message, 'error')
+    isLoading.value = true
+    const { status } = await useGenerateOtpUser(userGenerateOtpForm.value)
+    if (status.value === 'success') {
+      isLoading.value=false;
     }
-  }
+    step.value++
+  
 }
 
 const login = async () => {
-  if (loginForm.value.isValid) {
-    try {
-      const data = await api.post('loginClient', {
-        installationId: phone.value,
-        mobileNumber: phone.value,
-        otpCode: otp.value,
-      })
-
-      localStorage.setItem('sessionToken', data.result?.sessionToken)
-      showSnackbar('Login successfully', 'success')
-      navigateTo('/userProfile')
-    } catch (error) {
-      showSnackbar(error.message, 'error')
+  loginIsLoading.value = true
+  
+  userLoginForm.value.mobileNumber =  userGenerateOtpForm.value.mobileNumber
+  userLoginForm.value.installationId= userGenerateOtpForm.value.mobileNumber
+    const { status } = await useLoginUser(userLoginForm.value)
+    if (status.value === 'success') {
+      loginIsLoading.value = false
     }
-  }
 }
 </script>
 
 <template>
   <VCard>
-    <VWindow
-      v-model="step"
-    >
+    <VWindow v-model="step">
       <AuthLoginWindowItem
         :step="1"
         title="Login"
@@ -67,18 +60,19 @@ const login = async () => {
       >
         <template #form>
           <VForm
-            ref="loginForm"
+            ref="generateUserOtp"
             validate-on="input"
             @submit.prevent="generateOtp"
           >
             <VTextField
-              v-model="phone"
+              v-model="userGenerateOtpForm.mobileNumber"
               :rules="[validators.rules.phoneNumberRule]"
               label="Phone Number"
               variant="outlined"
             />
             <VBtn
-              :disabled="!loginForm?.isValid"
+              :disabled="!isValidGenrateOtpForm"
+              :loading="isLoading"
               type="submit"
               class="text-none my-2"
               color="primary"
@@ -91,11 +85,7 @@ const login = async () => {
           </VForm>
         </template>
         <template #image>
-          <VImg
-            src="/public/userLogin.png"
-            class="mt-10"
-            height="500px"
-          />
+          <VImg src="/public/userLogin.png" class="mt-10" height="500px" />
         </template>
       </AuthLoginWindowItem>
       <AuthLoginWindowItem
@@ -105,18 +95,18 @@ const login = async () => {
       >
         <template #form>
           <VForm
-            ref="otpForm"
+            ref="loginUserForm"
             validate-on="input"
             @submit.prevent="login"
           >
             <VOtpInput
-              v-model="otp"
+              v-model="userLoginForm.otpCode"
               focus-all
               :length="4"
               variant="outlined"
             />
             <VBtn
-              :disabled="!loginForm?.isValid"
+              :loading="loginIsLoading"
               type="submit"
               class="text-none my-2"
               color="primary"
@@ -129,27 +119,9 @@ const login = async () => {
           </VForm>
         </template>
         <template #image>
-          <VImg
-            src="/public/OTPuser.png"
-            class="mt-10"
-            height="500px"
-          />
+          <VImg src="/public/OTPuser.png" class="mt-10" height="500px" />
         </template>
       </AuthLoginWindowItem>
     </VWindow>
-    <VSnackbar
-      v-model="snackbar.show"
-      :color="snackbar.color"
-    >
-      {{ snackbar.message }}
-      <template>
-        <VBtn
-          variant="text"
-          @click="closeSnackbar"
-        >
-          Close
-        </VBtn>
-      </template>
-    </VSnackbar>
   </VCard>
 </template>

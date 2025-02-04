@@ -1,10 +1,9 @@
-import { getAdvertisment } from '@@/services/api'
 import { api, useAPI } from '@@/services/baseApi'
 import { useAsyncData } from 'nuxt/app'
 import { Ref } from 'vue'
  
 export const useAdvertisment = () => {
-  return useAsyncData('advertisments', () => getAdvertisment())
+  return useAsyncData('advertisments', () => api('/getAdvertisment'))
 }
 export const useDashboardAdvertisment = (params:{skip:Ref<number>,limit:Ref<number>}) => {  
 

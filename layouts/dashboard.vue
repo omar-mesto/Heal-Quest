@@ -1,10 +1,16 @@
 <script lang="ts" setup generic="T">
 import { useRoute } from 'nuxt/app';
-import { ref, watch } from 'vue';
+import { ref, useAttrs, watch } from 'vue';
 const emit = defineEmits(['save', 'update','viewCreateDialog','deleteItem','deleteThisItem'])
 const drawer = ref(true)
 const router = useRoute()
 // side Bar
+const attrs=useAttrs();
+const data=useAttrs().data;
+watch(attrs,(newValue)=>{
+  console.log(newValue);
+  
+})
 const items = ref([
   { id: 1, subitems: [
       { route: '/dashboard/actors/users', title: 'Users' },
@@ -28,19 +34,15 @@ const items = ref([
 const toggleDrawer = () => {
   drawer.value = !drawer.value
 }
-const props = defineProps<{
-  data: {results:[]} | undefined,
-  headers: { align: string, key: string, sortable: boolean, title: string }[],
-  tableName: string
-  dialogHeaderTitle?:string
-  icon?: string
-}>()
+// const props = defineProps<{
+//   data: any,  
+//   headers: { align: string, key: string, sortable: boolean, title: string }[],
+//   tableName: string
+//   dialogHeaderTitle?:string
+//   icon?: string
+// }>()
 
-const updatedData=ref(props.data)
-watch(()=>props.data,(newValue)=>{
-    
-  updatedData.value=newValue
-},{immediate:true})
+
 function deleteThisItem(itemId) {
   emit('deleteThisItem', itemId);
 }
@@ -48,7 +50,8 @@ function deleteThisItem(itemId) {
 
 <template>
   <VApp>
-    <VNavigationDrawer
+    {{data }}
+    <!-- <VNavigationDrawer
       v-model="drawer"
       permanent
     >
@@ -122,7 +125,7 @@ function deleteThisItem(itemId) {
             v-show="useRoute().fullPath!='/dashboard'"
             elevation="7"
             :headers="headers"
-            :items="updatedData"  
+            :items="data?.result?.results"  
             height="400"
             density="compact"
           >
@@ -191,7 +194,7 @@ function deleteThisItem(itemId) {
         </VCard>
       </VContainer>
     </VMain>
-  
+   -->
 
   </VApp>
 </template>

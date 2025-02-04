@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 definePageMeta({
   layout: 'user',
 })
@@ -23,7 +23,7 @@ const dateOfBirth = ref('DD / MM / YYYY')
           size="100"
           class="mb-5"
         >
-          <VImg src="../../public/userImage.png" />
+          <VImg src="/default-image.png" />
         </VAvatar>
       </VCardSubtitle>
 

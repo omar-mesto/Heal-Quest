@@ -33,19 +33,17 @@ const toggleDrawer = () => {
     </NavBar>
     <VNavigationDrawer
       v-model="drawer"
-      class="h-100"
-      app
+      class="h-screen"
+      app 
       permanent
     >
       <VList class="h-100">
         <VListItem class="profile-section">
           <div class="d-flex align-center">
-            <VListItemAvatar>
               <VImg
                 src="../public/default-image.png"
                 width="100px"
               />
-            </VListItemAvatar>
             <VListItemTitle class="mx-2 font-weight-bold">
               user name
             </VListItemTitle>
@@ -59,11 +57,9 @@ const toggleDrawer = () => {
           @click="$router.push(`${item.route}`)"
         >
           <div class="d-flex align-center">
-            <VListItemIcon>
               <VIcon class="mr-2">
                 {{ item.icon }}
               </VIcon>
-            </VListItemIcon>
             <VListItemTitle>{{ item.title }}</VListItemTitle>
           </div>
         </VListItem>
@@ -71,7 +67,7 @@ const toggleDrawer = () => {
     </VNavigationDrawer>
 
     <VContainer
-      class="h-100 container d-flex justify-center"
+      class="container d-flex justify-center"
       fluid
     >
       <slot />
@@ -91,6 +87,10 @@ const toggleDrawer = () => {
   }
   .container{
     margin: 0 auto !important;
+    height: 100vh !important;
   }
+}
+.v-navigation-drawer {
+  height: 100vh !important;
 }
   </style>

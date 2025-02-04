@@ -1,10 +1,9 @@
-import { getCategories } from '@@/services/api';
 import { useAsyncData } from 'nuxt/app';
 import { Ref } from "vue";
 import { api, useAPI } from '../services/baseApi';
 
 export const useCategories = () => {
-  return useAsyncData('categories', () => getCategories())
+  return useAsyncData('categories', () => api('/getCategories'))
 }
 
 export const useDashboardCategories = (params:{skip:Ref<number>,limit:Ref<number>}) => {  
@@ -25,5 +24,5 @@ export const useDeleteCategory = (categoryId:string) => {
 }
 
 export const useCreateCategory = (category) => {
-  return useAPI({url:'/addCategory',payload:category,queryKey:'categories',type:'POST'})
+  return useAPI({url:'/addEditCategory',payload:category,queryKey:'categories',type:'POST'})
 }

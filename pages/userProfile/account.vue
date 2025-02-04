@@ -1,25 +1,27 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
+
 definePageMeta({
   layout: 'user',
-})
-const fullName = ref('John Doe')
-const phoneNumber = ref('+123 567 89000')
-const dateOfBirth = ref('DD / MM / YYYY')
+});
 
+const fullName = ref('John Doe');
+const phoneNumber = ref('+123 567 89000');
+const dateOfBirth = ref('DD / MM / YYYY');
 </script>
 
 <template>
   <VCard
     class="pa-4"
-    width="500px"
+    width="100%"
+    max-width="500px"
   >
     <VCardSubtitle class="text-center">
       <VAvatar
         size="100"
         class="mb-5"
       >
-        <VImg src="/userImage.png" />
+        <VImg src="/default-image.png" />
       </VAvatar>
     </VCardSubtitle>
 
@@ -36,7 +38,6 @@ const dateOfBirth = ref('DD / MM / YYYY')
         required
         variant="outlined"
       />
-
       <VTextField
         v-model="dateOfBirth"
         label="Date Of Birth"
@@ -57,6 +58,3 @@ const dateOfBirth = ref('DD / MM / YYYY')
     </VForm>
   </VCard>
 </template>
-
-<style scoped>
-</style>
