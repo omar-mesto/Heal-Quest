@@ -70,7 +70,7 @@ const isValidForm = computed(() => loginAdminForm.value?.isValid)
               variant="flat"
               block
             >
-              Sign-In
+              Sign In
             </VBtn>
           </VForm>
         </template>

@@ -15,7 +15,7 @@ clear()
 <template>
     <div>
       <p class="text-grey-darken-4 text-h6 text-sm-h5 font-weight-medium mt-8 mt-sm-12 mb-4">
-        Places {{ queryId }}
+        Places 
       </p>
       <VRow class="mt-2">
         <VCol
@@ -27,14 +27,13 @@ clear()
           :key="placeService"
         >
           <v-card class="h-100 d-flex flex-column pb-4"
-          @click="$router.push({path:'/PlaceServices',query: { id:placeService.placeService.id }})">
+          @click="$router.push({path:'/PlaceServices',query: { id:placeService.id }})">
             <v-img
               height="200"
               :src="`${placeService.placeService.images[0].image}`"
               cover
               class="flex-grow-0"
             ></v-img>
-  
             <v-card-title class="text-h6 text-md-h5">
               {{ placeService.placeService.places[0].name.en }}
             </v-card-title>

@@ -24,17 +24,13 @@ const toggleDrawer = () => {
 </script>
 
 <template>
-  <VApp>
-    <NavBar>
+  <NavBar>
       <VAppBarNavIcon
         variant="text"
         @click="toggleDrawer"
       />
-    </NavBar>
-    <VNavigationDrawer
+      <VNavigationDrawer
       v-model="drawer"
-      class="h-screen"
-      app 
       permanent
     >
       <VList class="h-100">
@@ -67,16 +63,16 @@ const toggleDrawer = () => {
     </VNavigationDrawer>
 
     <VContainer
-      class="container d-flex justify-center"
+      class="container d-flex justify-center mx-auto"
       fluid
     >
       <slot />
     </VContainer>
-  </VApp>
+  </NavBar>
 </template>
 
-  <style scoped>
-  @media (max-width: 600px) {
+<style scoped>
+  /* @media (max-width: 600px) {
   .v-navigation-drawer {
     justify-content: center !important;
     display: grid !important;
@@ -92,5 +88,5 @@ const toggleDrawer = () => {
 }
 .v-navigation-drawer {
   height: 100vh !important;
-}
-  </style>
+} */
+</style>

@@ -7,54 +7,55 @@ definePageMeta({
 
 const fullName = ref('John Doe');
 const phoneNumber = ref('+123 567 89000');
-const dateOfBirth = ref('DD / MM / YYYY');
+const dateOfBirth = null  ;
 </script>
 
 <template>
-  <VCard
-    class="pa-4"
-    width="100%"
-    max-width="500px"
-  >
-    <VCardSubtitle class="text-center">
-      <VAvatar
-        size="100"
-        class="mb-5"
-      >
-        <VImg src="/default-image.png" />
-      </VAvatar>
-    </VCardSubtitle>
-
-    <VForm>
-      <VTextField
-        v-model="fullName"
-        label="Full Name"
-        required
-        variant="outlined"
-      />
-      <VTextField
-        v-model="phoneNumber"
-        label="Phone Number"
-        required
-        variant="outlined"
-      />
-      <VTextField
-        v-model="dateOfBirth"
-        label="Date Of Birth"
-        placeholder="DD / MM / YYYY"
-        required
-        variant="outlined"
-      />
-      <div class="text-center">
-        <VBtn
-          color="primary"
-          type="submit"
-          class="mt-4"
-          large
+    <VSheet
+    class="w-100 pa-5"
+    :class="[$vuetify.display.mobile?'w-100':'w-50']"
+    >
+      <VCardSubtitle class="text-center">
+        <VAvatar
+          size="100"
+          class="mb-5"
         >
-          Update Profile
-        </VBtn>
-      </div>
-    </VForm>
-  </VCard>
+          <VImg src="/default-image.png" />
+        </VAvatar>
+      </VCardSubtitle>
+
+      <VForm>
+        <VTextField
+          v-model="fullName"
+          class="py-3"
+          label="Full Name"
+          required
+          variant="outlined"
+        />
+        <VTextField
+          v-model="phoneNumber"
+          label="Phone Number"
+          class="py-3"
+          required
+          variant="outlined"
+        />
+        <VDateInput
+                v-model="dateOfBirth"
+                class="py-3"
+                label="Birth date"
+                append-inner-icon="mdi-calendar"
+                prepend-icon=""
+              />
+        <div class="text-center">
+          <VBtn
+            color="primary"
+            type="submit"
+            class="mt-4"
+            large
+          >
+            Update Profile
+          </VBtn>
+        </div>
+      </VForm>
+    </VSheet>
 </template>

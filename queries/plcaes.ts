@@ -9,13 +9,3 @@ export const useCategoryPlaces = (params:{id:string}) => {
   })
 )
 }
-
-
-export const useCategoryPlacesById = (params:{id:string}) => {
-  return useAsyncData('categoryPlaces', () => api('/getPlaceServiceCategoryById',{
-    params:{
-        id:params.id
-    }
-  })
-)
-}

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useGenerateOtpUser, useLoginUser } from '@@/queries/users'
 import validators from '@@/utils/validators'
+import { navigateTo } from 'nuxt/app'
 import { computed, ref } from 'vue'
 
 definePageMeta({
@@ -26,15 +27,14 @@ const isLoading = ref<boolean>(false)
 const loginIsLoading=ref<boolean>(false)
 
 const isValidGenrateOtpForm = computed(() => generateUserOtp.value?.isValid)
-const isValidLoginForm = computed(() => loginUserForm.value?.isValid)
 
 const generateOtp = async () => {
     isLoading.value = true
     const { status } = await useGenerateOtpUser(userGenerateOtpForm.value)
     if (status.value === 'success') {
       isLoading.value=false;
+      step.value++
     }
-    step.value++
   
 }
 
@@ -46,6 +46,7 @@ const login = async () => {
     const { status } = await useLoginUser(userLoginForm.value)
     if (status.value === 'success') {
       loginIsLoading.value = false
+      navigateTo('/userProfile/account')
     }
 }
 </script>
