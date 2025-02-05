@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { DoctorsModel } from '@@/models/doctorsModel'
 import { useDeleteDoctor, useDoctors } from '@@/queries/doctors'
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
 import CreateDoctorForm from './CreateDoctorForm.vue'
 
 definePageMeta({layout:false})
@@ -47,15 +47,15 @@ const nextPage = (currentPage: number) => {
     page.value++;
   }
 }
+const doctors=computed(()=>data.value?.result?.results)
 </script>
 
 <template>
   <div >
     <NuxtLayout
-    v-if="data?.result?.results?.length"
       name="dashboard"
       :headers="headers"
-      :data="data?.result?.results"
+      :data="doctors"
       table-name="Doctors"
       :loading="status!=='success'"
       dialogHeaderTitle="Create Doctor"

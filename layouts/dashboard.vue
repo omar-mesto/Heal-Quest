@@ -1,16 +1,9 @@
 <script lang="ts" setup generic="T">
 import { useRoute } from 'nuxt/app';
-import { ref, useAttrs, watch } from 'vue';
+import { ref } from 'vue';
 const emit = defineEmits(['save', 'update','viewCreateDialog','deleteItem','deleteThisItem'])
 const drawer = ref(true)
 const router = useRoute()
-// side Bar
-const attrs=useAttrs();
-const data=useAttrs().data;
-watch(attrs,(newValue)=>{
-  console.log(newValue);
-  
-})
 const items = ref([
   { id: 1, subitems: [
       { route: '/dashboard/actors/users', title: 'Users' },
@@ -34,13 +27,13 @@ const items = ref([
 const toggleDrawer = () => {
   drawer.value = !drawer.value
 }
-// const props = defineProps<{
-//   data: any,  
-//   headers: { align: string, key: string, sortable: boolean, title: string }[],
-//   tableName: string
-//   dialogHeaderTitle?:string
-//   icon?: string
-// }>()
+defineProps<{
+  data: []|undefined,
+  headers: { align: string, key: string, sortable: boolean, title: string }[],
+  tableName: string
+  dialogHeaderTitle?:string
+  icon?: string
+}>()
 
 
 function deleteThisItem(itemId) {
@@ -50,8 +43,7 @@ function deleteThisItem(itemId) {
 
 <template>
   <VApp>
-    {{data }}
-    <!-- <VNavigationDrawer
+<VNavigationDrawer
       v-model="drawer"
       permanent
     >
@@ -73,7 +65,7 @@ function deleteThisItem(itemId) {
         nav
         >
         <VListGroup
-          
+
         v-for="item in items"
         :key="item.title"
         :value="item.id"
@@ -122,10 +114,10 @@ function deleteThisItem(itemId) {
           class="mt-5"
         >
           <VDataTable
-            v-show="useRoute().fullPath!='/dashboard'"
+            v-if="useRoute().fullPath!='/dashboard'"
             elevation="7"
             :headers="headers"
-            :items="data?.result?.results"  
+            :items="data"
             height="400"
             density="compact"
           >
@@ -138,7 +130,7 @@ function deleteThisItem(itemId) {
                 </VToolbarTitle>
                   <VBtn :disabled="useRoute().name==='Dashboard-actors-users'" style="font-size: 24px;" icon="mdi-plus" color="primary" @click="$emit('viewCreateDialog')" />
               </vtoolbar>
-     
+
             </template>
 
             <template #item.actions="{ item }">
@@ -149,7 +141,7 @@ function deleteThisItem(itemId) {
               >
                 {{ icon ? icon : 'mdi-delete-outline' }}
               </VIcon>
-              
+
             </template>
 
             <template #item.image.image="{ item }">
@@ -189,18 +181,18 @@ function deleteThisItem(itemId) {
               </div>
             </template>
 
-            
+
           </VDataTable>
         </VCard>
       </VContainer>
     </VMain>
-   -->
+
 
   </VApp>
 </template>
 
 <style scoped lang="scss">
 .v-list--nav {
-  padding-inline: 0px !important;
+  padding-inline: 0 !important;
 }
 </style>
