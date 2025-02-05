@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { useGenerateOtpUser, useLoginUser } from '@@/queries/users'
-import validators from '@@/utils/validators'
-import { navigateTo } from 'nuxt/app'
-import { computed, ref } from 'vue'
+import { useGenerateOtpUser, useLoginUser } from '@@/queries/users';
+import { useGlobalStore } from "@@/stores/global";
+import validators from '@@/utils/validators';
+import { computed, ref } from 'vue';
+
 
 definePageMeta({
   layout: false,
 })
 
 const step = ref<number>(1)
+
+const globalStore=useGlobalStore()
+const router = useRouter()
 
 const userGenerateOtpForm = ref({
   mobileNumber: '',
@@ -43,11 +47,16 @@ const login = async () => {
   
   userLoginForm.value.mobileNumber =  userGenerateOtpForm.value.mobileNumber
   userLoginForm.value.installationId= userGenerateOtpForm.value.mobileNumber
-    const { status } = await useLoginUser(userLoginForm.value)
+    const { status,data } = await useLoginUser(userLoginForm.value)
     if (status.value === 'success') {
       loginIsLoading.value = false
-      navigateTo('/userProfile/account')
-    }
+      globalStore.role=data.value.result?.role
+      globalStore.token=data.value.result?.sessionToken
+      globalStore.currentUser={id:data.value.result.id,userName:data.value.result.userName}
+      await router.push({'name':'index'})
+    }else{
+    isLoading.value = false
+  }
 }
 </script>
 

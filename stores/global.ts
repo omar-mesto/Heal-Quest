@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import {RoleName} from "@@/utils/RoleName";
+import { RoleName } from "@@/utils/RoleName";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 export const useGlobalStore = defineStore('globalStore', () => {
     const token = ref('')

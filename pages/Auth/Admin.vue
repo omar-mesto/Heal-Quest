@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useLoginAdmin } from '@@/queries/admin';
+import { useGlobalStore } from "@@/stores/global";
 import validators from '@@/utils/validators';
+import { useRouter } from "nuxt/app";
 import { computed, ref } from 'vue';
-import {useGlobalStore} from "@@/stores/global";
-import {useRouter} from "nuxt/app";
 
 definePageMeta({
   layout: false,
@@ -45,7 +45,7 @@ const isValidForm = computed(() => loginAdminForm.value?.isValid)
     <VWindow class="h-100">
       <AuthLoginWindowItem
         :step="1"
-        title="Admin Login"
+        title="Login"
       >
         <template #form>
           <VForm

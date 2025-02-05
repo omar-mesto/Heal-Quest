@@ -114,7 +114,6 @@ function deleteThisItem(itemId) {
           class="mt-5"
         >
           <VDataTable
-            v-if="useRoute().fullPath!='/dashboard'"
             elevation="7"
             :headers="headers"
             :items="data"
