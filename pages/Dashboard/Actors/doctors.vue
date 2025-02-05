@@ -22,6 +22,10 @@ const limit = ref(2)
 const { data, status,clear} = useDoctors({ skip: skip, limit: limit });
 clear()
 
+onMounted(()=>{
+  if(!data.value)
+    refresh()
+})
 const crateDoctorDialog=ref(false);
 
 const thisDoctor=ref<DoctorsModel>({id:'',fullName:'',mobileNumber:'',image:{image:''},userBlock:{status:false},name:{ar:'',en:''},createdAt:''})
