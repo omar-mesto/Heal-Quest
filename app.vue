@@ -1,11 +1,15 @@
 <script setup lang="ts">
+
+import {useRoute} from "nuxt/app";
+
+const route = useRoute()
 </script>
 
 <template>
   <div>
     <VApp>
       <NuxtLayout>
-        <NuxtPage />
+        <NuxtPage keepalive  :page-key="route => route.fullPath"/>
       </NuxtLayout>
     </VApp>
   </div>
@@ -13,5 +17,5 @@
 
 <style>
 
-.v-application__wrap {  min-height: 100% !important; }
+.v-application__wrap {  min-height: 100dvh !important; }
 </style>
