@@ -2,11 +2,13 @@
 import { useLoginAdmin } from '@@/queries/admin';
 import validators from '@@/utils/validators';
 import { computed, ref } from 'vue';
+import {useGlobalStore} from "@@/stores/global";
+import {useRouter} from "nuxt/app";
 
 definePageMeta({
   layout: false,
 })
-
+const globalStore=useGlobalStore()
 
 const adminForm = ref({
   username:'',
@@ -14,13 +16,26 @@ const adminForm = ref({
 })
 const loginAdminForm = ref()
 const isLoading = ref(false);
+const router = useRouter()
 
 const loginAdmin = async () => {
   isLoading.value = true;
-  const { status,data } = await useLoginAdmin(adminForm.value)
+  const { status,data,error} = await useLoginAdmin(adminForm.value)
   if (status.value == 'success') {
     isLoading.value = false
+
+    globalStore.role=data.value.result?.role
+    globalStore.token=data.value.result?.sessionToken
+    globalStore.currentUser={id:data.value.result.id,userName:data.value.result.userName}
+    if(globalStore.role=='Doctor')
+      await router.push({'name':'doctor'})
+    else
+      await router.push({'name':'Dashboard'})
+
+  }else{
+    isLoading.value = false
   }
+
 }
 const isValidForm = computed(() => loginAdminForm.value?.isValid)
 </script>

@@ -5,33 +5,47 @@ import { DocumentChange, DocumentData, onSnapshot, orderBy, query } from '@fireb
 import { collection } from 'firebase/firestore'
 import moment from 'moment'
 import { onMounted, ref } from 'vue'
-const currentUserId = ref('1')
+import {useGlobalStore} from "@@/stores/global";
+import {useRoute, useRouter} from "nuxt/app";
+const globalStore=useGlobalStore()
+const currentUserId = ref<string>(globalStore.currentUser?.id)
+const router=useRoute();
+const receiverId=ref<string>((router.query as {client:string}).client);
 const messages = ref<MessageForm[]>([])
 const textMessage = ref('')
 const sendMsg = () => {
   sendMessage({
     message: textMessage.value,
-    receiverId: '2',
+    receiverId: receiverId.value,
     senderId: currentUserId.value,
     sentAt: moment().toISOString(),
     type: 'txt',
   })
   textMessage.value = ''
 }
+const isLoading=ref(false)
 function openStream() {
-  onSnapshot(query(collection(db, 'app', `${currentUserId.value}_2`, 'messages'), orderBy('sentAt', 'desc')), (streamDoc: DocumentData) => {
+  isLoading.value=true
+  onSnapshot(query(collection(db, 'app', `${currentUserId.value}_${receiverId.value}`, 'messages'), orderBy('sentAt', 'desc')), (streamDoc: DocumentData) => {
     streamDoc.docChanges().reverse().forEach((change: DocumentChange<MessageForm>) => {
+      isLoading.value=false
       messages.value = [...messages.value, change.doc.data()]
     })
+    isLoading.value=false
   })
 }
-onMounted(() => openStream())
+onMounted(() => {
+  if(!receiverId.value)
+    useRouter().push('doctor/conversations')
+  else
+  openStream()
+})
 </script>
 
 <template>
   <div>
     <VContainer
-      class="pa-0 d-flex flex-column "
+      class="pa-0 d-flex flex-column"
       fluid
     >
       <VCard
@@ -52,6 +66,7 @@ onMounted(() => openStream())
                 <p>email@email.com</p>
               </div>
               <VBtn
+                  @click="$router.push('doctor/conversations')"
                 variant="text"
                 icon="mdi-arrow-left"
               />
@@ -65,7 +80,7 @@ onMounted(() => openStream())
           max-height: calc(100dvh - 220px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(34,96,255,0.75) #f2f2f2;"
         >
           <VRow
-            v-if="messages.length==0"
+            v-if="isLoading"
             justify="end"
             align="end"
           >
@@ -83,6 +98,7 @@ onMounted(() => openStream())
               />
             </VCol>
           </VRow>
+          <VEmptyState v-if="messages.length==0 && !isLoading"  title="No messages yet" />
           <VList
             v-for="message in messages"
             :key="message.message"

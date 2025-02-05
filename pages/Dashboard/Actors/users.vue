@@ -3,7 +3,7 @@ import { UsersModel } from '@@/models/usersModel'
 import { useBlockUser, useUsers } from '@@/queries/users'
 import { ref } from 'vue'
 
-definePageMeta({layout:false,middleware:'auth'})
+definePageMeta({layout:false})
 const headers = ref([
   { align: 'center', key: 'id', sortable: true, title: 'id' },
   { align: 'center', key: 'userName', sortable: true, title: 'User Name' },

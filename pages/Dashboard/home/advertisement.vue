@@ -4,7 +4,7 @@ import { useDashboardAdvertisment, useDeleteAdvertisment } from '@@/queries/adve
 import { ref } from 'vue'
 import CreateAdvertisementForm from './CreateAdvertisementForm.vue'
 
-definePageMeta({ layout: false, middleware: 'auth' })
+definePageMeta({ layout: false })
 const headers = ref([
   { align: 'center', key: 'id', sortable: true, title: 'id' },
   { align: 'right', key: 'image.url', sortable: true, title: 'Image' },

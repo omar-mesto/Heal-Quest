@@ -4,7 +4,7 @@ import { useDashboardCategories, useDeleteCategory } from '@@/queries/categories
 import { computed, ref } from 'vue'
 import CreateCategoryForm from './CreateCategoryForm.vue'
 
-definePageMeta({ layout: false, middleware: 'auth' })
+definePageMeta({ layout: false })
 const headers = ref([
   { align: 'center', key: 'id', sortable: true, title: 'id' },
   { align: 'center', key: 'name.en', sortable: true, title: 'Name EN' },

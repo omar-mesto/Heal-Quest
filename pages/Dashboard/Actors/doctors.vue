@@ -4,7 +4,7 @@ import { useDeleteDoctor, useDoctors } from '@@/queries/doctors'
 import { ref } from 'vue'
 import CreateDoctorForm from './CreateDoctorForm.vue'
 
-definePageMeta({layout:false,middleware:'auth'})
+definePageMeta({layout:false})
 const headers = ref([
   { align: 'center', key: 'fullName', sortable: true, title: 'Full Name' },
   { align: 'center', key: 'userName', sortable: true, title: 'User Name' },
