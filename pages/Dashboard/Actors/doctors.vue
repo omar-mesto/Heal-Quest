@@ -18,8 +18,7 @@ const headers = ref([
 const page=ref(0)
 const skip = ref(0)
 const limit = ref(2)
-
-const { data, status,clear} = useDoctors({ skip: skip, limit: limit });
+const { data, status,clear,refresh } = useDoctors({ skip: skip, limit: limit });
 clear()
 
 onMounted(()=>{
