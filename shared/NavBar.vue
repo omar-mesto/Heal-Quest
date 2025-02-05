@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useRoute } from 'nuxt/app'
-import { VMain } from 'vuetify/components'
-import {useGlobalStore} from "@@/stores/global";
-import {ref} from "vue";
+import { useGlobalStore } from "@@/stores/global";
+import { useRoute } from 'nuxt/app';
+import { ref } from "vue";
+import { VMain } from 'vuetify/components';
 const globalStore=useGlobalStore();
 
 const navItems = ref([
@@ -10,6 +10,7 @@ const navItems = ref([
   { icon: 'mdi-chat', route: '/chat', title: 'Chat', value: 'Chat' },
   { icon: 'mdi-calendar-check', route: '/plans', title: 'Plans', value: 'Plans' },
   { icon: 'mdi-account', route: '/userProfile/account', title: 'Profile', value: 'Profile' },
+  
 ])
 if(globalStore.role=='Doctor')
   navItems.value=[

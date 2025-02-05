@@ -17,9 +17,11 @@ export const useBlockUser = (userId:string) => {
   return useAPI({ url: `/blockUser`,params:{userId:userId} ,queryKey: 'users' , type:'POST'})
 }
 
-
-
 export const useLoginUser = (user) => {
+  return useAPI({url:'/loginClient',payload:user,queryKey:'users',type:'POST'})
+}
+
+export const useUpdateUserInfo = (user) => {
   return useAPI({url:'/loginClient',payload:user,queryKey:'users',type:'POST'})
 }
 
