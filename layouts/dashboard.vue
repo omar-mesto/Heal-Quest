@@ -5,7 +5,7 @@ import { navigateTo, useRoute } from 'nuxt/app';
 import { ref } from 'vue';
 const emit = defineEmits(['save', 'update','viewCreateDialog','deleteItem','deleteThisItem'])
 const drawer = ref(true)
-const router = useRoute()
+const currentRoute = useRoute()
 const items = ref([
   { id: 1, subitems: [
       { route: '/dashboard/actors/users', title: 'Users' },
@@ -37,7 +37,6 @@ defineProps<{
   icon?: string
 }>()
 
-const route=useRoute()
 
 function deleteThisItem(itemId) {
   emit('deleteThisItem', itemId);
@@ -92,13 +91,14 @@ const logOut = async ()=>{
               v-bind="props"
             />
           </template>
+
           <VListItem
             v-for="subitem in item.subitems"
             :key="subitem.route"
             class="listItem"
             :title="subitem.title"
-            :class="{'border-s-lg border-primary':subitem.route===router.fullPath}"
-            @click="$router.push(`${subitem.route}`)"
+            :class="{'border-s-lg border-primary':subitem.route===currentRoute.fullPath}"
+            @click=" ()=>  navigateTo({path:subitem.route})"
           />
         </VListGroup>
       </VList>
@@ -152,7 +152,7 @@ const logOut = async ()=>{
         >
         <!-- todo:get current route -->
           <VDataTable
-            v-show="route.fullPath!='/Dashboard'"
+            v-show="currentRoute.fullPath!='/Dashboard'"
             elevation="7"
             :headers="headers"
             :items="data"
@@ -250,8 +250,8 @@ const logOut = async ()=>{
             variant="elevated"
             :loading="isLoading"
             :disabled="isLoading"
-            @click="logOut" 
-         
+            @click="logOut"
+
           >
             Yes
           </VBtn>
