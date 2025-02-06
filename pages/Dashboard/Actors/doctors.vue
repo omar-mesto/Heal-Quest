@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { DoctorsModel } from '@@/models/doctorsModel'
 import { useDeleteDoctor, useDoctors } from '@@/queries/doctors'
-import {computed, ref} from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import CreateDoctorForm from './CreateDoctorForm.vue'
 
 definePageMeta({layout:false})

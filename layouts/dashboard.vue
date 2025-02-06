@@ -1,5 +1,7 @@
 <script lang="ts" setup generic="T">
-import { useRoute } from 'nuxt/app';
+import { useLogout } from '@@/queries/users';
+import { useGlobalStore } from '@@/stores/global';
+import { navigateTo, useRoute } from 'nuxt/app';
 import { ref } from 'vue';
 const emit = defineEmits(['save', 'update','viewCreateDialog','deleteItem','deleteThisItem'])
 const drawer = ref(true)
@@ -18,10 +20,10 @@ const items = ref([
     title: 'Home',
   },
   { id: 3, subitems: [
-      { route: '/', title: 'Category' },
-      { route: '/', title: 'Doctors3' },
+      { route: '/dashboard/other/place', title: 'Place' },
+      { route: '/dashboard/other/advertisement', title: 'Category With Place' },
     ],
-    title: 'Actors3',
+    title: 'Other',
   },
 ])
 const toggleDrawer = () => {
@@ -35,9 +37,26 @@ defineProps<{
   icon?: string
 }>()
 
+const route=useRoute()
 
 function deleteThisItem(itemId) {
   emit('deleteThisItem', itemId);
+}
+const logOutDialog=ref(false);
+const globalStore=useGlobalStore()
+const isLoading=ref(false);
+const logOut = async ()=>{
+  isLoading.value=true;
+  const { status } = await useLogout()
+  globalStore.token=''
+  globalStore.currentUser=''
+  globalStore.role=null
+  window?.localStorage.clear()
+  if(status.value =='success' ){
+    logOutDialog.value=false
+    isLoading.value=false
+    return navigateTo('/auth/admin')
+  }
 }
 </script>
 
@@ -94,7 +113,7 @@ function deleteThisItem(itemId) {
         class="bg-white"
         elevation="2"
       >
-        <VToolbarTitle>Good Morning, Adam!</VToolbarTitle>
+        <VToolbarTitle>Good Morning</VToolbarTitle>
         <VSpacer />
         <VBtn
           icon
@@ -102,9 +121,26 @@ function deleteThisItem(itemId) {
         >
           <VIcon>{{ drawer ? 'mdi-menu-open' : 'mdi-menu' }}</VIcon>
         </VBtn>
-        <VBtn icon>
-          <VIcon>mdi-account-circle</VIcon>
-        </VBtn>
+        <v-menu
+      open-on-hover
+    >
+      <template v-slot:activator="{ props }">
+        <v-btn
+          v-bind="props"
+        >
+        <VIcon size="25px">mdi-account-circle</VIcon>
+        </v-btn>
+      </template>
+
+      <v-list>
+        <v-list-item>
+          <v-list-item-title class="cursor-pointer" @click="$router.push('/Dashboard')">Profile</v-list-item-title>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title class="cursor-pointer" @click="logOutDialog=true">Logout</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
       </VToolbar>
       <VDivider />
       <VContainer
@@ -113,7 +149,9 @@ function deleteThisItem(itemId) {
         <VCard
           class="mt-5"
         >
+        <!-- todo:get current route -->
           <VDataTable
+            v-show="route.fullPath!='/Dashboard'"
             elevation="7"
             :headers="headers"
             :items="data"
@@ -153,6 +191,16 @@ function deleteThisItem(itemId) {
                   class="rounded-circle my-2"
                 />
             </template>
+            <template #item.images[0].data="{ item }">
+                <VImg
+                  :src="item.images[0].data"
+                  lazy-src="/default-image.png"
+                  width="80"
+                  height="80"
+                  cover
+                  class="rounded-circle my-2"
+                />
+            </template>
             <template #item.image.url="{ item }">
                 <VImg
                   :src="item?.image?.url"
@@ -185,7 +233,29 @@ function deleteThisItem(itemId) {
         </VCard>
       </VContainer>
     </VMain>
-
+    <PrimaryDialog v-model="logOutDialog" icon="mdi-logout" title="LogOut" @close="logOutDialog=false">
+      <p class="text-h6 text-center">Are you sure, you want to <span class="font-weight-bold">Logout</span></p>
+      <VCardActions class="mt-4">
+          <VSpacer></VSpacer>
+          <VBtn
+            color="grey-darken-3"
+            @click="logOutDialog=false"
+          >
+            Cancel
+          </VBtn>
+          <VBtn
+            elevation="0"
+            color="error"
+            variant="elevated"
+            :loading="isLoading"
+            :disabled="isLoading"
+            @click="logOut" 
+         
+          >
+            Yes
+          </VBtn>
+        </VCardActions>
+  </PrimaryDialog>
 
   </VApp>
 </template>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { AdvertisementModel } from '@@/models/advertismentModel'
 import { useDashboardAdvertisment, useDeleteAdvertisment } from '@@/queries/advertisment'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import CreateAdvertisementForm from './CreateAdvertisementForm.vue'
 
 definePageMeta({ layout: false })
@@ -15,8 +15,13 @@ const page = ref(0)
 const skip = ref(0)
 const limit = ref(3)
 
-const { data, status, clear } = useDashboardAdvertisment({ skip: skip, limit: limit });
+const { data, status, clear,refresh } = useDashboardAdvertisment({ skip: skip, limit: limit });
 clear()
+
+onMounted(()=>{
+  if(!data.value)
+    refresh()
+})
 
 const createAdvertismentDialog = ref(false);
 
@@ -32,6 +37,7 @@ const deleteAdvertisment = async (advertisment: AdvertisementModel) => {
     isLoading.value = false
   }
 }
+
 
 const nextPage = (currentPage: number) => {
   if (currentPage > page.value) {

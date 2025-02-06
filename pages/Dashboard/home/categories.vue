@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { CategoreModel } from '@@/models/categoryModel'
 import { useDashboardCategories, useDeleteCategory } from '@@/queries/categories'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import CreateCategoryForm from './CreateCategoryForm.vue'
 
 definePageMeta({ layout: false })
@@ -17,9 +17,12 @@ const page = ref(1)
 const skip = ref(0)
 const limit = ref(3)
 
-const { data, status, clear } = await useDashboardCategories({ skip: skip, limit: limit });
+const { data, status, clear,refresh } = await useDashboardCategories({ skip: skip, limit: limit });
 clear()
-
+onMounted(()=>{
+  if(!data.value)
+    refresh()
+})
 const crateCategoryDialog = ref(false);
 
 const thisUser = ref<CategoreModel>({ id: '', icon: '', name: { ar: '', en: '' } })

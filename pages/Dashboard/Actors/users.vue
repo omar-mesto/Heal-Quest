@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { UsersModel } from '@@/models/usersModel'
 import { useBlockUser, useUsers } from '@@/queries/users'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 definePageMeta({layout:false})
 const headers = ref([
@@ -19,9 +19,12 @@ const page=ref(0)
 const skip = ref(0)
 const limit = ref(3)
 
-const { data, status,clear} = useUsers({ skip: skip, limit: limit });
+const { data, status,clear,refresh} = useUsers({ skip: skip, limit: limit });
 clear()
-
+onMounted(()=>{
+  if(!data.value)
+    refresh()
+})
 
 const thisUser=ref<UsersModel>({id:'',email:'',fullName:'',mobileNumber:'',image:{image:''},userBlock:{status:false},name:{ar:'',en:''},createdAt:''})
 

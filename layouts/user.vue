@@ -38,8 +38,8 @@ const logOut = async ()=>{
   if(status.value =='success' ){
     logOutDialog.value=false
     isLoading.value=false
+    return navigateTo('/auth/user')
   }
-  return navigateTo('/auth/user')
 }
 
 </script>

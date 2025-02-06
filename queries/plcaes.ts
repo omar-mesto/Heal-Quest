@@ -1,11 +1,10 @@
 import { useAsyncData } from 'nuxt/app';
-import { api } from '../services/baseApi';
+import { api, useAPI } from '../services/baseApi';
 
-export const useCategoryPlaces = (params:{id:string}) => {
-  return useAsyncData('categoryPlaces', () => api('/getPlaceServiceByCategory',{
-    params:{
-        id:params.id
-    }
-  })
+export const usePlaces = () => { 
+  return useAsyncData('places', () => api(`/getPlaces`, {})
 )
+}
+export const useDeletePlace = (placeId:string) => {
+  return useAPI({ url: `/deletePlaces`,params:{id:placeId} ,queryKey: 'places' , type:'DELETE'})
 }

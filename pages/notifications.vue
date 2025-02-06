@@ -46,7 +46,7 @@ const notifications = ref([
 <template>
     <div>
       <p class="text-grey-darken-4 text-h4 font-weight-medium mt-12 mb-4 ">
-          About Us
+        Notifications
       </p>
       <VContainer
     class="fill-height"
