@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { defineEmits, defineProps } from 'vue'
-
+import { defineEmits, defineProps ,defineModel} from 'vue'
+import {useGlobalStore} from "@@/stores/global";
 const props = defineProps({
   color: { default: 'error', type: String },
   message: { required: true, type: String },
-  show: { required: true, type: Boolean },
 })
 
 const emit = defineEmits(['closeSnackBar', 'showSnackBar'])
 const close_snack_bar = () => {
   emit('closeSnackBar')
 }
-
+const globalStore=useGlobalStore();
 </script>
 
 <template>
   <VSnackbar
-    :model-value="props.show"
+      timeout="3000"
+      :model-value="true"
     :color="props.color"
     @close="close_snack_bar"
   >
@@ -25,7 +25,7 @@ const close_snack_bar = () => {
       <VBtn
         variant="text"
 
-        @click="close_snack_bar"
+        @click="()=>globalStore.error=''"
       >
         Close
       </VBtn>
