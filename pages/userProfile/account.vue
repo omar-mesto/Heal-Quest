@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { useCreateDoctor } from '@@/queries/doctors'
+import { getActorInfo, useUpdateUserInfo } from '@@/queries/users'
+import { useGlobalStore } from '@@/stores/global'
 import validators from '@@/utils/validators'
 import { computed, ref } from 'vue'
 definePageMeta({
@@ -8,9 +9,8 @@ definePageMeta({
 
 const userForm = ref({
   birthdate: null,
-  image: '',
+  image_base64: '',
   password: '',
-  phoneNumber: '',
   username: '',
 })
 
@@ -24,15 +24,24 @@ const addImageToUserForm = (event: Event) => {
   const reader = new FileReader()
 
   reader.onload = () => {
-    userForm.value.image = reader.result as string
+    userForm.value.image_base64 = reader.result as string
   }
 
   reader.readAsDataURL(file)
 }
-
+const globalStore=useGlobalStore()
 const updateUserInfo = async () => {
   isLoading.value = true
-  const { status } = await useCreateDoctor(userForm.value)
+  const { status } = await useUpdateUserInfo(userForm.value)
+  if(status.value =='success' ){
+    isLoading.value=false
+  }
+  const { data } = await getActorInfo(globalStore.currentUser?.id)
+  console.log(data.value) 
+  userForm.value.birthdate= null;
+  userForm.value.image_base64= '';
+  userForm.value.password='',
+  userForm.value.username=''
 }
 const isValidForm = computed(() => createDoctorForm.value?.isValid)
 </script>

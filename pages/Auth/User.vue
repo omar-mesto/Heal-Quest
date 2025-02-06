@@ -52,6 +52,7 @@ const login = async () => {
       loginIsLoading.value = false
       globalStore.role=data.value.result?.role
       globalStore.token=data.value.result?.sessionToken
+      window?.localStorage.setItem('sessionToken',data.value.result?.sessionToken)
       globalStore.currentUser={id:data.value.result.id,userName:data.value.result.userName}
       await router.push({'path':'/userProfile/account'})
     }else{

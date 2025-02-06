@@ -5,8 +5,7 @@ import { computed } from 'vue';
 
 const route = useRoute();
 const queryId =route.query.id;
-const { data, status,clear} = await useCategoryPlacesById({ id:queryId });
-clear()
+const { data, status} = await useCategoryPlacesById({ id:queryId });
 const isLoading = computed(() => (status.value != 'success' && status.value != 'error'))
 const isCompleteLoading = computed(() => (status.value == 'success' || status.value == 'error'))
 </script>

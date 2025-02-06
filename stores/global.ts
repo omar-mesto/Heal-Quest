@@ -4,13 +4,14 @@ import { ref } from 'vue';
 
 export const useGlobalStore = defineStore('globalStore', () => {
     const token = ref('')
+    const lang=ref('en')
     const currentUser = ref()
-    const error = ref<string>()
+    const errors = ref<object>()
     const role=ref<RoleName>();
 
-return { currentUser,role, error, token }
+return { currentUser,role, errors, token }
 },  {
     persist: {
-        pick: ['token','role','error','currentUser'],
+        pick: ['token','role','errors','currentUser'],
     },
 },)
