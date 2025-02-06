@@ -1,46 +1,24 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import {onMounted, ref} from 'vue'
 import {useRouter} from "nuxt/app";
+import { getDoctorRooms} from "@@/services/firebase";
+import {useConversations} from "@@/queries/conversations";
+import {useGlobalStore} from "@@/stores/global";
+const globalStore = useGlobalStore();
+const currentDoctorId = ref(globalStore.currentUser?.id);
 
-const users = ref([
-      {
-        'email': 'john@example.com',
-        'id': 1,
-        'image': 'https://placehold.co/200x200?textphoot',
-        'phoneNumber': '123-456-7890',
-        'userName': 'john_doe',
-      },
-      {
-        'email': 'jane@example.com',
-        'id': 2,
-        'image': 'https://placehold.co/200x200?textphoot',
-        'phoneNumber': '987-654-3210',
-        'userName': 'jane_smith',
-      },
-      {
-        'email': 'alice@example.com',
-        'id': 3,
-        'image': 'https://placehold.co/200x200?textphoot',
-        'phoneNumber': '555-555-5555',
-        'userName': 'alice_jones',
-      },
-      {
-        'email': 'bob@example.com',
-        'id': 4,
-        'image': 'https://placehold.co/200x200?textphoot',
-        'phoneNumber': '444-444-4444',
-        'userName': 'bob_brown',
-      },
-      {
-        'email': 'charlie@example.com',
-        'id': 5,
-        'image': 'https://placehold.co/200x200?textphoot',
-        'phoneNumber': '333-333-3333',
-        'userName': 'charlie_white',
-      },
-    ],
-)
+const clientsId=ref<string[]>([]);
+const {data,status,clear}=useConversations(clientsId.value)
+clear()
+
+onMounted(async ()=>{
+  const rooms =  await getDoctorRooms(currentDoctorId.value);
+  rooms.forEach((room:string)=>{
+    clientsId.value.push(room.substring(room.indexOf("_")+1))
+  })
+})
+
 </script>
 
 <template>
@@ -54,7 +32,7 @@ const users = ref([
 
       <VListItem
 
-        v-for="user in users"
+        v-for="user in data?.result"
         :key="user.id"
         class="bg-grey-lighten-4 my-4 pa-2 rounded-lg"
         :prepend-avatar="user.image"

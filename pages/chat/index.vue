@@ -1,32 +1,40 @@
 <script setup lang="ts">
-import { MessageForm } from '@@/models/MessageForm'
-import { db, sendMessage } from '@@/services/firebase'
-import { DocumentChange, DocumentData, onSnapshot, orderBy, query } from '@firebase/firestore'
-import { collection } from 'firebase/firestore'
+import {MessageForm} from '@@/models/MessageForm'
+import {db, getClientRoom, sendMessage} from '@@/services/firebase'
+import {DocumentChange, DocumentData, onSnapshot, orderBy, query} from '@firebase/firestore'
+import {collection} from 'firebase/firestore'
 import moment from 'moment'
-import { onMounted, ref } from 'vue'
+import {onMounted, ref} from 'vue'
 import {useGlobalStore} from "@@/stores/global";
-import {useRoute, useRouter} from "nuxt/app";
+import {navigateTo, useRoute, useRouter} from "nuxt/app";
+import {RoleName} from "@@/utils/RoleName";
+
 const globalStore=useGlobalStore()
 const currentUserId = ref<string>(globalStore.currentUser?.id)
+
 const router=useRoute();
+
 const receiverId=ref<string>((router.query as {client:string}).client);
+
 const messages = ref<MessageForm[]>([])
 const textMessage = ref('')
-const sendMsg = () => {
-  sendMessage({
+
+const sendMsg =async () => {
+   await sendMessage({
     message: textMessage.value,
     receiverId: receiverId.value,
     senderId: currentUserId.value,
     sentAt: moment().toISOString(),
     type: 'txt',
-  })
+  },'2')
   textMessage.value = ''
 }
+
 const isLoading=ref(false)
-function openStream() {
+
+function openStream(room:string) {
   isLoading.value=true
-  onSnapshot(query(collection(db, 'app', `${currentUserId.value}_${receiverId.value}`, 'messages'), orderBy('sentAt', 'desc')), (streamDoc: DocumentData) => {
+  onSnapshot(query(collection(db, 'app', room, 'messages'), orderBy('sentAt', 'desc')), (streamDoc: DocumentData) => {
     streamDoc.docChanges().reverse().forEach((change: DocumentChange<MessageForm>) => {
       isLoading.value=false
       messages.value = [...messages.value, change.doc.data()]
@@ -34,11 +42,20 @@ function openStream() {
     isLoading.value=false
   })
 }
-onMounted(() => {
+
+const currentRoom=ref('');
+
+onMounted(async () => {
+
   if(!receiverId.value)
-    useRouter().push('doctor/conversations')
-  else
-  openStream()
+    await navigateTo({path:'doctor/conversations'})
+
+  if(globalStore.role===RoleName.Doctor)
+    currentRoom.value = `${currentUserId.value}_${receiverId.value}`
+
+  else currentRoom.value = await getClientRoom(currentUserId.value)
+
+  openStream(currentRoom.value)
 })
 </script>
 
