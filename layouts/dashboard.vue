@@ -21,6 +21,7 @@ const items = ref([
   },
   { id: 3, subitems: [
       { route: '/dashboard/other/place', title: 'Place' },
+      { route: '/dashboard/other/placeService', title: 'Place Service' },
       { route: '/dashboard/other/advertisement', title: 'Category With Place' },
     ],
     title: 'Other',
