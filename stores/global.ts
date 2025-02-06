@@ -7,10 +7,11 @@ export const useGlobalStore = defineStore('globalStore', () => {
     const lang=ref('en')
     const currentUser = ref()
     const errors = ref<object>()
-    const role=ref<RoleName>(); 
-return { currentUser,role, errors, token,lang  }
+    const role=ref<RoleName>();
+
+return { currentUser,role, errors, token }
 },  {
     persist: {
-        pick: ['token','role','errors','currentUser','lang'],
+        pick: ['token','role','errors','currentUser'],
     },
 },)

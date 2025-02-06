@@ -1,5 +1,6 @@
 import { refreshNuxtData, useFetch } from 'nuxt/app';
 import { Ref } from "vue";
+import {useGlobalStore} from "@@/stores/global";
 export function useAPI<T>(
 options:{  url: string,
   payload?: object,
@@ -28,7 +29,7 @@ export const api = $fetch.create({
   options.headers.set('X-Parse-Session-Token', window?.localStorage.getItem('sessionToken') ?? '')
   },
   onResponseError: (error) => {
-    window?.localStorage.setItem('snackBar', error.response._data)
+    useGlobalStore().error=error.response._data?.error
   },
 },
 )
