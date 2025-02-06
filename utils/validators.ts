@@ -7,5 +7,6 @@ export default {
     phoneNumberRule: (value: string) => /^\+[0-9]{12}$/.test(value) || 'Invalid phone number',
     userNameRule: (value: string) => /^[\u0600-\u06FFa-zA-Z0-9\s]+$/.test(value) || 'Invalid username',
     imageRule: (value:string) => {if (!value) return 'Image is required.';},
+    required:(value:string)=> !!value || 'Required field',
   },
 }

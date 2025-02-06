@@ -7,15 +7,15 @@ import CreateCategoryForm from './CreateCategoryForm.vue'
 definePageMeta({ layout: false })
 const headers = ref([
   { align: 'center', key: 'id', sortable: true, title: 'id' },
-  { align: 'center', key: 'name.en', sortable: true, title: 'Name EN' },
-  { align: 'center', key: 'name.ar', sortable: true, title: 'Name AR' },
-  { align: 'right', key: 'icon', sortable: true, title: ' Icon' },
+  { align: 'center', key: 'name.en', sortable: true, title: 'English name' },
+  { align: 'center', key: 'name.ar', sortable: true, title: 'Arabic name' },
+  { align: 'center', key: 'icon', sortable: true, title: ' Icon' },
   { align: 'center', key: 'actions', sortable: false, title: 'Actions' },
 ] as const)
 
 const page = ref(1)
 const skip = ref(0)
-const limit = ref(3)
+const limit = ref(12)
 
 const { data, status, clear,refresh } = await useDashboardCategories({ skip: skip, limit: limit });
 clear()
@@ -58,7 +58,7 @@ const categories=computed(()=>data.value?.result?.results ? data.value?.result?.
     </PrimaryDialog>
 
 
-    <PrimaryDialog icon="mdi-account-cancel-outline" @close="deleteDialog = false" v-model="deleteDialog" title="Block">
+    <PrimaryDialog icon="mdi-folder-remove-outline" @close="deleteDialog = false" v-model="deleteDialog" title="Delete category">
       <VForm>
         <p class="text-h6">Are you sure, you want to delete <span class="font-weight-bold"> {{ thisUser.id }}</span>
           category </p>

@@ -37,7 +37,7 @@ onMounted(async ()=>{
         v-for="user in data?.result"
         :key="user.id"
         class="bg-grey-lighten-4 my-4 pa-2 rounded-lg"
-        :prepend-avatar="user.image.image"
+        :prepend-avatar="user?.image?.image"
       >
         <template v-slot:append>
           <v-btn

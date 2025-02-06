@@ -30,7 +30,7 @@ if(globalStore.role=='Client'){
       v-if="!$vuetify.display.mobile"
       class="bg-primary px-4 "
     >
-      <VToolbarTitle>Logo</VToolbarTitle>
+      <VToolbarTitle>Heal Quest</VToolbarTitle>
       <div class="d-flex justify-center w-50">
         <VBtn
           v-for="item in navItems"
@@ -48,7 +48,7 @@ if(globalStore.role=='Client'){
       </VBtn>
       <VBtn
         icon
-        @click="$router.push('/userProfile')"
+        @click="$router.push('/userProfile/account')"
       >
         <VIcon>mdi-account</VIcon>
       </VBtn>

@@ -3,28 +3,31 @@ import { useLogout } from '@@/queries/users';
 import { useGlobalStore } from '@@/stores/global';
 import { navigateTo, useRoute } from 'nuxt/app';
 import { ref } from 'vue';
-const emit = defineEmits(['save', 'update','viewCreateDialog','deleteItem','deleteThisItem'])
+const emit = defineEmits(['viewPlaceImages','save', 'update','viewCreateDialog','deleteItem','deleteThisItem'])
 const drawer = ref(true)
-const router = useRoute()
+const currentRoute = useRoute()
 const items = ref([
   { id: 1, subitems: [
-      { route: '/dashboard/actors/users', title: 'Users' },
-      { route: '/dashboard/actors/doctors', title: 'Doctors' },
+      { route: '/dashboard/actors/users', title: 'Users',icon:'mdi-account-multiple-outline' },
+      { route: '/dashboard/actors/doctors', title: 'Doctors' ,icon:'mdi-doctor'},
     ],
     title: 'Actors',
+    icon:'mdi-account-group-outline',
   },
   { id: 2, subitems: [
-      { route: '/dashboard/home/categories', title: 'Disease Categories' },
-      { route: '/dashboard/home/advertisement', title: 'Advertisments' },
+      { route: '/dashboard/home/categories', title: 'Disease Categories', icon:'mdi-format-list-bulleted-type' },
+      { route: '/dashboard/home/advertisement', title: 'Advertisements', icon:'mdi-advertisements' },
     ],
     title: 'Home',
+    icon:'mdi-home-outline',
   },
   { id: 3, subitems: [
-      { route: '/dashboard/other/place', title: 'Place' },
       { route: '/dashboard/other/placeService', title: 'Place Service' },
-      { route: '/dashboard/other/advertisement', title: 'Category With Place' },
+      { route: '/dashboard/other/place', title: 'Place',icon:'mdi-home-group-plus' },
+      { route: '/dashboard/other/advertisement', title: 'Place Categories',icon: 'mdi-circle-double' },
     ],
     title: 'Other',
+    icon:'mdi-shape-outline',
   },
 ])
 const toggleDrawer = () => {
@@ -37,8 +40,6 @@ defineProps<{
   dialogHeaderTitle?:string
   icon?: string
 }>()
-
-const route=useRoute()
 
 function deleteThisItem(itemId) {
   emit('deleteThisItem', itemId);
@@ -66,15 +67,24 @@ const logOut = async ()=>{
     >
       <div class="text-center">
         <VAvatar
-          size="100px"
+          size="120px"
           class="mt-3"
         >
-          <VImg src="../public/default-image.png" />
+          <VImg  min-width="100px"  src="../public/default-image.png" >
+            <template v-slot:placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <VProgressCircular
+                    color="grey-lighten-4"
+                    indeterminate
+                ></VProgressCircular>
+              </div>
+            </template>
+          </VImg>
         </VAvatar>
         <VList>
-          <VListItem
-            title="Adam"
-          />
+          <VListItem class="text-h6 font-weight-bold">
+          {{globalStore.currentUser.userName}}
+          </VListItem>
         </VList>
       </div>
       <VList
@@ -89,18 +99,30 @@ const logOut = async ()=>{
         >
         <template #activator="{ props }">
           <VListItem
-              :title="item.title"
               v-bind="props"
-            />
+            >
+            <template v-slot:prepend>
+              <v-icon :icon="item.icon"></v-icon>
+            </template>
+            <VListItemTitle class="text-body-1 font-weight-medium text-grey-darken-3">{{ item.title}}</VListItemTitle>
+          </VListItem>
           </template>
+
           <VListItem
             v-for="subitem in item.subitems"
             :key="subitem.route"
-            class="listItem"
-            :title="subitem.title"
-            :class="{'border-s-lg border-primary':subitem.route===router.fullPath}"
-            @click="$router.push(`${subitem.route}`)"
-          />
+          class="text-start"
+            :class="{'border-s-xl rounded-0 border-primary':subitem.route===currentRoute.fullPath}"
+            @click=" ()=>  navigateTo({path:subitem.route})"
+          >
+            <template v-slot:prepend>
+              <v-icon :icon="subitem.icon"></v-icon>
+            </template>
+            <VListItemTitle class="text-body-2">
+              {{subitem.title}}
+            </VListItemTitle>
+          </VListItem>
+
         </VListGroup>
       </VList>
     </VNavigationDrawer>
@@ -153,12 +175,13 @@ const logOut = async ()=>{
         >
         <!-- todo:get current route -->
           <VDataTable
-            v-show="route.fullPath!='/Dashboard'"
+            v-show="currentRoute.fullPath!='/Dashboard'"
             elevation="7"
             :headers="headers"
             :items="data"
-            height="400"
+            height="600"
             density="compact"
+            class="text-body-1 font-weight-medium"
           >
             <template #top>
               <VToolbar
@@ -167,11 +190,33 @@ const logOut = async ()=>{
                 <VToolbarTitle class="text-h6">
                   {{ tableName }}
                 </VToolbarTitle>
-                  <VBtn :disabled="useRoute().name==='Dashboard-actors-users'" style="font-size: 24px;" icon="mdi-plus" color="primary" @click="$emit('viewCreateDialog')" />
+                  <VBtn
+                      :disabled="useRoute().name==='Dashboard-actors-users'"
+                      style="font-size: 24px;"
+                      icon
+                      variant="outlined"
+                      class="bg-white"
+                      @click="$emit('viewCreateDialog')"
+                  >
+                    <VIcon  icon="mdi-plus" color="primary"></VIcon>
+                  </VBtn>
               </vtoolbar>
 
             </template>
 
+
+            <template #item.placeContact.facebook="{item}">
+              <div>
+                <VBtn class="mx-auto text-center" base-color="primary" size="small" icon="mdi-facebook" target="_blank" :href="item.placeContact?.facebook" />
+              </div>
+
+            </template>
+            <template #item.placeContact.instagram="{item}">
+              <div>
+                <VBtn base-color="red-lighten-1" size="small" icon="mdi-instagram" target="_blank" :href="item.placeContact?.instagram" />
+              </div>
+
+            </template>
             <template #item.actions="{ item }">
               <slot />
               <VIcon
@@ -190,7 +235,7 @@ const logOut = async ()=>{
                   width="80"
                   height="80"
                   cover
-                  class="rounded-circle my-2"
+                  class="rounded-circle mx-auto my-2"
                 />
             </template>
             <template #item.images[0].data="{ item }">
@@ -200,7 +245,7 @@ const logOut = async ()=>{
                   width="80"
                   height="80"
                   cover
-                  class="rounded-circle my-2"
+                  class="rounded-circle mx-auto my-2"
                 />
             </template>
             <template #item.image.url="{ item }">
@@ -220,10 +265,14 @@ const logOut = async ()=>{
                   width="80"
                   height="80"
                   cover
-                  class="rounded-circle my-2"
+                  class="rounded-circle mx-auto my-2"
                 />
             </template>
-
+          <template #item.viewImages="{item}">
+            <div class="my-2">
+              <VBtn @click="$emit('viewPlaceImages',item)" prepend-icon="mdi-image-multiple-outline" variant="outlined" base-color="primary"  class="text-none">View images</VBtn>
+            </div>
+          </template>
             <template #bottom>
               <div class="text-center pt-2">
                 <slot name="pagination"/>
@@ -251,8 +300,8 @@ const logOut = async ()=>{
             variant="elevated"
             :loading="isLoading"
             :disabled="isLoading"
-            @click="logOut" 
-         
+            @click="logOut"
+
           >
             Yes
           </VBtn>

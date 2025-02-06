@@ -1,49 +1,52 @@
 <script setup lang="ts">
-import { useCreateDoctor } from '@@/queries/doctors'
 import validators from '@@/utils/validators'
 import { computed, ref } from 'vue'
+import {useCreatePlace} from "@@/queries/plcaes";
 const emit = defineEmits(['close'])
 const placeForm = ref({
   adress: '',
   name_en:'',
   name_ar:'',
-  placeContact:'',
+  placeContact:{facebook:'',instagram:'',mobile:''},
   images:[]
 })
 const isLoading=ref(false);
-const createDoctorForm = ref()
-const createDoctor = async () => {
-  isLoading.value=true;
-  const { status } = await useCreateDoctor(placeForm.value)
+const createPlaceForm = ref()
+const createPlace = async () => {
 
-  if (status.value === 'success'){
-  emit('close')
-  }
+  isLoading.value=true;
+  const { status } = await useCreatePlace(placeForm.value)
+
+  if (status.value === 'success')
+    emit('close')
+
+  isLoading.value=false;
 }
 
-const addImagesToPlaceForm = (event: Event) => {  
-  const files = (event.target as HTMLInputElement).files;   
-  placeForm.value.images = [];  
+const addImagesToPlaceForm = (event: Event) => {
+  const files = (event.target as HTMLInputElement).files;
 
-  const reader = new FileReader();  
-  for (let i = 0; i < files.length; i++) {  
-    const file = files[i];  
-    reader.onload = (loadEvent: ProgressEvent<FileReader>) => { 
-      placeForm.value.images.push({ data: loadEvent.target?.result as string });  
-    };  
-    reader.readAsDataURL(file);  
-  }  
-};  
+  if (files) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+      reader.onload = (loadEvent: ProgressEvent<FileReader>) => {
+        placeForm.value.images.push(loadEvent.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+};
 
-const isValidForm = computed(() => createDoctorForm.value?.isValid)
+const isValidForm = computed(() => createPlaceForm.value?.isValid)
 </script>
 
 <template>
   <VContainer>
     <VForm
-      ref="createDoctorForm"
+      ref="createPlaceForm"
       validate-on="input"
-      @submit.prevent="createDoctor()"
+      @submit.prevent="createPlace()"
     >
       <VCardText>
         <VRow>
@@ -55,7 +58,7 @@ const isValidForm = computed(() => createDoctorForm.value?.isValid)
             <VTextField
               v-model="placeForm.name_ar"
               :rules="[validators.rules.userNameRule]"
-              label="Full name"
+              label="Arabic name"
             />
           </VCol>
           <VCol
@@ -66,7 +69,7 @@ const isValidForm = computed(() => createDoctorForm.value?.isValid)
             <VTextField
               v-model="placeForm.name_en"
               :rules="[validators.rules.userNameRule]"
-              label="User name"
+              label="English name"
             />
           </VCol>
           <VCol
@@ -76,22 +79,59 @@ const isValidForm = computed(() => createDoctorForm.value?.isValid)
           >
           <VTextField
               v-model="placeForm.adress"
-              :rules="[validators.rules.userNameRule]"
-              label="User name"
+              :rules="[validators.rules.required]"
+              label="Address"
+              append-inner-icon="mdi-map-marker-outline "
+            />
+          </VCol>
+          <VCol
+              cols="12"
+              md="6"
+              sm="6"
+          >
+            <VTextField
+                v-model="placeForm.placeContact.facebook"
+                :rules="[validators.rules.required]"
+                label="Facebook"
+                append-inner-icon="mdi-facebook"
+            />
+          </VCol>
+          <VCol
+              cols="12"
+              md="6"
+              sm="6"
+          >
+            <VTextField
+                v-model="placeForm.placeContact.instagram"
+                :rules="[validators.rules.required]"
+                label="Instagram"
+                append-inner-icon="mdi-instagram"
+            />
+          </VCol>
+          <VCol
+              cols="12"
+              md="6"
+              sm="6"
+          >
+            <VTextField
+                v-model="placeForm.placeContact.mobile"
+                :rules="[validators.rules.required]"
+                label="Mobile number"
+                append-inner-icon="mdi-phone"
             />
           </VCol>
           <VCol
             cols="12"
-            md="6"
-            sm="6"
+
           >
             <VFileInput
               clearable
               label="Profile image"
-              required
+              :rules="[validators.rules.required]"
               prepend-icon=""
               append-inner-icon="mdi-cloud-upload-outline"
               @change="addImagesToPlaceForm"
+              multiple
             />
           </VCol>
         </VRow>
