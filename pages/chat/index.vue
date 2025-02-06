@@ -13,8 +13,9 @@ const globalStore=useGlobalStore()
 const currentUserId = ref<string>(globalStore.currentUser?.id)
 
 const router=useRoute();
-
-const receiverId=ref<string>((router.query as {client:string}).client);
+const routeQuery=(router.query as {id:string,name:string});
+const currentRoom=ref('');
+const receiver=ref<{id:string,name:string}>({name:routeQuery.name,id:routeQuery.id});
 
 const messages = ref<MessageForm[]>([])
 const textMessage = ref('')
@@ -22,17 +23,19 @@ const textMessage = ref('')
 const sendMsg =async () => {
    await sendMessage({
     message: textMessage.value,
-    receiverId: receiverId.value,
+    receiverId: receiver.value.id,
     senderId: currentUserId.value,
     sentAt: moment().toISOString(),
     type: 'txt',
-  },'2')
+  },currentRoom.value)
+
   textMessage.value = ''
 }
 
 const isLoading=ref(false)
 
 function openStream(room:string) {
+  console.log("open stream")
   isLoading.value=true
   onSnapshot(query(collection(db, 'app', room, 'messages'), orderBy('sentAt', 'desc')), (streamDoc: DocumentData) => {
     streamDoc.docChanges().reverse().forEach((change: DocumentChange<MessageForm>) => {
@@ -43,15 +46,16 @@ function openStream(room:string) {
   })
 }
 
-const currentRoom=ref('');
 
 onMounted(async () => {
 
-  if(!receiverId.value)
+  if(!receiver.value.id && globalStore.role===RoleName.Doctor)
     await navigateTo({path:'doctor/conversations'})
 
-  if(globalStore.role===RoleName.Doctor)
-    currentRoom.value = `${currentUserId.value}_${receiverId.value}`
+  if(globalStore.role===RoleName.Doctor) {
+
+    currentRoom.value = `${currentUserId.value}_${receiver.value.id}`
+  }
 
   else currentRoom.value = await getClientRoom(currentUserId.value)
 
@@ -78,9 +82,8 @@ onMounted(async () => {
             <div class="d-flex justify-space-between align-center">
               <div class="text-grey-darken-3">
                 <p class="font-weight-bold">
-                  UserName
+                  {{receiver.name}}
                 </p>
-                <p>email@email.com</p>
               </div>
               <VBtn
                   @click="$router.push('doctor/conversations')"
@@ -135,6 +138,8 @@ onMounted(async () => {
           </VList>
         </div>
       </VCard>
+      <VForm @submit.prevent="sendMsg()">
+
       <VTextField
         v-model="textMessage"
         variant="solo-filled"
@@ -143,6 +148,7 @@ onMounted(async () => {
         append-inner-icon="mdi-send"
         @click:append-inner="sendMsg()"
       />
+      </VForm>
     </VContainer>
   </div>
 </template>

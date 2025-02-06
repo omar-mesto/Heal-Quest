@@ -17,6 +17,10 @@ if(globalStore.role=='Doctor')
     { icon: 'mdi-chat', route: 'doctor/conversations', title: 'Conversations', value: 'Conversations' },
     { icon: 'mdi-account', route: '/doctor', title: 'Profile', value: 'Profile' },
   ]
+if(globalStore.role=='Client'){
+  navItems.value[1]={ icon: 'mdi-chat', route: {path:'/chat',query:{id:'JOAl3NgwgE',name:'Doctor'}}, title: 'Chat', value: 'Chat' }
+}
+
 
 </script>
 

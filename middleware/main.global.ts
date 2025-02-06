@@ -1,8 +1,6 @@
-import { useGlobalStore } from "@@/stores/global";
-import { RoleName } from "@@/utils/RoleName";
-import { defineNuxtRouteMiddleware, navigateTo } from "nuxt/app";
-import { util } from "protobufjs";
-import global = util.global;
+import {useGlobalStore} from "@@/stores/global";
+import {RoleName} from "@@/utils/RoleName";
+import {defineNuxtRouteMiddleware, navigateTo} from "nuxt/app";
 
 const availableRoutes=['index','PlaceServices','categoryPlaces','Auth-Admin','Auth-User','UnauthorizedPage']
 const doctorRoutes=[...availableRoutes, 'doctor-conversations','chat','doctor'];
@@ -22,6 +20,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
          return  navigateTo({name:'Auth-User'})
 
     if(role==RoleName.Doctor && !doctorRoutes.find((routeName)=>routeName==to.name)){
+        return navigateTo({path:'/UnauthorizedPage'})
+    }
+    if(role===RoleName.Client && !availableRoutes.find((routeName)=>routeName==to.name) ){
         return navigateTo({path:'/UnauthorizedPage'})
     }
 

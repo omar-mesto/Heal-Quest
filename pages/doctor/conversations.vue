@@ -22,26 +22,28 @@ onMounted(async ()=>{
 </script>
 
 <template>
+
   <VContainer
     class="fill-height"
     fluid
   >
+    <p class="d-flex w-100 text-grey-darken-4 text-h5 font-weight-medium">Conversations</p>
     <VRow justify="center" align="center">
       <VCol cols="8">
-    <VList max-height="500px">
-
-      <VListItem
+      <VList max-height="600px">
+          <VSkeletonLoader v-for="n in data?.result ? 0 : 5" class="my-4" type="list-item-avatar-two-line" />
+          <VListItem
 
         v-for="user in data?.result"
         :key="user.id"
         class="bg-grey-lighten-4 my-4 pa-2 rounded-lg"
-        :prepend-avatar="user.image"
+        :prepend-avatar="user.image.image"
       >
         <template v-slot:append>
           <v-btn
               color="grey-lighten-1"
               icon="mdi-square-rounded-badge-outline"
-              @click="()=>useRouter().push({name:'chat',query:{'client':user.id}})"
+              @click="()=>useRouter().push({name:'chat',query:{'id':user.id,'name':user.userName}})"
               variant="text"
           ></v-btn>
         </template>
@@ -52,7 +54,7 @@ onMounted(async ()=>{
           {{ user.phoneNumber }}
         </VListItemSubtitle>
       </VListItem>
-    </VList>
+       </VList>
       </VCol>
     </VRow>
   </VContainer>

@@ -1,5 +1,5 @@
 import { MessageForm } from '@@/models/MessageForm'
-import {addDoc, doc, query, setDoc, where} from '@firebase/firestore'
+import { addDoc, query, where } from '@firebase/firestore'
 import { initializeApp } from 'firebase/app'
 import { collection, getDocs, getFirestore } from 'firebase/firestore'
 export const firebaseApp = initializeApp({
@@ -10,47 +10,46 @@ export const firebaseApp = initializeApp({
     projectId: 'app-chat-642cd',
     storageBucket: 'app-chat-642cd.firebasestorage.app',
 })
-const randomDoctorId='fYZ6TdQPkp';
+const randomDoctorId = 'JOAl3NgwgE'
 
 export const db = getFirestore(firebaseApp)
 
-export const getDoctorRooms = async (doctorId:string)=>{
-    const docs = await getDocs(query(collection(db, 'app')))
+export const getDoctorRooms = async (doctorId: string) => {
+
     const doctorRooms = []
 
-    docs.forEach((doc) => {
-        const roomId = doc.id.toString()
-        if (roomId.startsWith(doctorId))
-            doctorRooms.push(roomId)
-    })
+    const q = query(collection(db, 'app'))
 
-    return doctorRooms
+    const querySnapshot = await getDocs(q)
+    querySnapshot.docs.forEach((doc) => {
+            const roomId = doc.data().room
+            if (roomId.startsWith(doctorId))
+                doctorRooms.push(roomId)
+    })
+    return doctorRooms;
 }
 
 export const getClientRoom = async (clientId: string) => {
-
-    const q = query(collection(db, 'app'),where('clientId',"==", clientId))
-
-    const clientDocs=  await getDocs(q)
-
-    if(!!clientDocs.size)
+    const q = query(collection(db, 'app'), where('clientId', '==', clientId))
+    const clientDocs = await getDocs(q)
+    console.log(clientDocs.size)
+    if (clientDocs.size)
        return clientDocs.docs[0].data().room
 
-    await createRoom(clientId,randomDoctorId)
+    await createRoom(clientId, randomDoctorId)
 
     return `${randomDoctorId}_${clientId}`
 }
 
 export const createRoom = async (clientId: string, doctorId: string) => {
-    await setDoc(doc(db, 'app'), {
-        'room': `${doctorId}_${clientId}`,
+    await addDoc(collection(db, 'app'), {
         'clientId': clientId,
         'doctorId': doctorId,
+        'room': `${doctorId}_${clientId}`,
     })
 }
 
-export const sendMessage = async (messageForm: MessageForm,roomId:string) => {
-
+export const sendMessage = async (messageForm: MessageForm, roomId: string) => {
    const collectionSet = collection(db, 'app', roomId, 'messages')
     await addDoc(collectionSet, messageForm)
 }
