@@ -11,6 +11,7 @@ defineEmits(['close'])
   <VDialog
     v-model="model"
     persistent
+    v-bind="$attrs"
     :max-width="$vuetify.display.smAndDown ? '100%' : '40%'"
     :fullscreen="$vuetify.display.smAndDown"
   >

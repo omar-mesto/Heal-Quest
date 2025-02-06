@@ -10,15 +10,18 @@ const headers = ref([
   { align: 'center', key: 'id', sortable: true, title: 'ID' },
   { align: 'center', key: 'name.en', sortable: true, title: 'English Name' },
   { align: 'center', key: 'name.ar', sortable: true, title: 'Arabic Name' },
-  { align: 'center', key: 'adress', sortable: true, title: 'Adress' },
-  { align: 'center', key: 'placeContact', sortable: false, title: 'place Contact' },
-  { align: 'right',  key: 'images[0].data', sortable: true, title: 'Images' },
+  { align: 'center', key: 'adress', sortable: true, title: 'Address' },
+  { align: 'center', key: 'placeContact.facebook', sortable: true, title: 'Facebook' },
+  { align: 'center', key: 'placeContact.instagram', sortable: true, title: 'Instagram' },
+  { align: 'center', key: 'placeContact.mobile', sortable: true, title: 'Phone number',nowrap:true },
+  // { align: 'center', key: 'placeContact', sortable: false, title: 'place Contact' },
+  { align: 'center',  key: 'viewImages', sortable: true, title: 'View images' },
   { align: 'center', key: 'actions', sortable: false, title: 'Actions' },
 ] as const)
 
 const page=ref(0)
 const skip = ref(0)
-const limit = ref(2)
+const limit = ref(12)
 const { data, status,clear,refresh } = usePlaces();
 clear()
 
@@ -59,6 +62,8 @@ const nextPage = (currentPage: number) => {
   }
 }
 const places=computed(()=>data.value?.result)
+const placeImagesDialog=ref<boolean>(false)
+const currentPlace =ref({});
 </script>
 
 <template>
@@ -72,14 +77,9 @@ const places=computed(()=>data.value?.result)
       dialogHeaderTitle="Create Doctor"
       @view-create-dialog="cratePlaceDialog=true"
       @deleteThisItem="(item)=>{thisPlace=item; deleteDialog=true;}"
+      @viewPlaceImages="(item)=>{currentPlace=item;placeImagesDialog=true}"
     >
-    <VIcon
-        size="30"
-        @click="showAllImage(thisPlace)"
-        class="mx-2 cursor-pointer"s
-    >
-        {{ 'mdi mdi-image-multiple-outline' }}
-    </VIcon>
+
     <template #pagination>
       <VPagination
 
@@ -89,14 +89,14 @@ const places=computed(()=>data.value?.result)
       />
     </template>
     </NuxtLayout>
-    
-    <PrimaryDialog v-model="cratePlaceDialog" title="Create Doctor" @close="cratePlaceDialog=false">
+
+    <PrimaryDialog v-model="cratePlaceDialog" title="Create Place" @close="cratePlaceDialog=false">
        <CreatePlaceForm @close="cratePlaceDialog=false"/>
     </PrimaryDialog>
-    
+
     <PrimaryDialog icon="mdi-account-cancel-outline" @close="deleteDialog=false" v-model="deleteDialog" title="Delete">
       <VForm>
-        <p class="text-h6">Are you sure, you want to delete <span class="font-weight-bold"> {{ thisPlace.name.en }}</span> doctor </p>
+        <p class="text-h6">Are you sure, you want to delete <span class="font-weight-bold"> {{ thisPlace.name?.en ? thisPlace.name.en : thisPlace.name.ar }}</span> place </p>
         <VCardActions class="mt-4">
           <VSpacer></VSpacer>
           <VBtn
@@ -111,13 +111,29 @@ const places=computed(()=>data.value?.result)
             variant="elevated"
             :loading="isLoading"
             :disabled="isLoading"
-            @click="deletePlace(thisPlace)" 
-         
+            @click="deletePlace(thisPlace)"
+
           >
             Save
           </VBtn>
         </VCardActions>
       </VForm>
+    </PrimaryDialog>
+
+    <PrimaryDialog width="50%" icon="mdi-image-multiple-outline" @close="placeImagesDialog=false"  v-model="placeImagesDialog" title="Place images" >
+      <VRow justify="center" align="center" >
+
+        <VCol v-for="image in currentPlace?.images"
+              :cols="currentPlace?.images?.length > 9 ? '4' :'6' "
+        >
+         <VImg
+             lazy-src="/default-image.png"
+                class="mx-auto border-sm rounded-lg"
+                width="230"
+                :src="image.image"
+         />
+        </VCol>
+      </VRow>
     </PrimaryDialog>
   </div>
 </template>

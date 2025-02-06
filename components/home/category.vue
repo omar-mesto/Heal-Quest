@@ -38,11 +38,11 @@ const isCompleteLoading = computed(() => (status.value == 'success' || status.va
           <VAvatar size="50">
             <VImg
               lazy-src="/default-image.png"
-              :src="data?.result[index-1]?.icon?.url ? data?.result[index-1]?.icon?.url : '/default-image.png'"
+              :src="data.result[index-1]?.icon ? data.result[index-1]?.icon : '/default-image.png'"
             />
           </VAvatar>
           <VCardText>
-            {{ data?.result[index-1]?.name?.en }} 
+            {{ data?.result[index-1]?.name?.en }}
           </VCardText>
         </VCard>
       </VCol>

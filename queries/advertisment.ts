@@ -18,7 +18,7 @@ export const useDashboardAdvertisment = (params:{skip:Ref<number>,limit:Ref<numb
 )
 }
 export const useCreateAdvertisment = (advertisment) => {
-  return useAPI({url:'/addCategory',payload:advertisment,queryKey:'advertisments',type:'POST'})
+  return useAPI({url:'/addAdvertisment',payload:advertisment,queryKey:'advertisments',type:'POST'})
 }
 
 export const useDeleteAdvertisment = (advertismentID:string) => {

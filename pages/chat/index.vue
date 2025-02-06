@@ -86,7 +86,7 @@ onMounted(async () => {
                 </p>
               </div>
               <VBtn
-                  @click="$router.push('doctor/conversations')"
+                  @click="$router.push(globalStore.role=='Client' ? '/':'doctor/conversations' )"
                 variant="text"
                 icon="mdi-arrow-left"
               />
@@ -130,7 +130,7 @@ onMounted(async () => {
               class="bg-grey-lighten-2"
               :class="[ message.receiverId==currentUserId ? 'rounded-e-lg rounded-s-md':'rounded-s-lg rounded-e-md']"
             >
-              <p>{{ message.message }}</p>
+              <p class="text-end">{{ message.message }}</p>
               <VListItemSubtitle v-tooltip="moment(message.sentAt).format('Y-MM-DD HH:MM')">
                 {{ moment(message.sentAt).fromNow() }}
               </VListItemSubtitle>

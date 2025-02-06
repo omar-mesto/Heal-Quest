@@ -13,7 +13,7 @@ const headers = ref([
 
 const page = ref(0)
 const skip = ref(0)
-const limit = ref(3)
+const limit = ref(12)
 
 const { data, status, clear,refresh } = useDashboardAdvertisment({ skip: skip, limit: limit });
 clear()
@@ -61,12 +61,12 @@ const nextPage = (currentPage: number) => {
       </template>
     </NuxtLayout>
 
-    <PrimaryDialog v-model="createAdvertismentDialog" title="Create Category" @close="createAdvertismentDialog = false">
+    <PrimaryDialog v-model="createAdvertismentDialog" title="Create Advertisement" @close="createAdvertismentDialog = false">
       <CreateAdvertisementForm @close="createAdvertismentDialog = false" />
     </PrimaryDialog>
 
 
-    <PrimaryDialog icon="mdi-account-cancel-outline" @close="deleteDialog = false" v-model="deleteDialog" title="Delete">
+    <PrimaryDialog icon="mdi-folder-remove-outline" @close="deleteDialog = false" v-model="deleteDialog" title="Delete">
       <VForm>
         <p class="text-h6">Are you sure, you want to delete <span class="font-weight-bold"> {{ thisUser.id }} </span>
           advertisment </p>
