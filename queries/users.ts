@@ -11,8 +11,16 @@ export const useUsers = (params:{skip:Ref<number>,limit:Ref<number>}) => {
   }), {
     watch: [params.limit,params.skip]
   }
-)
-}
+)}
+
+export const getActorInfo = (params:{id:Ref<string>}) => { 
+  return useAsyncData('users', () => api(`/getActorInfo`, {
+    params: {
+      id: params.id.value
+    } 
+  })
+)}
+
 export const useBlockUser = (userId:string) => {
   return useAPI({ url: `/blockUser`,params:{userId:userId} ,queryKey: 'users' , type:'POST'})
 }
@@ -22,9 +30,13 @@ export const useLoginUser = (user) => {
 }
 
 export const useUpdateUserInfo = (user) => {
-  return useAPI({url:'/loginClient',payload:user,queryKey:'users',type:'POST'})
+  return useAPI({url:'/addEditActorInfo',payload:user,queryKey:'users',type:'POST'})
 }
 
 export const useGenerateOtpUser = (user) => {
   return useAPI({url:'/generateOTP',payload:user,queryKey:'users',type:'POST'})
+}
+//
+export const useLogout = () => {
+  return useAPI({url:'/logOut',queryKey:'users',type:'POST'})
 }
