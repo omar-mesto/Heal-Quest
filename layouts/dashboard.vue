@@ -48,10 +48,7 @@ const isLoading=ref(false);
 const logOut = async ()=>{
   isLoading.value=true;
   const { status } = await useLogout()
-  globalStore.token=''
-  globalStore.currentUser=''
-  globalStore.role=null
-  window?.localStorage.clear()
+  globalStore.logout();
   if(status.value =='success' ){
     logOutDialog.value=false
     isLoading.value=false
@@ -133,11 +130,15 @@ const logOut = async ()=>{
       </template>
 
       <v-list>
-        <v-list-item>
-          <v-list-item-title class="cursor-pointer" @click="$router.push('/Dashboard')">Profile</v-list-item-title>
+        <v-list-item >
+          <v-list-item-title class="cursor-pointer d-flex align-center" @click="$router.push('/Dashboard')">
+            <VIcon>mdi-account-circle-outline</VIcon> <p class="ms-2 text-grey-darken-3" >Profile</p>
+          </v-list-item-title>
         </v-list-item>
         <v-list-item>
-          <v-list-item-title class="cursor-pointer" @click="logOutDialog=true">Logout</v-list-item-title>
+          <v-list-item-title class="cursor-pointer d-flex align-center" @click="logOutDialog=true">
+            <VIcon>mdi-logout</VIcon> <p class="ms-2 text-grey-darken-3" >Logout</p>
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>

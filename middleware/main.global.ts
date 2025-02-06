@@ -9,6 +9,9 @@ const doctorRoutes=[...availableRoutes, 'doctor-conversations','chat','doctor'];
 
 
 export default defineNuxtRouteMiddleware((to, from) => {
+
+    console.log("ddd");
+    console.log(to);
     let {role,token}=useGlobalStore()
 
     if(token && to.name.toString().startsWith('Auth-')){

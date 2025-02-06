@@ -1,6 +1,8 @@
 import { useGlobalStore } from "@@/stores/global";
-import { refreshNuxtData, useFetch } from 'nuxt/app';
+import { refreshNuxtData, useFetch, useRouter } from 'nuxt/app';
 import { Ref } from "vue";
+
+// const router=useRouter()
 export function useAPI<T>(
 options:{  url: string,
   payload?: object,
@@ -29,6 +31,12 @@ export const api = $fetch.create({
   options.headers.set('X-Parse-Session-Token', useGlobalStore().token)
   },
   onResponseError: (error) => {
+    const router=useRouter()
+    const globalStore=useGlobalStore();
+    if(error.response._data?.error=='Invalid session token'){
+      globalStore.logout();
+    }
+    
     useGlobalStore().error=error.response._data?.error
   },
 },

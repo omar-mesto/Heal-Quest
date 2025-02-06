@@ -31,10 +31,7 @@ const logOutDialog=ref(false);
 const logOut = async ()=>{
   isLoading.value=true;
   const { status } = await useLogout()
-  globalStore.token=''
-  globalStore.currentUser=''
-  globalStore.role=null
-  window?.localStorage.clear()
+  globalStore.logout();
   if(status.value =='success' ){
     logOutDialog.value=false
     isLoading.value=false
