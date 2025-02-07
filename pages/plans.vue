@@ -1,20 +1,17 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-const plans = ref([
-      {
-        'id': 1,
-        'text':'test',
-        'status':'pending'
-      }
-    ],
-)
+import { usePlans } from '@@/queries/plans';
+import { useGlobalStore } from '@@/stores/global';
+
+const globalStore=useGlobalStore();
+const {data,clear,status}=usePlans(globalStore.currentUser.id)
+clear();
   </script>
   
   <style>
   
   </style>
 <template>
-    <div>
+    <div>{{ data }}
         <p class="text-grey-darken-4 text-h5 font-weight-medium mt-12">
             Your Plans
         </p>
@@ -28,12 +25,12 @@ const plans = ref([
 
       <VListItem
 
-        v-for="plan in plans"
+        v-for="plan in data?.result"
         :key="plan.id"
         class="bg-grey-lighten-4 my-4 pa-2 rounded-lg"
       >
-        <VListItemTitle class="text-h6 text-grey-darken-4">
-            {{ plan.text }}
+        <VListItemTitle class="text-h6  text-grey-darken-4">
+            {{ plan.placeService?.service?.name.en }}
         </VListItemTitle>
         <VListItemSubtitle class="pt-1 mx-2">
           {{ plan.status }}

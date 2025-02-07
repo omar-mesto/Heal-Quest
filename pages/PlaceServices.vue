@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { useCategoryPlacesById } from '@@/queries/categoryPlaces';
+import { useAllServices } from '@@/queries/services';
 import { useRoute } from 'nuxt/app';
 import { computed } from 'vue';
 
 const route = useRoute();
-const queryId =route.query.id;
-const { data, status} = await useCategoryPlacesById({ id:queryId });
+const query =(route.query as {id:string});
+const { data,clear, status} = await useAllServices(query.id);
+clear();
 const isLoading = computed(() => (status.value != 'success' && status.value != 'error'))
 const isCompleteLoading = computed(() => (status.value == 'success' || status.value == 'error'))
 </script>
@@ -14,66 +15,76 @@ const isCompleteLoading = computed(() => (status.value == 'success' || status.va
 
 </style>
 <template>
-    <div>
-      <p class="text-grey-darken-4 text-h6 text-sm-h5 font-weight-medium mt-2 mt-sm-2 mb-4">
+    <div v-if="data">
+      <p class="text-grey-darken-4 text-h6 text-sm-h5 font-weight-medium mt-2 mt-sm-12 mb-4">
         Place Services
       </p>
-        
-    <VSkeletonLoader
-      v-if="status !='success'"
-      class="window-item-skeleton"
-      height="300"
-    />
-    <VCarousel
-      v-else
-      height="300"
-      show-arrows="hover"
-      hide-delimiters
-    >
-      <VCarouselItem
-
-        v-for="placeImages in data?.result?.placeService?.images"
-        :key="placeImages"
-        aspect-ratio="16/9"
-        :src="placeImages.image.url"
-        eager
-        cover
-        lazy-src="/default-image.png"
-      />
-    </VCarousel>
-    <VRow class="mt-2 d-flex justify-center">
-      <VCol
-        v-for="index in (isLoading && !isCompleteLoading) ? 6 : 0"
-        :key="index"
-        cols="6"
-        md="2"
-      >
-        <VSkeletonLoader
-          class="window-item-skeleton"
-          card
-          height="100"
-        />
-      </VCol>
-      <VCol
-      v-for="service in data?.result?.placeService?.services"
-        :key="service"
-        cols="6"
-        md="2"
-      >
-        <VCard
-          class="mx-auto text-center h-100 cursor-pointer"
-        >
-          <VCardText>
-            {{ service.name.en }} 
-          </VCardText>
-        </VCard>
-      </VCol>
-    </VRow>
-    <p class="text-grey-darken-4 text-h6 text-sm-h5 font-weight-medium mt-8 mt-sm-12 mb-4">
-      descraption
-    </p>
-    <p class="text-grey-darken-4 text-h6 text-sm-h5 font-weight-medium  mb-4">
-        {{ data?.result?.placeService?.descraption }}
-    </p>
+        <VRow>
+          <VCol cols="3">
+            <VSheet class="pa-4 rounded-lg border-md">
+              <p class="text-h5">Name:</p>
+              <div class="d-flex  justify-end">
+            <VBtn
+                variant="elevated"
+                color="primary"
+                class="text-none mr-3"
+                type="submit"
+                large
+            >
+                Add to Cart
+            </VBtn>
+        </div>
+            </VSheet>
+          </VCol>
+          <VCol cols="3">
+            <VSheet class="pa-4 rounded-lg border-md">
+              <p class="text-h5">Name:</p>
+              <div class="d-flex  justify-end">
+            <VBtn
+                variant="elevated"
+                color="primary"
+                class="text-none mr-3"
+                type="submit"
+                large
+            >
+                Add to Cart
+            </VBtn>
+        </div>
+            </VSheet>
+          </VCol>
+          <VCol cols="3">
+            <VSheet class="pa-4 rounded-lg border-md">
+              <p class="text-h5">Name:</p>
+              <div class="d-flex  justify-end">
+            <VBtn
+                variant="elevated"
+                color="primary"
+                class="text-none mr-3"
+                type="submit"
+                large
+            >
+                Add to Cart
+            </VBtn>
+        </div>
+            </VSheet>
+          </VCol>
+          <VCol cols="3">
+            <VSheet class="pa-4 rounded-lg border-md">
+              <p class="text-h5">Name:</p>
+              <div class="d-flex  justify-end">
+            <VBtn
+                variant="elevated"
+                color="primary"
+                class="text-none mr-3"
+                type="submit"
+                large
+            >
+                Add to Cart
+            </VBtn>
+        </div>
+            </VSheet>
+          </VCol>
+        </VRow>
+    
     </div>
 </template>

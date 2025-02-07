@@ -23,9 +23,6 @@ const toggleDrawer = () => {
 }
 const globalStore=useGlobalStore()
 globalStore.lang='en'
-const changeLanguage = () => {  
-  globalStore.lang = (globalStore.lang === 'en') ? 'ar' : 'en';  
-}; 
 
 const logOutDialog=ref(false);
 const logOut = async ()=>{
@@ -63,17 +60,6 @@ const logOut = async ()=>{
               {{ item.icon }}
             </VIcon>
             <VListItemTitle>{{ item.title }}</VListItemTitle>
-          </div>
-        </VListItem>
-        <VListItem
-          class="profile-section my-2"
-          @click="changeLanguage()"
-        >
-          <div class="d-flex align-center">
-            <VIcon class="mr-2">
-              mdi-translate
-            </VIcon>
-            <VListItemTitle>{{ globalStore.lang }}</VListItemTitle>
           </div>
         </VListItem>
         <VListItem

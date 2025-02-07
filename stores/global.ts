@@ -1,4 +1,5 @@
 import { RoleName } from "@@/utils/RoleName";
+import { useRouter } from "nuxt/app";
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
@@ -13,7 +14,7 @@ export const useGlobalStore = defineStore('globalStore', () => {
         token.value='';
         currentUser.value='';
         role.value=undefined;
-        router.push({path:'/Auth/user'})
+        useRouter().push({path:'/Auth/user'})
     }
 return { currentUser,role,logout, error, token,lang }
 },  {

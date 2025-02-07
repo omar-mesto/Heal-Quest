@@ -3,9 +3,8 @@ import { useCategoryPlaces } from '@@/queries/categoryPlaces';
 import { useRoute } from 'nuxt/app';
 
 const route = useRoute();
-const queryId =route.query.id;
-// const show=ref(false)
-const { data, status,clear} = await useCategoryPlaces({ id:queryId });
+const query =(route.query as{id:string});
+const { data, status,clear} = await useCategoryPlaces( query.id );
 clear()
 </script>
 
@@ -13,7 +12,7 @@ clear()
 
 </style>
 <template>
-    <div>
+    <div v-if="data">
       <p class="text-grey-darken-4 text-h6 text-sm-h5 font-weight-medium mt-8 mt-sm-12 mb-4">
         Places 
       </p>
@@ -26,34 +25,21 @@ clear()
           v-for="placeService in data?.result"
           :key="placeService"
         >
-          <v-card class="h-100 d-flex flex-column pb-4"
-          @click="$router.push({path:'/PlaceServices',query: { id:placeService.id }})">
-            <v-img
-              height="200"
-              :src="`${placeService.placeService.images[0].image}`"
-              cover
-              class="flex-grow-0"
-            ></v-img>
-            <v-card-title class="text-h6 text-md-h5">
-              {{ placeService.placeService.places[0].name.en }}
+           <VSheet class="border-md rounded-lg pa-2 h-100 d-flex flex-column pb-4"
+         >
+           <VImg  @click="$router.push({path:'/placeServices',query: { id:placeService.id }})" width="130"  rounded="lg" :src="placeService.images[0]?.image?.url" />
+            <v-card-title class="text-h6 ">
+              {{ placeService.name.en }}
             </v-card-title>
   
             <div class="d-flex align-center justify-space-between">
-              <v-card-subtitle class="text-grey-darken-4 text-subtitle-1">
-                {{ placeService.placeService.totalprice }}$
-              </v-card-subtitle>
-              <v-card-subtitle class="pt-1">
-                <v-rating
-                  :model-value="placeService.placeService.rating"
-                  color="amber"
-                  density="compact"
-                  size="small"
-                  half-increments
-                  readonly
-                ></v-rating>
-              </v-card-subtitle>
+            
+              <div  class="d-flex flex-column pt-1">
+               <span>facebook: {{placeService.placeContact?.facebook  }}</span>
+               <span>instagram: {{placeService.placeContact?.instagram  }}</span>
+              </div>
             </div>
-          </v-card>
+          </VSheet>
         </VCol>
       </VRow>
     </div>

@@ -13,9 +13,14 @@ export const useServices = (params:{skip:Ref<number>,limit:Ref<number>}) => {
     }
   )
 }
-export const useAllServices = () => { 
+export const useAllServices = (id:string) => { 
 
-  return useAsyncData('allServices', () => api(`/getService`, {})
+  return useAsyncData('allServices', () => api('/getService')
+ )
+}
+export const useGetServices = () => { 
+
+  return useAsyncData('PlaceService', () => api(`/getPlaceService`, {})
  )
 }
 
