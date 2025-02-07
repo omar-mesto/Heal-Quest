@@ -23,8 +23,8 @@ const items = ref([
   },
   { id: 3, subitems: [
       { route: '/dashboard/other/placeService', title: 'Place Service' },
+      { route: '/dashboard/other/service', title: 'Service',icon:'mdi-home-group-plus' },
       { route: '/dashboard/other/place', title: 'Place',icon:'mdi-home-group-plus' },
-      { route: '/dashboard/other/advertisement', title: 'Place Categories',icon: 'mdi-circle-double' },
     ],
     title: 'Other',
     icon:'mdi-shape-outline',

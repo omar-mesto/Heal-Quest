@@ -12,3 +12,8 @@ export const useDeletePlace = (placeId:string) => {
 export const useCreatePlace = (placeForm:object) => {
   return useAPI({ url: `/addEditPlaces`, payload:placeForm ,queryKey: 'places' , type:'POST'})
 }
+
+
+export const useCreatePlaceService = (form:object) => {
+  return useAPI({ url: `/addEditPlaceService`, payload:form ,queryKey: 'placeServices' , type:'POST'})
+}

@@ -23,7 +23,7 @@ clear()
 
 onMounted(()=>{
   if(!data.value)
-    refresh()
+  refresh()
 })
 const crateDoctorDialog=ref(false);
 
@@ -48,6 +48,7 @@ const doctors=computed(()=>data.value?.result?.results)
 <template>
   <div >
     <NuxtLayout
+    v-if="doctors"
       name="dashboard"
       :headers="headers"
       :data="doctors"
