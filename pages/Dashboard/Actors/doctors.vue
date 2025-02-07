@@ -40,16 +40,8 @@ const deleteDoctor = async (doctor:DoctorsModel)=>{
   isLoading.value=false
 }
 
-const nextPage = (currentPage: number) => {
-  if (currentPage > page.value) {
-    skip.value = page.value;
-    page.value++;
-  }
-  else {
-    skip.value = limit.value;
-    page.value++;
-  }
-}
+
+const nextPage = (currentPage:number) => skip.value=currentPage;
 const doctors=computed(()=>data.value?.result?.results)
 </script>
 
