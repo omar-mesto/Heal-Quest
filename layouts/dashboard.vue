@@ -29,6 +29,13 @@ const items = ref([
     title: 'Other',
     icon:'mdi-shape-outline',
   },
+  { id: 4, subitems: [
+      { route: '/dashboard/app/AboutUs', title: 'About Us',icon:'mdi-information-outline' },
+      { route: '/dashboard/app/privacyPolicy', title: 'privacy Policy',icon:'mdi mdi-file-find' },
+    ],
+    title: 'Application Info',
+    icon:'mdi-folder-information-outline',
+  },
 ])
 const toggleDrawer = () => {
   drawer.value = !drawer.value
