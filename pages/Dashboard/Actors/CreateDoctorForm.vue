@@ -21,6 +21,7 @@ const createDoctor = async () => {
   if (status.value === 'success'){
   emit('close')
   }
+  isLoading.value=false;
 }
 
 const addImageToDoctorForm = (event: Event) => {

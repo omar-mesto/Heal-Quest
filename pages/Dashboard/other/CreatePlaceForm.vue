@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import validators from '@@/utils/validators'
-import { computed, ref } from 'vue'
-import {useCreatePlace} from "@@/queries/plcaes";
+import { useCategories } from "@@/queries/categories";
+import { useCreatePlace } from "@@/queries/plcaes";
+import validators from '@@/utils/validators';
+import { computed, ref } from 'vue';
 const emit = defineEmits(['close'])
 const placeForm = ref({
   adress: '',
   name_en:'',
   name_ar:'',
   placeContact:{facebook:'',instagram:'',mobile:''},
-  images:[]
+  images:[],
+  categoryId:''
 })
+const {data:categories,status:categoriesStatus}=useCategories();
 const isLoading=ref(false);
 const createPlaceForm = ref()
 const createPlace = async () => {
@@ -96,6 +99,7 @@ const isValidForm = computed(() => createPlaceForm.value?.isValid)
                 append-inner-icon="mdi-facebook"
             />
           </VCol>
+
           <VCol
               cols="12"
               md="6"
@@ -120,6 +124,12 @@ const isValidForm = computed(() => createPlaceForm.value?.isValid)
                 append-inner-icon="mdi-phone"
             />
           </VCol>
+          
+          <VCol  cols="12"
+             >
+            <VSelect label="Category" density="comfortable" hide-details="auto" variant="outlined" :loading="categoriesStatus=='pending'" v-model="placeForm.categoryId" :items="categories?.result" item-value="id" item-title="name.en" />
+
+            </VCol>
           <VCol
             cols="12"
 

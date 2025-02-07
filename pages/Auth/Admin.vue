@@ -22,7 +22,6 @@ const loginAdmin = async () => {
   isLoading.value = true;
   const { status,data,error} = await useLoginAdmin(adminForm.value)
   if (status.value == 'success') {
-    isLoading.value = false
 
     globalStore.role=data.value.result?.role
     globalStore.token=data.value.result?.sessionToken
@@ -31,10 +30,8 @@ const loginAdmin = async () => {
       await router.push({'name':'doctor'})
     else
       await router.push({'name':'Dashboard'})
-
-  }else{
-    isLoading.value = false
   }
+    isLoading.value = false
 
 }
 const isValidForm = computed(() => loginAdminForm.value?.isValid)

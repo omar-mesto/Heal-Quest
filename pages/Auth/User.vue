@@ -36,9 +36,9 @@ const generateOtp = async () => {
     isLoading.value = true
     const { status } = await useGenerateOtpUser(userGenerateOtpForm.value)
     if (status.value === 'success') {
-      isLoading.value=false;
       step.value++
     }
+    isLoading.value=false;
   
 }
 
@@ -54,9 +54,8 @@ const login = async () => {
       globalStore.token=data.value.result?.sessionToken
       globalStore.currentUser={id:data.value.result.id,userName:data.value.result.userName}
       await router.push({'path':'/userProfile/account'})
-    }else{
+    }
     isLoading.value = false
-  }
 }
 </script>
 
