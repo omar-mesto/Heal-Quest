@@ -23,11 +23,19 @@ const items = ref([
   },
   { id: 3, subitems: [
       { route: '/dashboard/other/placeService', title: 'Place Service' },
+      { route: '/dashboard/other/service', title: 'Service' },
       { route: '/dashboard/other/place', title: 'Place',icon:'mdi-home-group-plus' },
       { route: '/dashboard/other/advertisement', title: 'Place Categories',icon: 'mdi-circle-double' },
     ],
     title: 'Other',
     icon:'mdi-shape-outline',
+  },
+  { id: 4, subitems: [
+      { route: '/dashboard/app/AboutUs', title: 'About Us',icon:'mdi-information-outline' },
+      { route: '/dashboard/app/privacyPolicy', title: 'privacy Policy',icon:'mdi mdi-file-find' },
+    ],
+    title: 'Application Info',
+    icon:'mdi-folder-information-outline',
   },
 ])
 const toggleDrawer = () => {
