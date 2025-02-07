@@ -35,8 +35,8 @@ const deleteDoctor = async (doctor:UsersModel)=>{
   const { status } = await useBlockUser(doctor.id)
   if(status.value =='success' ){
     deleteDialog.value=false
-    isLoading.value=false
   }
+  isLoading.value=false
 }
 
 const nextPage = (currentPage: number) => {

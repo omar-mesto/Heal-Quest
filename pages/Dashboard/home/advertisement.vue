@@ -34,8 +34,8 @@ const deleteAdvertisment = async (advertisment: AdvertisementModel) => {
   const { status } = await useDeleteAdvertisment(advertisment.id)
   if (status.value == 'success') {
     deleteDialog.value = false
-    isLoading.value = false
   }
+  isLoading.value = false
 }
 
 

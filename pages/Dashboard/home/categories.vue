@@ -34,8 +34,8 @@ const deleteDoctor = async (category: CategoreModel) => {
   const { status } = await useDeleteCategory(category.id)
   if (status.value == 'success') {
     deleteDialog.value = false
-    isLoading.value = false
   }
+  isLoading.value = false
 }
 
 const nextPage = (currentPage:number) => skip.value=currentPage;

@@ -34,9 +34,9 @@ const logOut = async ()=>{
   globalStore.logout();
   if(status.value =='success' ){
     logOutDialog.value=false
-    isLoading.value=false
     return navigateTo('/auth/user')
   }
+  isLoading.value=false
 }
 
 </script>

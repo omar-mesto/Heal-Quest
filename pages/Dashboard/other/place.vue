@@ -7,10 +7,10 @@ import CreatePlaceForm from './CreatePlaceForm.vue'
 
 definePageMeta({layout:false})
 const headers = ref([
-  { align: 'center', key: 'id', sortable: true, title: 'ID' },
   { align: 'center', key: 'name.en', sortable: true, title: 'English Name' },
   { align: 'center', key: 'name.ar', sortable: true, title: 'Arabic Name' },
   { align: 'center', key: 'adress', sortable: true, title: 'Address' },
+  { align: 'center', key: 'category.name.ar', sortable: true, title: 'category' },
   { align: 'center', key: 'placeContact.facebook', sortable: true, title: 'Facebook' },
   { align: 'center', key: 'placeContact.instagram', sortable: true, title: 'Instagram' },
   { align: 'center', key: 'placeContact.mobile', sortable: true, title: 'Phone number',nowrap:true },
