@@ -2,7 +2,7 @@ import {useGlobalStore} from "@@/stores/global";
 import {RoleName} from "@@/utils/RoleName";
 import {defineNuxtRouteMiddleware, navigateTo} from "nuxt/app";
 
-const availableRoutes=['index','PlaceServices','categoryPlaces','Auth-Admin','Auth-User','UnauthorizedPage']
+const availableRoutes=['index','PlaceServices','categoryPlaces','Auth-Admin','Auth-User','UnauthorizedPage','plans']
 const doctorRoutes=[...availableRoutes, 'doctor-conversations','chat','doctor'];
 
 
