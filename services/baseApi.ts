@@ -23,7 +23,7 @@ options:{  url: string,
 
 export const api = $fetch.create({
 
-  baseURL: 'https://hq.90-soft.com/api/functions/',
+  baseURL: 'http://localhost:1337/api/functions/',
   onRequest({ error, options, request }) {
     options.headers.set('Content-Type', 'application/json')
     options.headers.set('X-Parse-Application-Id', 'appId')
