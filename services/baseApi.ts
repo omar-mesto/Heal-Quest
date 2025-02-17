@@ -25,15 +25,14 @@ export const api = $fetch.create({
 
   baseURL: 'https://hq.90-soft.com/api/functions/',
   onRequest({ error, options, request }) {
+    const globalStore=useGlobalStore();
+    globalStore.error='';
     options.headers.set('Content-Type', 'application/json')
     options.headers.set('X-Parse-Application-Id', 'appId')
     options.headers.set('X-Parse-REST-API-Key', 'restAPIKey')
   options.headers.set('X-Parse-Session-Token', useGlobalStore().token)
   },
-  onResponse:()=>{
-    const globalStore=useGlobalStore();
-    globalStore.error='';  
-  },
+
   onResponseError: (error) => {
     const router=useRouter()
     const globalStore=useGlobalStore();
