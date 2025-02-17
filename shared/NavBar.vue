@@ -43,8 +43,9 @@ if(globalStore.role=='Client'){
         </VBtn>
       </div>
       <VSpacer />
-      <VBtn icon>
-        <VIcon>mdi-heart</VIcon>
+      <VBtn icon
+      @click="$router.push('./notifications')">
+        <VIcon>mdi mdi-bell</VIcon>
       </VBtn>
       <VBtn
         icon
@@ -58,8 +59,8 @@ if(globalStore.role=='Client'){
       <slot />
     </VMain>
     <VBottomNavigation
-      v-if="$vuetify.display.mobile"
-      class="bg-primary"
+      v-show="$vuetify.display.mobile"
+      class="bg-primary d-sm-none d-flex"
       app
     >
       <VBtn

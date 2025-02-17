@@ -17,7 +17,6 @@ const { data, status } = useAdvertisment()
       hide-delimiters
     >
       <VCarouselItem
-
         v-for="advertisement in data?.result"
         :key="advertisement.id"
         aspect-ratio="16/9"

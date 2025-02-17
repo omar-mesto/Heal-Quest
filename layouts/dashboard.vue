@@ -22,7 +22,7 @@ const items = ref([
     icon:'mdi-home-outline',
   },
   { id: 3, subitems: [
-      { route: '/dashboard/other/placeService', title: 'Place Service' },
+      { route: '/dashboard/other/placeService', title: 'Place Service' ,icon:'mdi mdi-land-plots-marker'},
       { route: '/dashboard/other/service', title: 'Service',icon:'mdi-home-group-plus' },
       { route: '/dashboard/other/place', title: 'Place',icon:'mdi-home-group-plus' },
     ],
@@ -186,7 +186,7 @@ const logOut = async ()=>{
             elevation="7"
             :headers="headers"
             :items="data"
-            height="600"
+            height="445"
             density="compact"
             class="text-body-1 font-weight-medium"
           >

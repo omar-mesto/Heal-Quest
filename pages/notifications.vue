@@ -45,16 +45,16 @@ const notifications = ref([
 </script>
 <template>
     <div>
-      <p class="text-grey-darken-4 text-h4 font-weight-medium mt-12 mb-4 ">
+      <p class="text-grey-darken-4 text-h4 font-weight-medium mt-12">
         Notifications
       </p>
       <VContainer
-    class="fill-height"
-    fluid
-  >
-    <VRow justify="center" align="center">
-      <VCol cols="10">
-    <VList>
+        class="fill-height"
+        fluid
+      >
+        <VRow justify="center" align="center">
+          <VCol cols="10">
+         <VList>
 
       <VListItem
 
@@ -77,8 +77,8 @@ const notifications = ref([
       </VListItem>
     </VList>
       </VCol>
-    </VRow>
-  </VContainer>
+        </VRow>
+    </VContainer>
     </div>
 </template>  
 <style>

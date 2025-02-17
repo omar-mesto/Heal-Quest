@@ -2,8 +2,7 @@
 import { useCategories } from '@@/queries/categories';
 import { computed } from 'vue';
 
-const { data, status,clear } = useCategories()
-clear();
+const { data, status } = useCategories()
 const isLoading = computed(() => (status.value != 'success' && status.value != 'error'))
 const isCompleteLoading = computed(() => (status.value == 'success' || status.value == 'error'))
 </script>

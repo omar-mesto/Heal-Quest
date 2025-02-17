@@ -2,13 +2,12 @@ import { useGlobalStore } from "@@/stores/global";
 import { RoleName } from "@@/utils/RoleName";
 import { defineNuxtRouteMiddleware, navigateTo } from "nuxt/app";
 
-const availableRoutes=['index','PlaceServices','categoryPlaces','Auth-Admin','Auth-User','UnauthorizedPage','plans']
+const availableRoutes=['index','PlaceServices','categoryPlaces','Auth-Admin','Auth-User','UnauthorizedPage']
 const doctorRoutes=[...availableRoutes, 'doctor-conversations','chat','doctor'];
 
 const clientRoutes=[...availableRoutes,"userProfile-account" ,"chat","notifications","aboutUs","privacyPolicy"];
 
 export default defineNuxtRouteMiddleware((to, from) => {
-
     let {role,token}=useGlobalStore()
 
     if(token && to.name.toString().startsWith('Auth-')){

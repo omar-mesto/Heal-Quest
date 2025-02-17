@@ -17,7 +17,7 @@ const headers = ref([
 
 const page=ref(0)
 const skip = ref(0)
-const limit = ref(2)
+const limit = ref(12)
 const { data, status,clear,refresh } = useDoctors({ skip: skip, limit: limit });
 clear()
 
